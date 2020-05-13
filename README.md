@@ -1,2 +1,2 @@
-# Lazer-Dragon-Workout-Experience
-A HIIT Timer app designed by me.
+# The Lazer Dragon Workout Experience
+All other workout apps hang their heads in shame.
