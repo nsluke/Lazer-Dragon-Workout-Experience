@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  SelectWorkoutViewController.swift
 //  CodeDump
 //
 //  Created by Luke Solomon on 5/1/20.
@@ -12,12 +12,15 @@ import UIKit
 
 class SelectWorkoutViewController: UIViewController {
   
-  var tableView:UITableView = UITableView.init()
+  var tableView:UITableView = UITableView()
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    // Do any additional setup after loading the view.
     
+    setupViews()
+  }
+  
+  func setupViews() {
     navigationController?.navigationBar.prefersLargeTitles = true
     title = "Select your Workout"
     
@@ -55,17 +58,18 @@ class SelectWorkoutViewController: UIViewController {
     ])
   }
   
+  
   @objc func addItemTapped(sender:UIButton) {
     let workoutDesignerVC = IntervalDesignerViewController()
     navigationController?.pushViewController(workoutDesignerVC, animated: true)
   }
+  
   
 }
 extension SelectWorkoutViewController:UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return Constants.WorkoutObject.count
   }
-  
   
   func numberOfSections(in tableView: UITableView) -> Int {
     return 1
@@ -95,8 +99,8 @@ extension SelectWorkoutViewController:UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
     let workout = Constants.WorkoutObject[indexPath.row]
-    var workoutVC = WorkoutViewController()
-    var workoutDesignerVC = IntervalDesignerViewController()
+    let workoutVC = WorkoutViewController()
+    let workoutDesignerVC = IntervalDesignerViewController()
     
     switch workout.type {
     case .HIIT:

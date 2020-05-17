@@ -30,9 +30,15 @@
 		D57E4070246A383200DBD3A5 /* RoutineDesignerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57E406F246A383200DBD3A5 /* RoutineDesignerViewController.swift */; };
 		D57E4072246C6A2C00DBD3A5 /* RoutineDesignerTableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57E4071246C6A2C00DBD3A5 /* RoutineDesignerTableViewHandler.swift */; };
 		D57E4076246C84A300DBD3A5 /* RoutineDesignerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57E4075246C84A300DBD3A5 /* RoutineDesignerTableViewCell.swift */; };
+		D5916646246CA96D00497830 /* DataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5916645246CA96D00497830 /* DataHandler.swift */; };
+		D5916648246CA97800497830 /* CoreDataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5916647246CA97800497830 /* CoreDataHandler.swift */; };
+		D5A70CBE246F218D009FD146 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A70CBD246F218C009FD146 /* SettingsViewController.swift */; };
+		D5A70CC2246F344F009FD146 /* OutrunTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A70CC1246F344F009FD146 /* OutrunTabBar.swift */; };
+		D5A70CC4246F4CCB009FD146 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A70CC3246F4CCB009FD146 /* ProfileViewController.swift */; };
+		D5A70CC72470901C009FD146 /* OutrunStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A70CC62470901C009FD146 /* OutrunStackView.swift */; };
 		D5BA33B5245CF239001DE467 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BA33B4245CF239001DE467 /* AppDelegate.swift */; };
 		D5BA33B7245CF239001DE467 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BA33B6245CF239001DE467 /* SceneDelegate.swift */; };
-		D5BA33B9245CF239001DE467 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BA33B8245CF239001DE467 /* ViewController.swift */; };
+		D5BA33B9245CF239001DE467 /* SelectWorkoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BA33B8245CF239001DE467 /* SelectWorkoutViewController.swift */; };
 		D5BA33BC245CF239001DE467 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D5BA33BA245CF239001DE467 /* Main.storyboard */; };
 		D5BA33BF245CF239001DE467 /* CodeDump.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D5BA33BD245CF239001DE467 /* CodeDump.xcdatamodeld */; };
 		D5BA33C1245CF23D001DE467 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5BA33C0245CF23D001DE467 /* Assets.xcassets */; };
@@ -71,14 +77,21 @@
 		D52114DC2469C26300D1F0ED /* IntervalDesignerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntervalDesignerViewController.swift; sourceTree = "<group>"; };
 		D52114DF2469CC9900D1F0ED /* IntervalPickerDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntervalPickerDataSource.swift; sourceTree = "<group>"; };
 		D52114E12469F4E500D1F0ED /* OutrunLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutrunLabel.swift; sourceTree = "<group>"; };
+		D548391D246E2C480003B3E5 /* CodeDump.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CodeDump.entitlements; sourceTree = "<group>"; };
 		D57E406C246A03E100DBD3A5 /* OutrunPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutrunPickerView.swift; sourceTree = "<group>"; };
 		D57E406F246A383200DBD3A5 /* RoutineDesignerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineDesignerViewController.swift; sourceTree = "<group>"; };
 		D57E4071246C6A2C00DBD3A5 /* RoutineDesignerTableViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineDesignerTableViewHandler.swift; sourceTree = "<group>"; };
 		D57E4075246C84A300DBD3A5 /* RoutineDesignerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineDesignerTableViewCell.swift; sourceTree = "<group>"; };
-		D5BA33B1245CF239001DE467 /* CodeDump.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeDump.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5916645246CA96D00497830 /* DataHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataHandler.swift; sourceTree = "<group>"; };
+		D5916647246CA97800497830 /* CoreDataHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataHandler.swift; sourceTree = "<group>"; };
+		D5A70CBD246F218C009FD146 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		D5A70CC1246F344F009FD146 /* OutrunTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutrunTabBar.swift; sourceTree = "<group>"; };
+		D5A70CC3246F4CCB009FD146 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		D5A70CC62470901C009FD146 /* OutrunStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutrunStackView.swift; sourceTree = "<group>"; };
+		D5BA33B1245CF239001DE467 /* Lazer Dragon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Lazer Dragon.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5BA33B4245CF239001DE467 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D5BA33B6245CF239001DE467 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		D5BA33B8245CF239001DE467 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		D5BA33B8245CF239001DE467 /* SelectWorkoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectWorkoutViewController.swift; sourceTree = "<group>"; };
 		D5BA33BB245CF239001DE467 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D5BA33BE245CF239001DE467 /* CodeDump.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CodeDump.xcdatamodel; sourceTree = "<group>"; };
 		D5BA33C0245CF23D001DE467 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -162,6 +175,9 @@
 				D57E406E246A103000DBD3A5 /* ViewControllers */,
 				D57E4073246C6A3800DBD3A5 /* RoutineDesigner */,
 				D57E4074246C6A4400DBD3A5 /* IntervalDesigner */,
+				D5A70CBF246F2197009FD146 /* Handlers */,
+				D5A70CC5246F4CD4009FD146 /* ProfileView */,
+				D5A70CC0246F21A2009FD146 /* Settings */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -169,7 +185,7 @@
 		D57E406E246A103000DBD3A5 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				D5BA33B8245CF239001DE467 /* ViewController.swift */,
+				D5BA33B8245CF239001DE467 /* SelectWorkoutViewController.swift */,
 				D5CEDC1B2460E5D000F79129 /* WorkoutViewController.swift */,
 			);
 			name = ViewControllers;
@@ -194,6 +210,31 @@
 			name = IntervalDesigner;
 			sourceTree = "<group>";
 		};
+		D5A70CBF246F2197009FD146 /* Handlers */ = {
+			isa = PBXGroup;
+			children = (
+				D5916645246CA96D00497830 /* DataHandler.swift */,
+				D5916647246CA97800497830 /* CoreDataHandler.swift */,
+			);
+			name = Handlers;
+			sourceTree = "<group>";
+		};
+		D5A70CC0246F21A2009FD146 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				D5A70CBD246F218C009FD146 /* SettingsViewController.swift */,
+			);
+			name = Settings;
+			sourceTree = "<group>";
+		};
+		D5A70CC5246F4CD4009FD146 /* ProfileView */ = {
+			isa = PBXGroup;
+			children = (
+				D5A70CC3246F4CCB009FD146 /* ProfileViewController.swift */,
+			);
+			name = ProfileView;
+			sourceTree = "<group>";
+		};
 		D5BA33A8245CF239001DE467 = {
 			isa = PBXGroup;
 			children = (
@@ -207,7 +248,7 @@
 		D5BA33B2245CF239001DE467 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D5BA33B1245CF239001DE467 /* CodeDump.app */,
+				D5BA33B1245CF239001DE467 /* Lazer Dragon.app */,
 				D5BA33CA245CF23D001DE467 /* CodeDumpTests.xctest */,
 				D5BA33D5245CF23D001DE467 /* CodeDumpUITests.xctest */,
 			);
@@ -217,11 +258,11 @@
 		D5BA33B3245CF239001DE467 /* CodeDump */ = {
 			isa = PBXGroup;
 			children = (
+				D548391D246E2C480003B3E5 /* CodeDump.entitlements */,
 				D5BA33B4245CF239001DE467 /* AppDelegate.swift */,
 				D5BA33B6245CF239001DE467 /* SceneDelegate.swift */,
 				D52114DE2469CC7900D1F0ED /* Controllers */,
 				D5BA33E8245CF250001DE467 /* Views */,
-				D5BA33E7245CF249001DE467 /* ViewModels */,
 				D5BA33ED245CF2AC001DE467 /* Models */,
 				D5BA33EB245CF265001DE467 /* Reference */,
 				D5BA33BA245CF239001DE467 /* Main.storyboard */,
@@ -249,17 +290,12 @@
 			path = CodeDumpUITests;
 			sourceTree = "<group>";
 		};
-		D5BA33E7245CF249001DE467 /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModels;
-			sourceTree = "<group>";
-		};
 		D5BA33E8245CF250001DE467 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D5A70CC1246F344F009FD146 /* OutrunTabBar.swift */,
 				D52114E12469F4E500D1F0ED /* OutrunLabel.swift */,
+				D5A70CC62470901C009FD146 /* OutrunStackView.swift */,
 				D57E406C246A03E100DBD3A5 /* OutrunPickerView.swift */,
 			);
 			path = Views;
@@ -310,7 +346,7 @@
 			);
 			name = CodeDump;
 			productName = CodeDump;
-			productReference = D5BA33B1245CF239001DE467 /* CodeDump.app */;
+			productReference = D5BA33B1245CF239001DE467 /* Lazer Dragon.app */;
 			productType = "com.apple.product-type.application";
 		};
 		D5BA33C9245CF23D001DE467 /* CodeDumpTests */ = {
@@ -441,19 +477,25 @@
 			files = (
 				D5CEDC1C2460E5D000F79129 /* WorkoutViewController.swift in Sources */,
 				D57E4070246A383200DBD3A5 /* RoutineDesignerViewController.swift in Sources */,
+				D5A70CC4246F4CCB009FD146 /* ProfileViewController.swift in Sources */,
 				D52114E22469F4E500D1F0ED /* OutrunLabel.swift in Sources */,
 				D52114E02469CC9900D1F0ED /* IntervalPickerDataSource.swift in Sources */,
+				D5916646246CA96D00497830 /* DataHandler.swift in Sources */,
 				D52114C324662F4300D1F0ED /* Colors.swift in Sources */,
 				D52114DD2469C26300D1F0ED /* IntervalDesignerViewController.swift in Sources */,
+				D5A70CC2246F344F009FD146 /* OutrunTabBar.swift in Sources */,
 				D5BA33EA245CF25E001DE467 /* Constants.swift in Sources */,
 				D5CEDC1E246221B100F79129 /* Workout.swift in Sources */,
-				D5BA33B9245CF239001DE467 /* ViewController.swift in Sources */,
+				D5916648246CA97800497830 /* CoreDataHandler.swift in Sources */,
+				D5BA33B9245CF239001DE467 /* SelectWorkoutViewController.swift in Sources */,
+				D5A70CC72470901C009FD146 /* OutrunStackView.swift in Sources */,
 				D5BA33B5245CF239001DE467 /* AppDelegate.swift in Sources */,
 				D5BA33BF245CF239001DE467 /* CodeDump.xcdatamodeld in Sources */,
 				D57E4076246C84A300DBD3A5 /* RoutineDesignerTableViewCell.swift in Sources */,
 				D5BA33B7245CF239001DE467 /* SceneDelegate.swift in Sources */,
 				D57E4072246C6A2C00DBD3A5 /* RoutineDesignerTableViewHandler.swift in Sources */,
 				D57E406D246A03E100DBD3A5 /* OutrunPickerView.swift in Sources */,
+				D5A70CBE246F218D009FD146 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -626,6 +668,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = CodeDump/CodeDump.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6TK8Q4KD6G;
 				INFOPLIST_FILE = CodeDump/Info.plist;
@@ -634,7 +677,8 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = Observatory.CodeDump;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Lazer Dragon";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -644,6 +688,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = CodeDump/CodeDump.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6TK8Q4KD6G;
 				INFOPLIST_FILE = CodeDump/Info.plist;
@@ -652,7 +697,8 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = Observatory.CodeDump;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Lazer Dragon";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

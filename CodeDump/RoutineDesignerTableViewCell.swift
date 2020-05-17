@@ -8,8 +8,6 @@
 
 import UIKit
 
-
-
 class RoutineDesignerTableViewCell : UITableViewCell {
   var icon = UIImage()
   var label = UILabel()
@@ -18,9 +16,12 @@ class RoutineDesignerTableViewCell : UITableViewCell {
 
 class IntervalVisualizationCell : UITableViewCell {
   
-  var visualizationView: IntervalVisualizationView
+  var visualizationView = IntervalVisualizationView()
   
-  
+
+  func configure(viewModel: IntervalVisualizationViewModel) {
+    
+  }
   
   
 }
@@ -61,8 +62,8 @@ class IntervalVisualizationView : UIView {
     
     if viewModel.cooldownLength > 0 {
       let cooldownView = UIView(frame: CGRect(x: 0, y: 0, width: 80, height: viewModel.cooldownLength))
-      view.backgroundColor = UIColor.OutrunOffPurple
-      containerView.addArrangedSubview(view)
+      cooldownView.backgroundColor = UIColor.OutrunOffPurple
+      containerView.addArrangedSubview(cooldownView)
     }
 
     

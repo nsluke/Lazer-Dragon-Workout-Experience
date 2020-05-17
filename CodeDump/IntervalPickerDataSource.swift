@@ -18,8 +18,8 @@ enum OutrunPickerType {
 // =================== Interval Length =================== //
 class WorkoutPickerHandler:NSObject {
   private var pickerView:OutrunPickerView
-  private var items = ["5","10","15","20","25","30","35","40","45","50","55","60"]
-  private var intervals = ["1","2","3","4","5","6","7","8","9","10"]
+  private var items = Array(stride(from: 5, to: 60, by: 5))  // ["5","10","15","20","25","30","35","40","45","50","55","60"]
+  private var intervals = Array(stride(from: 1, to: 10, by: 1)) // ["1","2","3","4","5","6","7","8","9","10"]
 
 
   init(pickerView: OutrunPickerView) {
@@ -61,15 +61,15 @@ extension WorkoutPickerHandler: UIPickerViewDelegate {
 
     switch self.pickerView.outrunPickerViewType {
     case .IntervalLength:
-      pickerLabel?.text = items[row]
+      pickerLabel?.text = String(items[row])
     case .RestLength:
-      pickerLabel?.text = items[row]
+      pickerLabel?.text = String(items[row])
     case .IntervalCount:
-      pickerLabel?.text = intervals[row]
+      pickerLabel?.text = String(intervals[row])
     case .SetCount:
-      pickerLabel?.text = intervals[row]
+      pickerLabel?.text = String(intervals[row])
     default:
-      pickerLabel?.text = items[row]
+      pickerLabel?.text = String(items[row])
     }
 
     return pickerLabel!;

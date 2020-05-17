@@ -100,6 +100,13 @@ extension UIColor {
     return self.init(red: 84/255, green: 19/255, blue: 136/255, alpha: 1.0)
   }
   
+  // ==========================================================//
+  
+  class var OutrunLaserGreen:UIColor {
+        return self.init(red: 30/255, green: 255/255, blue: 30/255, alpha: 1.0)
+
+  }
+  
 }
 
 

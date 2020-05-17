@@ -52,7 +52,6 @@ class IntervalDesignerViewController: UIViewController {
 
     containerView.translatesAutoresizingMaskIntoConstraints = false
     containerView.axis = .vertical
-    containerView.backgroundColor = UIColor.OutrunDarkerGray
     containerView.distribution = .fillEqually
     
 
@@ -73,6 +72,7 @@ class IntervalDesignerViewController: UIViewController {
     intervalLengthPickerHandler = WorkoutPickerHandler(pickerView: intervalLengthPickerView)
     intervalLengthPickerView.dataSource = intervalLengthPickerHandler
     intervalLengthPickerView.delegate = intervalLengthPickerHandler
+    
     
     // Rest Length
     containerView.addArrangedSubview(restLengthContainerView)

@@ -12,15 +12,9 @@ import UIKit
 
 struct Constants {
   
-  static var Workouts =
-  [
-    Workout("Interval Workout", .HIIT, 45),
-    Workout("Cardio", .HIIT, 60),
-    Workout("Strength", .Yoga, 90),
-    Workout("Custom", .Custom, 0)
+  static var WorkoutObject = [
+    WorkoutModel("60/30", .Strength, 20, 300, 60, 30, 10, 2),
+    WorkoutModel("45/15", .HIIT, 30, 360, 45, 15, 10, 3) // yeah....fix the descriptors later. this looks awful.
   ]
   
-  
 }
-
-
