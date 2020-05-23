@@ -60,8 +60,8 @@ class SelectWorkoutViewController: UIViewController {
   
   
   @objc func addItemTapped(sender:UIButton) {
-    let workoutDesignerVC = IntervalDesignerViewController()
-    navigationController?.pushViewController(workoutDesignerVC, animated: true)
+    let routineDesignerVC = RoutineDesignerViewController()
+    navigationController?.pushViewController(routineDesignerVC, animated: true)
   }
   
   

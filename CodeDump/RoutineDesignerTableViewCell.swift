@@ -10,8 +10,14 @@ import UIKit
 
 class RoutineDesignerTableViewCell : UITableViewCell {
   var icon = UIImage()
-  var label = UILabel()
-  var descriptorLabel = UILabel()
+  var label = OutrunLabel()
+  var descriptorLabel = OutrunLabel()
+  var textField = UITextField()
+
+  func setupViews() {
+    self.contentView.backgroundColor = UIColor.OutrunDarkerGray
+  }
+  
 }
 
 class IntervalVisualizationCell : UITableViewCell {
@@ -22,7 +28,6 @@ class IntervalVisualizationCell : UITableViewCell {
   func configure(viewModel: IntervalVisualizationViewModel) {
     
   }
-  
   
 }
 
@@ -42,6 +47,10 @@ class IntervalVisualizationView : UIView {
   
   func configure(viewModel: IntervalVisualizationViewModel) {
     self.viewModel = viewModel
+    containerView.distribution = .fillProportionally
+    containerView.alignment = .center
+    containerView.axis = .vertical
+    containerView.translatesAutoresizingMaskIntoConstraints = false
     
     if viewModel.warmupLength > 0 {
       let view = UIView(frame: CGRect(x: 0, y: 0, width: 80, height: viewModel.warmupLength))

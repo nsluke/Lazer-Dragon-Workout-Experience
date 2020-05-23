@@ -676,7 +676,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Observatory.CodeDump;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Observatory.CodeDump;
 				PRODUCT_NAME = "Lazer Dragon";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
@@ -696,7 +696,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Observatory.CodeDump;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Observatory.CodeDump;
 				PRODUCT_NAME = "Lazer Dragon";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
