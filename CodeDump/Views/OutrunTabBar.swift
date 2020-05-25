@@ -14,8 +14,7 @@ class OutrunTabBar: UITabBarController {
     super.viewDidLoad()
         
     
-    let profileNavigationController = UINavigationController.init(rootViewController: ProfileViewController())
-    profileNavigationController.tabBarItem = UITabBarItem(tabBarSystemItem: .contacts, tag: 0)
+
 //    profileNavigationController.tabBarItem.badgeColor = UIColor.OutrunLaserBlue
     
     
@@ -27,6 +26,9 @@ class OutrunTabBar: UITabBarController {
       appearance.stackedLayoutAppearance.normal.badgeBackgroundColor = UIColor.OutrunBlack
       tabBar.standardAppearance = appearance
       
+      self.tabBar.backgroundColor = UIColor.OutrunBlack
+      tabBar.isTranslucent = false
+      
     } else {
       
       let appearance = UITabBarItem.appearance(whenContainedInInstancesOf: [OutrunTabBar.self])
@@ -36,6 +38,8 @@ class OutrunTabBar: UITabBarController {
       
     }
 
+    let profileNavigationController = UINavigationController.init(rootViewController: ProfileViewController())
+    profileNavigationController.tabBarItem = UITabBarItem(tabBarSystemItem: .contacts, tag: 0)
 
     let selectWorkoutNavigationController = UINavigationController.init(rootViewController: SelectWorkoutViewController())
     selectWorkoutNavigationController.tabBarItem = UITabBarItem(tabBarSystemItem: .downloads, tag: 1)

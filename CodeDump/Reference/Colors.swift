@@ -75,13 +75,17 @@ extension UIColor {
   }
   
   class var OutrunRed:UIColor {
-    return self.init(red: 253/255, green: 6/255, blue: 207/255, alpha: 1.0)
+    return self.init(red: 253/255, green: 29/255, blue: 83/255, alpha: 1.0)
   }
   
   // ==========================================================//
   
-  class var OutrunYellow:UIColor {
+  class var OutrunPaleYellow:UIColor {
     return self.init(red: 249/255, green: 200/255, blue: 14/255, alpha: 1.0)
+  }
+  
+  class var OutrunLaserYellow:UIColor {
+    return self.init(red: 155/255, green: 239/255, blue: 0/255, alpha: 1.0)
   }
     
   class var OutrunSalmon2:UIColor {

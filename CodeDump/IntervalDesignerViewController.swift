@@ -64,7 +64,7 @@ class IntervalDesignerViewController: UIViewController {
     intervalLengthContainerView.axis = .vertical
     intervalLengthContainerView.translatesAutoresizingMaskIntoConstraints = false
     
-    intervalLengthLabel.customize(text: "Interval Length", font: .Pixel, size: 30, textColor: UIColor.OutrunYellow)
+    intervalLengthLabel.customize(text: "Interval Length", font: .Pixel, size: 30, textColor: UIColor.OutrunPaleYellow)
     intervalLengthLabel.translatesAutoresizingMaskIntoConstraints = false
     
     intervalLengthPickerView.outrunPickerViewType = .IntervalLength
@@ -83,7 +83,7 @@ class IntervalDesignerViewController: UIViewController {
     restLengthContainerView.axis = .vertical
     restLengthContainerView.translatesAutoresizingMaskIntoConstraints = false
 
-    restLengthLabel.customize(text: "Rest Length", font: .Pixel, size: 30, textColor: UIColor.OutrunYellow)
+    restLengthLabel.customize(text: "Rest Length", font: .Pixel, size: 30, textColor: UIColor.OutrunPaleYellow)
     restLengthLabel.translatesAutoresizingMaskIntoConstraints = false
 
     restLengthPickerView.outrunPickerViewType = .RestLength
@@ -102,7 +102,7 @@ class IntervalDesignerViewController: UIViewController {
     numberOfIntervalsContainerView.axis = .vertical
     numberOfIntervalsContainerView.translatesAutoresizingMaskIntoConstraints = false
     
-    numberOfIntervalsLabel.customize(text: "Number of Intervals", font: .Pixel, size: 30, textColor: UIColor.OutrunYellow)
+    numberOfIntervalsLabel.customize(text: "Number of Intervals", font: .Pixel, size: 30, textColor: UIColor.OutrunPaleYellow)
     numberOfIntervalsLabel.translatesAutoresizingMaskIntoConstraints = false
     
     numberOfIntervalsPickerView.outrunPickerViewType = .IntervalCount
@@ -121,7 +121,7 @@ class IntervalDesignerViewController: UIViewController {
     numberOfSetsContainerView.axis = .vertical
     numberOfSetsContainerView.translatesAutoresizingMaskIntoConstraints = false
     
-    numberOfSetsLabel.customize(text: "Number of Sets", font: .Pixel, size: 30, textColor: UIColor.OutrunYellow)
+    numberOfSetsLabel.customize(text: "Number of Sets", font: .Pixel, size: 30, textColor: UIColor.OutrunPaleYellow)
     numberOfSetsLabel.translatesAutoresizingMaskIntoConstraints = false
     
     numberOfSetsPickerView.outrunPickerViewType = .SetCount

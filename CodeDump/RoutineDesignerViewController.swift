@@ -18,31 +18,7 @@ class RoutineDesignerViewController: UIViewController {
   var tableViewHandler:RoutineDesignerTableViewHandler!
   var tableView = UITableView()
 
-  
-//  // Name
-//  var nameContainerView = OutrunStackView()
-//  var nameLabel = OutrunLabel()
-//  var nameTextField = UITextField()
-//
-//  // Warmup
-//  var warmupContainerView = OutrunStackView()
-//  var warmupLengthTitleLabel = OutrunLabel()
-//  var warmupLengthDescriptorLabel = OutrunLabel()
-//
-//  // Interval Count
-//  var intervalCountContainerVew = OutrunStackView()
-//  var intervalCountTitleLabel = OutrunLabel()
-//  var intervalCountDescriptorLabel = OutrunLabel()
-//
-//  // Interval Length
-//  var intervalLengthContainerVew = OutrunStackView()
-//  var intervalLengthTitleLabel = OutrunLabel()
-//  var intervalLengthDescriptorLabel = OutrunLabel()
-//
-//  // Cooldown Length
-//  var cooldownLengthContainerVew = OutrunStackView()
-//  var cooldownLengthTitleLabel = OutrunLabel()
-//  var cooldownLengthDescriptorLabel = OutrunLabel()
+  var routineDesignerDelegate:RoutineDesignerCellDelegate?
   
   
   override func viewDidLoad() {
@@ -50,7 +26,8 @@ class RoutineDesignerViewController: UIViewController {
     
     title = "Design your Workout"
     navigationItem.largeTitleDisplayMode = .never
-    
+    navigationItem.backBarButtonItem?.tintColor = UIColor.OutrunLaserBlue
+//    navigationController
     setupViews()
   }
   
@@ -59,15 +36,18 @@ class RoutineDesignerViewController: UIViewController {
     view.addSubview(containerView)
     view.backgroundColor = UIColor.OutrunDarkerGray
     tableView.backgroundColor = UIColor.OutrunDarkerGray
-
+    
     containerView.translatesAutoresizingMaskIntoConstraints = false
     containerView.axis = .vertical
     containerView.distribution = .fillEqually
     containerView.alignment = .center
-
+    
     // TableView
+    tableViewHandler = RoutineDesignerTableViewHandler.init(tableView: tableView)
     tableView.delegate = tableViewHandler
     tableView.dataSource = tableViewHandler
+    tableView.register(RoutineDesignerTableViewCell.self, forCellReuseIdentifier: "RoutineCell") //TO DO: Get this working!
+    tableView.register(IntervalVisualizationCell.self, forCellReuseIdentifier: "VisualizationCell") //TO DO: Get this working!
     containerView.addArrangedSubview(tableView)
     
     
@@ -83,8 +63,5 @@ class RoutineDesignerViewController: UIViewController {
       tableView.rightAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.rightAnchor)
     ])
   }
-  
-  
-  
   
 }

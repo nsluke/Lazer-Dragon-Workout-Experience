@@ -8,12 +8,6 @@
 
 import UIKit
 
-enum OutrunPickerType {
-  case IntervalLength
-  case RestLength
-  case IntervalCount
-  case SetCount
-}
 
 // =================== Interval Length =================== //
 class WorkoutPickerHandler:NSObject {
@@ -56,7 +50,7 @@ extension WorkoutPickerHandler: UIPickerViewDelegate {
       pickerLabel = UILabel()
       pickerLabel?.font = UIFont(name: OutrunFonts.Pixel.rawValue, size: 20) ?? UIFont.systemFont(ofSize: 30)
       pickerLabel?.textAlignment = .center
-      pickerLabel?.textColor = UIColor.OutrunYellow
+      pickerLabel?.textColor = UIColor.OutrunPaleYellow
     }
 
     switch self.pickerView.outrunPickerViewType {

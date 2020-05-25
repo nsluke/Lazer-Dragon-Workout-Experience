@@ -9,6 +9,13 @@
 import UIKit
 
 
+enum OutrunPickerType {
+  case IntervalLength
+  case RestLength
+  case IntervalCount
+  case SetCount
+}
+
 
 class OutrunPickerView:UIPickerView {
   

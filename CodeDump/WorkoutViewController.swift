@@ -113,7 +113,7 @@ class WorkoutViewController:UIViewController {
     // SplitTimer
     splitTimerLabel.text = String(counter)
     splitTimerLabel.font = UIFont(name: "Pixel-01", size: 70) ?? UIFont.systemFont(ofSize: 30)
-    splitTimerLabel.textColor = UIColor.OutrunYellow
+    splitTimerLabel.textColor = UIColor.OutrunPaleYellow
     
     
     // remainingTimerLabel
@@ -130,7 +130,7 @@ class WorkoutViewController:UIViewController {
     exerciseTitleLabel.translatesAutoresizingMaskIntoConstraints = false
     exerciseTitleLabel.text = "Exercise"
     exerciseTitleLabel.font = UIFont(name: "Pixel-01", size: 30) ?? UIFont.systemFont(ofSize: 30)
-    exerciseTitleLabel.textColor = UIColor.OutrunYellow
+    exerciseTitleLabel.textColor = UIColor.OutrunPaleYellow
         
     
     // controls

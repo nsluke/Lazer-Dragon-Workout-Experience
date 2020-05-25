@@ -79,7 +79,7 @@ extension SelectWorkoutViewController:UITableViewDataSource {
     let cell = tableView.dequeueReusableCell(withIdentifier: "CellID")
     
     cell?.textLabel?.text = Constants.WorkoutObject[indexPath.row].name
-    cell?.textLabel?.textColor = UIColor.OutrunYellow
+    cell?.textLabel?.textColor = UIColor.OutrunPaleYellow
     
     cell?.textLabel?.font = UIFont(name: "Pixel-01", size: 30) ?? UIFont.systemFont(ofSize: 20)
     

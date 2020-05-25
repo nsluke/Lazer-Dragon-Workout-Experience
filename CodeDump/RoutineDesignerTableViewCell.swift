@@ -8,74 +8,73 @@
 
 import UIKit
 
+protocol RoutineDesignerCellDelegate {
+  func returnValue()
+}
+
 class RoutineDesignerTableViewCell : UITableViewCell {
-  var icon = UIImage()
+  var icon = UIImageView()
   var label = OutrunLabel()
   var descriptorLabel = OutrunLabel()
-  var textField = UITextField()
-
+  var textField = OutrunTextField()
+  
+  var containerView = OutrunStackView()
+  
+  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    super.init(style: style, reuseIdentifier: reuseIdentifier)
+    
+    self.contentView.addSubview(icon)
+    self.contentView.addSubview(label)
+    self.contentView.addSubview(descriptorLabel)
+    self.contentView.addSubview(textField)
+    
+    icon.anchor(
+      top: topAnchor,
+      left: leftAnchor,
+      bottom: bottomAnchor,
+      right: label.leftAnchor,
+      paddingTop: 0,
+      paddingLeft: 0,
+      paddingBottom: 0,
+      paddingRight: 0,
+      width: 30,
+      height: 0,
+      enableInsets: false)
+    
+    label.anchor(
+      top: topAnchor,
+      left: icon.rightAnchor,
+      bottom: bottomAnchor,
+      right: textField.leftAnchor,
+      paddingTop: 8,
+      paddingLeft: 8,
+      paddingBottom: 8,
+      paddingRight: 8,
+      width: 0,
+      height: 0,
+      enableInsets: true)
+    
+    textField.anchor(
+      top: topAnchor,
+      left: label.rightAnchor,
+      bottom: bottomAnchor,
+      right: rightAnchor,
+      paddingTop: 8,
+      paddingLeft: 8,
+      paddingBottom: 8,
+      paddingRight: 8,
+      width: 200,
+      height: 0,
+      enableInsets: true)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
   func setupViews() {
     self.contentView.backgroundColor = UIColor.OutrunDarkerGray
   }
   
 }
 
-class IntervalVisualizationCell : UITableViewCell {
-  
-  var visualizationView = IntervalVisualizationView()
-  
-
-  func configure(viewModel: IntervalVisualizationViewModel) {
-    
-  }
-  
-}
-
-struct IntervalVisualizationViewModel {
-  var warmupLength   : Int
-  var intervalCount  : Int
-  var intervalLength : Int
-  var restLength     : Int
-  var cooldownLength : Int
-}
-
-// takes a couple of variables and builds a simple visualization of the workout
-class IntervalVisualizationView : UIView {
-  
-  var containerView = UIStackView()
-  var viewModel:IntervalVisualizationViewModel?
-  
-  func configure(viewModel: IntervalVisualizationViewModel) {
-    self.viewModel = viewModel
-    containerView.distribution = .fillProportionally
-    containerView.alignment = .center
-    containerView.axis = .vertical
-    containerView.translatesAutoresizingMaskIntoConstraints = false
-    
-    if viewModel.warmupLength > 0 {
-      let view = UIView(frame: CGRect(x: 0, y: 0, width: 80, height: viewModel.warmupLength))
-      view.backgroundColor = UIColor.OutrunOrange
-      containerView.addArrangedSubview(view)
-    }
-    
-    
-    for _ in 0..<viewModel.intervalCount {
-      let intervalView = UIView(frame: CGRect(x: 0, y: 0, width: 80, height: viewModel.intervalLength))
-      intervalView.backgroundColor = UIColor.OutrunRed
-      containerView.addArrangedSubview(intervalView)
-      
-      let restView = UIView(frame: CGRect(x: 0, y: 0, width: 80, height: viewModel.restLength))
-      restView.backgroundColor = UIColor.OutrunLaserBlue
-      containerView.addArrangedSubview(restView)
-    }
-    
-    if viewModel.cooldownLength > 0 {
-      let cooldownView = UIView(frame: CGRect(x: 0, y: 0, width: 80, height: viewModel.cooldownLength))
-      cooldownView.backgroundColor = UIColor.OutrunOffPurple
-      containerView.addArrangedSubview(cooldownView)
-    }
-
-    
-  }
-  
-}
