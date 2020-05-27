@@ -12,11 +12,25 @@ import UIKit
 class RoutineDesignerTableViewHandler:NSObject {
   
   private var tableView:UITableView
+  
+  var workout:WorkoutModel
+  
   var intervalCellDelegate:IntervalVisualizationCellDelegate?
+  var routineDesignerDelegate:RoutineDesignerCellDelegate?
+  var textFieldDelegate:UITextFieldDelegate?
+  
 
-  init(tableView:UITableView) {
+  init(tableView:UITableView, workout:WorkoutModel?) {
     self.tableView = tableView
+    
+    if let workout = workout {
+      self.workout = workout
+    } else {
+      self.workout = WorkoutModel("", .Custom, 0, 0, 0, 0, 0, 0)
+    }
+    
   }
+  
 }
 
 extension RoutineDesignerTableViewHandler : UITableViewDataSource {
@@ -41,7 +55,7 @@ extension RoutineDesignerTableViewHandler : UITableViewDataSource {
 
     // ============================ Name your workout cell ============================ //
     if indexPath.section == 0 {
-      let cell = tableView.dequeueReusableCell(withIdentifier: "RoutineCell", for: indexPath)  as! RoutineDesignerTableViewCell
+      let cell = tableView.dequeueReusableCell(withIdentifier: "RoutineNameCell", for: indexPath)  as! RoutineDesignerNameCell
       
       cell.label.customize(
         text: "Name Your Workout:",
@@ -49,6 +63,7 @@ extension RoutineDesignerTableViewHandler : UITableViewDataSource {
         size: 24,
         textColor: UIColor.OutrunPaleYellow
       )
+      cell.textField.delegate = textFieldDelegate
       cell.textField.isHidden = false
       cell.textField.customizeWithStandardValues(placeholder: "_")
       cell.setupViews()
@@ -64,21 +79,35 @@ extension RoutineDesignerTableViewHandler : UITableViewDataSource {
         size: 24,
         textColor: UIColor.OutrunPaleYellow
       )
-      cell.textField.isHidden = true
+      
+      cell.descriptorLabel.customize(
+        text: String(self.workout.warmupLength),
+        font: .Pixel,
+        size: 24,
+        textColor: UIColor.OutrunPaleYellow
+      )
+      
       cell.setupViews()
       return cell
 
       // ============================ Intervals ============================ //
     } else if indexPath.section == 2 {
       let cell = tableView.dequeueReusableCell(withIdentifier: "RoutineCell", for: indexPath)  as! RoutineDesignerTableViewCell
-
+      
       cell.label.customize(
         text: "Intervals:",
         font: .Pixel,
         size: 24,
         textColor: UIColor.OutrunPaleYellow
       )
-      cell.textField.isHidden = true
+      
+      cell.descriptorLabel.customize(
+        text: ">",
+        font: .Pixel,
+        size: 24,
+        textColor: UIColor.OutrunPaleYellow
+      )
+      
       cell.setupViews()
       return cell
 
@@ -103,7 +132,14 @@ extension RoutineDesignerTableViewHandler : UITableViewDataSource {
         size: 24,
         textColor: UIColor.OutrunPaleYellow
       )
-      cell.textField.isHidden = true
+      
+      cell.descriptorLabel.customize(
+        text: "0",
+        font: .Pixel,
+        size: 24,
+        textColor: UIColor.OutrunPaleYellow
+      )
+      
       cell.setupViews()
       return cell
 
@@ -122,12 +158,29 @@ extension RoutineDesignerTableViewHandler : UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     
-    if indexPath.section == 2 {
+    if indexPath.section == 2 || indexPath.section == 3 {
+      
+      routineDesignerDelegate!.segueToIntervalDesigner()
       
     }
     
     
   }
   
+  
+}
+
+extension RoutineDesignerTableViewHandler: UITextFieldDelegate {
+  
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    guard let textFieldText = textField.text else {
+      return true
+    }
+    
+    self.workout.name = textFieldText
+    textField.resignFirstResponder()
+
+    return true
+  }
   
 }

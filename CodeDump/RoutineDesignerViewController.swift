@@ -9,6 +9,7 @@
 import UIKit
 
 
+
 class RoutineDesignerViewController: UIViewController {
   
   var workout:WorkoutModel?
@@ -17,12 +18,17 @@ class RoutineDesignerViewController: UIViewController {
   
   var tableViewHandler:RoutineDesignerTableViewHandler!
   var tableView = UITableView()
+  
 
-  var routineDesignerDelegate:RoutineDesignerCellDelegate?
-  
-  
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    if let workout = workout  {
+      self.workout = workout
+    } else {
+      self.workout = WorkoutModel("", .Custom, 0, 0, 0, 0, 0, 0)
+    }
+    
     
     title = "Design your Workout"
     navigationItem.largeTitleDisplayMode = .never
@@ -43,14 +49,19 @@ class RoutineDesignerViewController: UIViewController {
     containerView.alignment = .center
     
     // TableView
-    tableViewHandler = RoutineDesignerTableViewHandler.init(tableView: tableView)
+    tableViewHandler = RoutineDesignerTableViewHandler.init(tableView: tableView, workout: self.workout!)
+    tableViewHandler.routineDesignerDelegate = self
+//    tableViewHandler.textFieldDelegate = self
     tableView.delegate = tableViewHandler
     tableView.dataSource = tableViewHandler
-    tableView.register(RoutineDesignerTableViewCell.self, forCellReuseIdentifier: "RoutineCell") //TO DO: Get this working!
-    tableView.register(IntervalVisualizationCell.self, forCellReuseIdentifier: "VisualizationCell") //TO DO: Get this working!
+    tableView.register(RoutineDesignerNameCell.self, forCellReuseIdentifier: "RoutineNameCell")
+    tableView.register(RoutineDesignerTableViewCell.self, forCellReuseIdentifier: "RoutineCell")
+    tableView.register(IntervalVisualizationCell.self, forCellReuseIdentifier: "VisualizationCell")
+
+
+    
     containerView.addArrangedSubview(tableView)
-    
-    
+
     NSLayoutConstraint.activate([
       containerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
       containerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
@@ -65,3 +76,19 @@ class RoutineDesignerViewController: UIViewController {
   }
   
 }
+
+extension RoutineDesignerViewController: RoutineDesignerCellDelegate {
+  func returnValue() {
+    
+  }
+  
+  
+  func segueToIntervalDesigner() {
+    let intervalVC = IntervalDesignerViewController()
+    
+    navigationController?.pushViewController(intervalVC, animated: true)
+  }
+  
+}
+
+

@@ -8,7 +8,13 @@
 
 import UIKit
 
+protocol IntervalDesignerDelegate {
+  func finishedEditing(workout:WorkoutModel)
+}
+
 class IntervalDesignerViewController: UIViewController {
+  
+  var workout:WorkoutModel?
   
   let containerView = UIStackView()
   

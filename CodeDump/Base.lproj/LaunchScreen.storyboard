@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="MorningStar.ttf">
-            <string>MorningStar</string>
-        </array>
-    </customFonts>
     <scenes>
         <!--View Controller-->
         <scene sceneID="EHf-IW-A2E">
@@ -20,24 +15,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Launch Icon" translatesAutoresizingMaskIntoConstraints="NO" id="AeA-3o-Tf8">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Launch Screen" translatesAutoresizingMaskIntoConstraints="NO" id="AeA-3o-Tf8">
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="The Lazer Dragon Workout Experience" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="swV-Bc-kr5">
-                                <rect key="frame" x="0.0" y="640" width="414" height="222"/>
-                                <fontDescription key="fontDescription" name="MorningStar" family="Morning Star" pointSize="64"/>
-                                <color key="textColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.050980392156862744" green="0.0078431372549019607" blue="0.12941176470588234" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="AeA-3o-Tf8" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Cpf-YF-wny"/>
                             <constraint firstItem="AeA-3o-Tf8" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="T3r-Wa-Bee"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="AeA-3o-Tf8" secondAttribute="bottom" id="el3-vy-qd7"/>
-                            <constraint firstItem="swV-Bc-kr5" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="hs5-2B-0Rd"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="swV-Bc-kr5" secondAttribute="bottom" id="vrs-jh-bgo"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="swV-Bc-kr5" secondAttribute="trailing" id="xbw-0S-vdn"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="AeA-3o-Tf8" secondAttribute="trailing" id="ynX-K2-KZs"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -49,6 +35,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Launch Icon" width="300.66665649414062" height="300.66665649414062"/>
+        <image name="Launch Screen" width="139" height="272.33334350585938"/>
     </resources>
 </document>
