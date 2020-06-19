@@ -29,19 +29,23 @@ class WorkoutModel {
 
   var numberOfIntervals:Int
   var numberOfSets:Int
+  var restBetweenSetLength:Int
+  var cooldownLength:Int
 //  var exercises:[Exercise]
 
   init(
-    _ name:String,
-    _ type:WorkoutType,
-    _ length:Int,
+    name:String,
+    type:WorkoutType,
+    length:Int,
 
-    _ warmupLength:Int,
-    _ intervalLength:Int,
-    _ restLength:Int,
+    warmupLength:Int,
+    intervalLength:Int,
+    restLength:Int,
 
-    _ numberOfIntervals:Int,
-    _ numberOfSets:Int
+    numberOfIntervals:Int,
+    numberOfSets:Int,
+    restBetweenSetLength:Int,
+    cooldownLength:Int
 //    _ exercises:[Exercise]
     ) {
 
@@ -55,6 +59,8 @@ class WorkoutModel {
 
     self.numberOfIntervals = numberOfIntervals
     self.numberOfSets = numberOfSets
+    self.restBetweenSetLength = restBetweenSetLength
+    self.cooldownLength = cooldownLength
 //    self.exercises = exercises
   }
 

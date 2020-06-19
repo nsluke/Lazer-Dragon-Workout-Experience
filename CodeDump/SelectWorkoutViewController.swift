@@ -25,7 +25,6 @@ class SelectWorkoutViewController: UIViewController {
     title = "Select your Workout"
     
     view.backgroundColor = UIColor.OutrunDarkerGray
-    navigationController?.navigationBar.tintColor = UIColor.OutrunDarkGray
     navigationController?.navigationBar.titleTextAttributes = [
       .foregroundColor : UIColor.OutrunLaserBlue,
       .font : UIFont(name: "OutrunFuture", size: 18) ?? UIFont.systemFont(ofSize: 18)
@@ -36,8 +35,6 @@ class SelectWorkoutViewController: UIViewController {
       .font : UIFont(name: "OutrunFuture", size: 30) ?? UIFont.systemFont(ofSize: 30)
     ]
     
-    navigationController?.navigationBar.barTintColor = UIColor.OutrunDarkGray
-    navigationController?.navigationBar.backgroundColor = UIColor.OutrunDarkGray
     navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.addItemTapped))
     navigationItem.rightBarButtonItem?.tintColor = UIColor.OutrunLaserBlue
     
@@ -57,7 +54,6 @@ class SelectWorkoutViewController: UIViewController {
       tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor)
     ])
   }
-  
   
   @objc func addItemTapped(sender:UIButton) {
     let routineDesignerVC = RoutineDesignerViewController()

@@ -40,7 +40,9 @@ class CoreDataHandler: NSObject {
     
     workoutEntity.setValue(workoutModel.numberOfIntervals , forKeyPath: "numberOfIntervals")
     workoutEntity.setValue(workoutModel.numberOfSets , forKeyPath: "numberOfSets")
-//    workoutEntity.setValue(workoutModel.exercises , forKeyPath: "exercises")
+    workoutEntity.setValue(workoutModel.cooldownLength , forKeyPath: "cooldownLength")
+
+    //    workoutEntity.setValue(workoutModel.exercises , forKeyPath: "exercises")
     
     // 4
     do {
@@ -97,18 +99,22 @@ class CoreDataHandler: NSObject {
         let workoutRestLength = Int(workout.restLength)
         let workoutNumberOfIntervals = Int(workout.numberOfIntervals)
         let workoutNumberOfSets = Int(workout.numberOfSets)
-        
+        let workoutRestBetweenSetLength = Int(workout.restBetweenSetLength)
+        let workoutCooldownLength = Int(workout.cooldownLength)
+
         // do exercises later?
         
         let workoutModel = WorkoutModel(
-          workoutName,
-          convertedWorkoutType!,
-          workoutLength,
-          workoutWarmupLength,
-          workoutIntervalLength,
-          workoutRestLength,
-          workoutNumberOfIntervals,
-          workoutNumberOfSets)
+          name: workoutName,
+          type: convertedWorkoutType!,
+          length: workoutLength,
+          warmupLength: workoutWarmupLength,
+          intervalLength: workoutIntervalLength,
+          restLength: workoutRestLength,
+          numberOfIntervals: workoutNumberOfIntervals,
+          numberOfSets: workoutNumberOfSets,
+          restBetweenSetLength: workoutRestBetweenSetLength,
+          cooldownLength: workoutCooldownLength)
         result.append(workoutModel)
         
       }

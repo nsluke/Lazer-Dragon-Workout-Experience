@@ -26,7 +26,7 @@ class RoutineDesignerViewController: UIViewController {
     if let workout = workout  {
       self.workout = workout
     } else {
-      self.workout = WorkoutModel("", .Custom, 0, 0, 0, 0, 0, 0)
+      self.workout = WorkoutModel(name: "", type: .Custom, length: 0, warmupLength: 0, intervalLength: 0, restLength: 0, numberOfIntervals: 0, numberOfSets: 0, restBetweenSetLength: 0, cooldownLength: 0)
     }
     
     

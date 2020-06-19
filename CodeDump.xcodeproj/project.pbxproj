@@ -29,6 +29,8 @@
 		D55A19B4247C375700FDC7D6 /* UIView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55A19B3247C375700FDC7D6 /* UIView+extension.swift */; };
 		D55A19B6247C454D00FDC7D6 /* IntervalVisualizationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55A19B5247C454D00FDC7D6 /* IntervalVisualizationCell.swift */; };
 		D55A19B8247C5F2800FDC7D6 /* OutrunTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55A19B7247C5F2800FDC7D6 /* OutrunTextField.swift */; };
+		D55E21EE249D581000F1D252 /* OutrunNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55E21ED249D581000F1D252 /* OutrunNavigationController.swift */; };
+		D55E21F0249D671700F1D252 /* OutrunViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55E21EF249D671700F1D252 /* OutrunViewController.swift */; };
 		D57E406D246A03E100DBD3A5 /* OutrunPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57E406C246A03E100DBD3A5 /* OutrunPickerView.swift */; };
 		D57E4070246A383200DBD3A5 /* RoutineDesignerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57E406F246A383200DBD3A5 /* RoutineDesignerViewController.swift */; };
 		D57E4072246C6A2C00DBD3A5 /* RoutineDesignerTableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57E4071246C6A2C00DBD3A5 /* RoutineDesignerTableViewHandler.swift */; };
@@ -51,6 +53,7 @@
 		D5BA33EA245CF25E001DE467 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BA33E9245CF25E001DE467 /* Constants.swift */; };
 		D5CEDC1C2460E5D000F79129 /* WorkoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CEDC1B2460E5D000F79129 /* WorkoutViewController.swift */; };
 		D5CEDC1E246221B100F79129 /* Workout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CEDC1D246221B100F79129 /* Workout.swift */; };
+		D5F2E3E624805E8600C868EC /* WorkoutHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F2E3E524805E8600C868EC /* WorkoutHandler.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,6 +87,8 @@
 		D55A19B3247C375700FDC7D6 /* UIView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIView+extension.swift"; path = "CodeDump/UIView+extension.swift"; sourceTree = SOURCE_ROOT; };
 		D55A19B5247C454D00FDC7D6 /* IntervalVisualizationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntervalVisualizationCell.swift; sourceTree = SOURCE_ROOT; };
 		D55A19B7247C5F2800FDC7D6 /* OutrunTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutrunTextField.swift; sourceTree = "<group>"; };
+		D55E21ED249D581000F1D252 /* OutrunNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutrunNavigationController.swift; sourceTree = "<group>"; };
+		D55E21EF249D671700F1D252 /* OutrunViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutrunViewController.swift; sourceTree = "<group>"; };
 		D57E406C246A03E100DBD3A5 /* OutrunPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutrunPickerView.swift; sourceTree = "<group>"; };
 		D57E406F246A383200DBD3A5 /* RoutineDesignerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineDesignerViewController.swift; sourceTree = "<group>"; };
 		D57E4071246C6A2C00DBD3A5 /* RoutineDesignerTableViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineDesignerTableViewHandler.swift; sourceTree = "<group>"; };
@@ -112,6 +117,7 @@
 		D5BA33E9245CF25E001DE467 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		D5CEDC1B2460E5D000F79129 /* WorkoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutViewController.swift; sourceTree = "<group>"; };
 		D5CEDC1D246221B100F79129 /* Workout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Workout.swift; sourceTree = "<group>"; };
+		D5F2E3E524805E8600C868EC /* WorkoutHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutHandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,6 +199,7 @@
 			children = (
 				D5BA33B8245CF239001DE467 /* SelectWorkoutViewController.swift */,
 				D5CEDC1B2460E5D000F79129 /* WorkoutViewController.swift */,
+				D5F2E3E524805E8600C868EC /* WorkoutHandler.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -300,6 +307,8 @@
 		D5BA33E8245CF250001DE467 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D55E21ED249D581000F1D252 /* OutrunNavigationController.swift */,
+				D55E21EF249D671700F1D252 /* OutrunViewController.swift */,
 				D5A70CC1246F344F009FD146 /* OutrunTabBar.swift */,
 				D52114E12469F4E500D1F0ED /* OutrunLabel.swift */,
 				D5A70CC62470901C009FD146 /* OutrunStackView.swift */,
@@ -486,12 +495,15 @@
 			files = (
 				D5CEDC1C2460E5D000F79129 /* WorkoutViewController.swift in Sources */,
 				D57E4070246A383200DBD3A5 /* RoutineDesignerViewController.swift in Sources */,
+				D55E21EE249D581000F1D252 /* OutrunNavigationController.swift in Sources */,
 				D55A19B6247C454D00FDC7D6 /* IntervalVisualizationCell.swift in Sources */,
+				D5F2E3E624805E8600C868EC /* WorkoutHandler.swift in Sources */,
 				D5A70CC4246F4CCB009FD146 /* ProfileViewController.swift in Sources */,
 				D52114E22469F4E500D1F0ED /* OutrunLabel.swift in Sources */,
 				D52114E02469CC9900D1F0ED /* IntervalPickerDataSource.swift in Sources */,
 				D55A19B8247C5F2800FDC7D6 /* OutrunTextField.swift in Sources */,
 				D5916646246CA96D00497830 /* DataHandler.swift in Sources */,
+				D55E21F0249D671700F1D252 /* OutrunViewController.swift in Sources */,
 				D52114C324662F4300D1F0ED /* Colors.swift in Sources */,
 				D52114DD2469C26300D1F0ED /* IntervalDesignerViewController.swift in Sources */,
 				D5A70CC2246F344F009FD146 /* OutrunTabBar.swift in Sources */,

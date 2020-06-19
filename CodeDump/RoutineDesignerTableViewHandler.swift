@@ -26,7 +26,7 @@ class RoutineDesignerTableViewHandler:NSObject {
     if let workout = workout {
       self.workout = workout
     } else {
-      self.workout = WorkoutModel("", .Custom, 0, 0, 0, 0, 0, 0)
+      self.workout = WorkoutModel(name: "", type: .Custom, length: 0, warmupLength: 0, intervalLength: 0, restLength: 0, numberOfIntervals: 0, numberOfSets: 0, restBetweenSetLength: 0, cooldownLength: 0)
     }
     
   }
@@ -134,7 +134,7 @@ extension RoutineDesignerTableViewHandler : UITableViewDataSource {
       )
       
       cell.descriptorLabel.customize(
-        text: "0",
+        text: String(self.workout.cooldownLength),
         font: .Pixel,
         size: 24,
         textColor: UIColor.OutrunPaleYellow

@@ -24,10 +24,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
       let tabBarController = OutrunTabBar()
       
-      tabBarController.tabBar.tintColor = UIColor.OutrunBlack
-      tabBarController.tabBar.backgroundColor = UIColor.OutrunBlack
+//      tabBarController.tabBar.tintColor = UIColor.OutrunBlack
+//      tabBarController.tabBar.backgroundColor = UIColor.OutrunBlack
+//      tabBarController.tabBar.barTintColor = UIColor.OutrunBlack
 
-      
       window.rootViewController = tabBarController
       self.window = window
       window.makeKeyAndVisible()

@@ -11,6 +11,7 @@
 // |                                  |
 // |                                  |
 // |                                  |
+// |                                  |
 // |           |Character|            |
 // |          Exercise Title          |
 // |                                  |
@@ -28,19 +29,17 @@
 
 import UIKit
 
-enum WorkoutSegment {
-  case Stopped
-  case Paused
-  case Warmup
-  case Interval
-  case Rest
-  case Cooldown
-  case End
+protocol WorkoutDelegate: WorkoutViewController {
+  func updateTimer(time: String, remainingTime: String, elapsedTime: String)
+  func updateStartStopButton(isPaused: Bool)
+  func updateExerciseLabel(text: String)
 }
 
-class WorkoutViewController:UIViewController {
+class WorkoutViewController:OutrunViewController {
   
-  var workout:WorkoutModel?
+  var workout:WorkoutModel!
+  
+  var handler:WorkoutHandler!
   
   var containerView = OutrunStackView()
   
@@ -55,12 +54,7 @@ class WorkoutViewController:UIViewController {
   var controlStackView = OutrunStackView()
   var musicButton = UIButton()
   var startStopButton = UIButton()
-  var finishButton = UIButton()
-
-  var timer = Timer()
-  var counter = 0
-  var isPlaying = false
-  var workoutState = WorkoutSegment.Stopped
+  var endButton = UIButton()
   
   
   override func viewDidLoad() {
@@ -70,19 +64,20 @@ class WorkoutViewController:UIViewController {
       fatalError("You must pass a workout to show this view controller")
     }
     
-    title = workout.name
+    handler = WorkoutHandler(workout: workout, delegate: self)
+    
+    title = handler.workout.name
     
     navigationItem.largeTitleDisplayMode = .never
-    navigationItem.backBarButtonItem?.tintColor = UIColor.OutrunLaserBlue
-    navigationItem.leftBarButtonItem?.tintColor = UIColor.OutrunLaserBlue
-    
+
     setupViews()
-    counter = workout.length
-    setTimerText(label: self.elapsedTimerLabel)
-    setTimerText(label: self.splitTimerLabel)
-    setTimerText(label: self.remainingTimerLabel)  }
+    self.handler.updateTimer()
+  }
   
   func setupViews() {
+    self.navigationController?.navigationBar.backgroundColor = UIColor.OutrunDarkGray
+
+    // Container View
     view.addSubview(containerView)
     view.backgroundColor = UIColor.OutrunDarkerGray
     
@@ -105,19 +100,16 @@ class WorkoutViewController:UIViewController {
     
     
     // elapsedTimerLabel
-    elapsedTimerLabel.text = "elapsed"
     elapsedTimerLabel.font = UIFont(name: "Pixel-01", size: 20) ?? UIFont.systemFont(ofSize: 30)
     elapsedTimerLabel.textColor = UIColor.OutrunLaserGreen
     
     
     // SplitTimer
-    splitTimerLabel.text = String(counter)
     splitTimerLabel.font = UIFont(name: "Pixel-01", size: 70) ?? UIFont.systemFont(ofSize: 30)
     splitTimerLabel.textColor = UIColor.OutrunPaleYellow
     
     
     // remainingTimerLabel
-    remainingTimerLabel.text = "remaining"
     remainingTimerLabel.font = UIFont(name: "Pixel-01", size: 20) ?? UIFont.systemFont(ofSize: 30)
     remainingTimerLabel.textColor = UIColor.OutrunSoftRed
     
@@ -128,7 +120,6 @@ class WorkoutViewController:UIViewController {
     workoutView.translatesAutoresizingMaskIntoConstraints = false
     //    workoutView.image = #imageLiteral(resourceName: "situp")
     exerciseTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-    exerciseTitleLabel.text = "Exercise"
     exerciseTitleLabel.font = UIFont(name: "Pixel-01", size: 30) ?? UIFont.systemFont(ofSize: 30)
     exerciseTitleLabel.textColor = UIColor.OutrunPaleYellow
         
@@ -137,7 +128,7 @@ class WorkoutViewController:UIViewController {
     containerView.addArrangedSubview(controlStackView)
     controlStackView.addArrangedSubview(musicButton)
     controlStackView.addArrangedSubview(startStopButton)
-    controlStackView.addArrangedSubview(finishButton)
+    controlStackView.addArrangedSubview(endButton)
     controlStackView.alignment = .center
     controlStackView.distribution = .equalSpacing
     controlStackView.axis = .horizontal
@@ -165,7 +156,7 @@ class WorkoutViewController:UIViewController {
 
     
     // finishButton
-    finishButton.setAttributedTitle(
+    endButton.setAttributedTitle(
       NSAttributedString(
         string: "End",
         attributes: [
@@ -175,10 +166,10 @@ class WorkoutViewController:UIViewController {
       ),
       for: .normal
     )
-    finishButton.addTarget(self, action: #selector(self.finishButtonTapped), for: .touchUpInside)
-    finishButton.layer.cornerRadius = 3
-    finishButton.titleEdgeInsets = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
-    finishButton.backgroundColor = UIColor.darkGray
+    endButton.addTarget(self, action: #selector(self.endButtonTapped), for: .touchUpInside)
+    endButton.layer.cornerRadius = 3
+    endButton.titleEdgeInsets = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
+    endButton.backgroundColor = UIColor.darkGray
     
     
     NSLayoutConstraint.activate([
@@ -195,91 +186,63 @@ class WorkoutViewController:UIViewController {
       startStopButton.widthAnchor.constraint(equalToConstant: 140),
       startStopButton.heightAnchor.constraint(equalToConstant: 80),
       
-      finishButton.widthAnchor.constraint(equalToConstant: 70),
-      finishButton.heightAnchor.constraint(equalToConstant: 40)
+      endButton.widthAnchor.constraint(equalToConstant: 70),
+      endButton.heightAnchor.constraint(equalToConstant: 40)
     ])
     
     view.backgroundColor = UIColor.white
   }
   
-  
-  @objc func updateTimer() {
-    if counter < 1 {
-      counter = 0
-      handleTimerEnded()
-    } else {
-      counter -= 1
-    }
-    
-    setTimerText(label: self.elapsedTimerLabel)
-    setTimerText(label: self.splitTimerLabel)
-    setTimerText(label: self.remainingTimerLabel)
-  }
-  
-  func setTimerText(label: OutrunLabel) {
-    let hours = counter/360
-    let minutes = counter/60
-    let seconds = counter
-    
-    var formattedTimeString = ""
-    
-    if hours < 1 {
-      formattedTimeString = String(format: "%02i:%02i", minutes, seconds)
-    } else {
-      formattedTimeString = String(format: "%02i:%02i:%02i", hours, minutes, seconds)
-    }
-    
-    label.text = formattedTimeString
+  func setTimerText(label: OutrunLabel, time: String) {
+    label.text = time
   }
   
   //tapHandler - play pause
   @objc func playPauseButtonTapped() {
+    handler.playPauseTapped()
+  }
     
-    if isPlaying {
-      stopTimer()
-    } else {
-      startTimer()
-    }
-    
-    self.isPlaying = !self.isPlaying
-  }
-  
-
-  func startTimer() {
-    startStopButton.setAttributedTitle(
-      NSAttributedString(
-        string: "Pause",
-        attributes: [
-          .foregroundColor: UIColor.OutrunLaserBlue,
-          .font : UIFont(name: "Pixel-01", size: 40) ?? UIFont.systemFont(ofSize: 18)
-        ]
-      ),
-      for: .normal
-    )
-    timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
-  }
-  
-  func stopTimer() {
-    startStopButton.setAttributedTitle(
-      NSAttributedString(
-        string: "Continue",
-        attributes: [
-          .foregroundColor: UIColor.OutrunLaserBlue,
-          .font : UIFont(name: "Pixel-01", size: 40) ?? UIFont.systemFont(ofSize: 18)
-        ]
-      ),
-      for: .normal
-    )
-    timer.invalidate()
-  }
-  
   func handleTimerEnded() {
     
   }
   
-  @objc func finishButtonTapped() {
+  @objc func endButtonTapped() {
     // present an alert?
   }
   
 }
 
+extension WorkoutViewController : WorkoutDelegate {
+  func updateExerciseLabel(text: String) {
+    exerciseTitleLabel.text = text
+  }
+  
+  func updateStartStopButton(isPaused: Bool) {
+    var buttonText = ""
+    
+    if isPaused {
+      buttonText = "Paused"
+    } else {
+      buttonText = "Continue"
+    }
+    
+    startStopButton.setAttributedTitle(
+      NSAttributedString(
+        string: buttonText,
+        attributes: [
+          .foregroundColor: UIColor.OutrunLaserBlue,
+          .font : UIFont(name: "Pixel-01", size: 40) ?? UIFont.systemFont(ofSize: 18)
+        ]
+      ),
+      for: .normal
+    )
+  }
+  
+  func updateTimer(time: String, remainingTime: String, elapsedTime: String) {
+    setTimerText(label: self.elapsedTimerLabel, time: elapsedTime)
+    setTimerText(label: self.splitTimerLabel, time: time)
+    setTimerText(label: self.remainingTimerLabel, time: remainingTime)
+  }
+  
+  
+}
