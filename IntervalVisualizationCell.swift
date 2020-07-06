@@ -8,8 +8,6 @@
 
 import UIKit
 
-
-
 protocol IntervalVisualizationCellDelegate {
   func returnValue()
 }
@@ -25,7 +23,6 @@ class IntervalVisualizationCell : UITableViewCell {
     visualizationView.configure(viewModel: viewModel)
     
     visualizationView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 8, paddingLeft: 8, paddingBottom: 8, paddingRight: 8, width: 0, height: 0, enableInsets: true)
-    
   }
   
 }

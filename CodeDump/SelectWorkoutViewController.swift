@@ -14,10 +14,18 @@ class SelectWorkoutViewController: UIViewController {
   
   var tableView:UITableView = UITableView()
   
+  var workouts = [Workout]()
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
     setupViews()
+    DataHandler.shared.getWorkouts { (results) in
+      DispatchQueue.main.async {
+        self.workouts = results
+        self.tableView.reloadData()
+      }
+    }
   }
   
   func setupViews() {
@@ -64,7 +72,7 @@ class SelectWorkoutViewController: UIViewController {
 }
 extension SelectWorkoutViewController:UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return Constants.WorkoutObject.count
+    return self.workouts.count
   }
   
   func numberOfSections(in tableView: UITableView) -> Int {
@@ -74,7 +82,7 @@ extension SelectWorkoutViewController:UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "CellID")
     
-    cell?.textLabel?.text = Constants.WorkoutObject[indexPath.row].name
+    cell?.textLabel?.text = self.workouts[indexPath.row].name ?? "error"  // Constants.WorkoutObject[indexPath.row].name
     cell?.textLabel?.textColor = UIColor.OutrunPaleYellow
     
     cell?.textLabel?.font = UIFont(name: "Pixel-01", size: 30) ?? UIFont.systemFont(ofSize: 20)

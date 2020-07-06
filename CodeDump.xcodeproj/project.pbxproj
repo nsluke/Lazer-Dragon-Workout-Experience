@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D504F2DE24B15ADC00A99ED7 /* LaunchHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D504F2DD24B15ADC00A99ED7 /* LaunchHandler.swift */; };
+		D5113BDF24A548A7002EB1A4 /* Workout+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5113BDB24A548A7002EB1A4 /* Workout+CoreDataClass.swift */; };
+		D5113BE024A548A7002EB1A4 /* Workout+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5113BDC24A548A7002EB1A4 /* Workout+CoreDataProperties.swift */; };
+		D5113BE124A548A7002EB1A4 /* Exercise+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5113BDD24A548A7002EB1A4 /* Exercise+CoreDataClass.swift */; };
+		D5113BE224A548A7002EB1A4 /* Exercise+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5113BDE24A548A7002EB1A4 /* Exercise+CoreDataProperties.swift */; };
 		D52114C324662F4300D1F0ED /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52114C224662F4300D1F0ED /* Colors.swift */; };
 		D52114C72466377E00D1F0ED /* OutrunFutureBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D52114C42466377D00D1F0ED /* OutrunFutureBold.otf */; };
 		D52114C82466377E00D1F0ED /* OutrunFutureBoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = D52114C52466377E00D1F0ED /* OutrunFutureBoldItalic.otf */; };
@@ -31,6 +36,7 @@
 		D55A19B8247C5F2800FDC7D6 /* OutrunTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55A19B7247C5F2800FDC7D6 /* OutrunTextField.swift */; };
 		D55E21EE249D581000F1D252 /* OutrunNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55E21ED249D581000F1D252 /* OutrunNavigationController.swift */; };
 		D55E21F0249D671700F1D252 /* OutrunViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55E21EF249D671700F1D252 /* OutrunViewController.swift */; };
+		D56B081B24B377CB00E1351F /* ExercisesDesignerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56B081A24B377CB00E1351F /* ExercisesDesignerViewController.swift */; };
 		D57E406D246A03E100DBD3A5 /* OutrunPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57E406C246A03E100DBD3A5 /* OutrunPickerView.swift */; };
 		D57E4070246A383200DBD3A5 /* RoutineDesignerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57E406F246A383200DBD3A5 /* RoutineDesignerViewController.swift */; };
 		D57E4072246C6A2C00DBD3A5 /* RoutineDesignerTableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57E4071246C6A2C00DBD3A5 /* RoutineDesignerTableViewHandler.swift */; };
@@ -74,6 +80,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D504F2DD24B15ADC00A99ED7 /* LaunchHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchHandler.swift; sourceTree = "<group>"; };
+		D5113BDB24A548A7002EB1A4 /* Workout+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Workout+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D5113BDC24A548A7002EB1A4 /* Workout+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Workout+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D5113BDD24A548A7002EB1A4 /* Exercise+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Exercise+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D5113BDE24A548A7002EB1A4 /* Exercise+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Exercise+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D52114C224662F4300D1F0ED /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		D52114C42466377D00D1F0ED /* OutrunFutureBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = OutrunFutureBold.otf; sourceTree = "<group>"; };
 		D52114C52466377E00D1F0ED /* OutrunFutureBoldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = OutrunFutureBoldItalic.otf; sourceTree = "<group>"; };
@@ -89,6 +100,7 @@
 		D55A19B7247C5F2800FDC7D6 /* OutrunTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutrunTextField.swift; sourceTree = "<group>"; };
 		D55E21ED249D581000F1D252 /* OutrunNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutrunNavigationController.swift; sourceTree = "<group>"; };
 		D55E21EF249D671700F1D252 /* OutrunViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutrunViewController.swift; sourceTree = "<group>"; };
+		D56B081A24B377CB00E1351F /* ExercisesDesignerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExercisesDesignerViewController.swift; sourceTree = "<group>"; };
 		D57E406C246A03E100DBD3A5 /* OutrunPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutrunPickerView.swift; sourceTree = "<group>"; };
 		D57E406F246A383200DBD3A5 /* RoutineDesignerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineDesignerViewController.swift; sourceTree = "<group>"; };
 		D57E4071246C6A2C00DBD3A5 /* RoutineDesignerTableViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineDesignerTableViewHandler.swift; sourceTree = "<group>"; };
@@ -227,6 +239,7 @@
 		D5A70CBF246F2197009FD146 /* Handlers */ = {
 			isa = PBXGroup;
 			children = (
+				D504F2DD24B15ADC00A99ED7 /* LaunchHandler.swift */,
 				D5916645246CA96D00497830 /* DataHandler.swift */,
 				D5916647246CA97800497830 /* CoreDataHandler.swift */,
 			);
@@ -237,6 +250,7 @@
 			isa = PBXGroup;
 			children = (
 				D5A70CBD246F218C009FD146 /* SettingsViewController.swift */,
+				D56B081A24B377CB00E1351F /* ExercisesDesignerViewController.swift */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -341,6 +355,10 @@
 		D5BA33ED245CF2AC001DE467 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				D5113BDB24A548A7002EB1A4 /* Workout+CoreDataClass.swift */,
+				D5113BDC24A548A7002EB1A4 /* Workout+CoreDataProperties.swift */,
+				D5113BDD24A548A7002EB1A4 /* Exercise+CoreDataClass.swift */,
+				D5113BDE24A548A7002EB1A4 /* Exercise+CoreDataProperties.swift */,
 				D5CEDC1D246221B100F79129 /* Workout.swift */,
 				D5BA33BD245CF239001DE467 /* CodeDump.xcdatamodeld */,
 			);
@@ -498,13 +516,17 @@
 				D55E21EE249D581000F1D252 /* OutrunNavigationController.swift in Sources */,
 				D55A19B6247C454D00FDC7D6 /* IntervalVisualizationCell.swift in Sources */,
 				D5F2E3E624805E8600C868EC /* WorkoutHandler.swift in Sources */,
+				D5113BE124A548A7002EB1A4 /* Exercise+CoreDataClass.swift in Sources */,
 				D5A70CC4246F4CCB009FD146 /* ProfileViewController.swift in Sources */,
+				D504F2DE24B15ADC00A99ED7 /* LaunchHandler.swift in Sources */,
 				D52114E22469F4E500D1F0ED /* OutrunLabel.swift in Sources */,
 				D52114E02469CC9900D1F0ED /* IntervalPickerDataSource.swift in Sources */,
 				D55A19B8247C5F2800FDC7D6 /* OutrunTextField.swift in Sources */,
 				D5916646246CA96D00497830 /* DataHandler.swift in Sources */,
 				D55E21F0249D671700F1D252 /* OutrunViewController.swift in Sources */,
 				D52114C324662F4300D1F0ED /* Colors.swift in Sources */,
+				D5113BE224A548A7002EB1A4 /* Exercise+CoreDataProperties.swift in Sources */,
+				D56B081B24B377CB00E1351F /* ExercisesDesignerViewController.swift in Sources */,
 				D52114DD2469C26300D1F0ED /* IntervalDesignerViewController.swift in Sources */,
 				D5A70CC2246F344F009FD146 /* OutrunTabBar.swift in Sources */,
 				D5BA33EA245CF25E001DE467 /* Constants.swift in Sources */,
@@ -513,7 +535,9 @@
 				D5916648246CA97800497830 /* CoreDataHandler.swift in Sources */,
 				D5BA33B9245CF239001DE467 /* SelectWorkoutViewController.swift in Sources */,
 				D5A70CC72470901C009FD146 /* OutrunStackView.swift in Sources */,
+				D5113BE024A548A7002EB1A4 /* Workout+CoreDataProperties.swift in Sources */,
 				D5BA33B5245CF239001DE467 /* AppDelegate.swift in Sources */,
+				D5113BDF24A548A7002EB1A4 /* Workout+CoreDataClass.swift in Sources */,
 				D5BA33BF245CF239001DE467 /* CodeDump.xcdatamodeld in Sources */,
 				D57E4076246C84A300DBD3A5 /* RoutineDesignerTableViewCell.swift in Sources */,
 				D5BA33B7245CF239001DE467 /* SceneDelegate.swift in Sources */,

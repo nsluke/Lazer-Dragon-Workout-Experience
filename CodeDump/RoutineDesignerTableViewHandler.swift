@@ -14,12 +14,13 @@ class RoutineDesignerTableViewHandler:NSObject {
   private var tableView:UITableView
   
   var workout:WorkoutModel
+  var exercises:[String]
   
   var intervalCellDelegate:IntervalVisualizationCellDelegate?
   var routineDesignerDelegate:RoutineDesignerCellDelegate?
   var textFieldDelegate:UITextFieldDelegate?
   
-
+  
   init(tableView:UITableView, workout:WorkoutModel?) {
     self.tableView = tableView
     
@@ -29,6 +30,7 @@ class RoutineDesignerTableViewHandler:NSObject {
       self.workout = WorkoutModel(name: "", type: .Custom, length: 0, warmupLength: 0, intervalLength: 0, restLength: 0, numberOfIntervals: 0, numberOfSets: 0, restBetweenSetLength: 0, cooldownLength: 0)
     }
     
+    self.exercises = [String]()
   }
   
 }
@@ -36,15 +38,15 @@ class RoutineDesignerTableViewHandler:NSObject {
 extension RoutineDesignerTableViewHandler : UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    if indexPath.section == 3 {
-      return 120
+    if indexPath.section == 4 {
+      return 80
     } else {
       return 50
     }
   }
   
   func numberOfSections(in tableView: UITableView) -> Int {
-    return 5
+    return 6 + self.exercises.count
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -69,7 +71,7 @@ extension RoutineDesignerTableViewHandler : UITableViewDataSource {
       cell.setupViews()
       return cell
 
-      // ============================ Warmup ============================ //
+    // ============================ Warmup ============================ //
     } else if indexPath.section == 1 {
       let cell = tableView.dequeueReusableCell(withIdentifier: "RoutineCell", for: indexPath)  as! RoutineDesignerTableViewCell
 
@@ -89,9 +91,31 @@ extension RoutineDesignerTableViewHandler : UITableViewDataSource {
       
       cell.setupViews()
       return cell
+      
+      // ============================ CoolDown ============================ //
+      } else if indexPath.section == 2 {
+      
+        let cell = tableView.dequeueReusableCell(withIdentifier: "RoutineCell", for: indexPath)  as! RoutineDesignerTableViewCell
 
-      // ============================ Intervals ============================ //
-    } else if indexPath.section == 2 {
+        cell.label.customize(
+          text: "Cool Down:",
+          font: .Pixel,
+          size: 24,
+          textColor: UIColor.OutrunPaleYellow
+        )
+        
+        cell.descriptorLabel.customize(
+          text: String(self.workout.cooldownLength),
+          font: .Pixel,
+          size: 24,
+          textColor: UIColor.OutrunPaleYellow
+        )
+        
+        cell.setupViews()
+        return cell
+
+    // ============================ Intervals ============================ //
+    } else if indexPath.section == 3 {
       let cell = tableView.dequeueReusableCell(withIdentifier: "RoutineCell", for: indexPath)  as! RoutineDesignerTableViewCell
       
       cell.label.customize(
@@ -105,15 +129,15 @@ extension RoutineDesignerTableViewHandler : UITableViewDataSource {
         text: ">",
         font: .Pixel,
         size: 24,
-        textColor: UIColor.OutrunPaleYellow
+        textColor: UIColor.OutrunLaserBlue
       )
       
       cell.setupViews()
       return cell
 
       
-      // ============================ Interval Visualization Cell ============================ //
-    } else if indexPath.section == 3 {
+    // ============================ Interval Visualization Cell ============================ //
+    } else if indexPath.section == 4 {
       let intervalVisualizationCell = tableView.dequeueReusableCell(withIdentifier: "VisualizationCell", for: indexPath)  as! IntervalVisualizationCell
 
       let viewModel = IntervalVisualizationViewModel(warmupLength: 500, intervalCount: 10, intervalLength: 60, restLength: 30, cooldownLength: 500)
@@ -122,51 +146,62 @@ extension RoutineDesignerTableViewHandler : UITableViewDataSource {
       
       return intervalVisualizationCell
       
-      // ============================ CoolDown ============================ //
-    } else if indexPath.section == 4 {
+    // ============================ Exercises ============================ //
+    } else if indexPath.section == 5 {
       let cell = tableView.dequeueReusableCell(withIdentifier: "RoutineCell", for: indexPath)  as! RoutineDesignerTableViewCell
 
       cell.label.customize(
-        text: "Cool Down:",
+        text: "Exercises:",
         font: .Pixel,
         size: 24,
         textColor: UIColor.OutrunPaleYellow
       )
       
       cell.descriptorLabel.customize(
-        text: String(self.workout.cooldownLength),
+        text: "+",
         font: .Pixel,
-        size: 24,
-        textColor: UIColor.OutrunPaleYellow
+        size: 30,
+        textColor: UIColor.OutrunLaserBlue
       )
       
       cell.setupViews()
       return cell
 
+    // ============================ Done Cell ============================ //
+    } else if indexPath.section == 6 {
+      let cell = tableView.dequeueReusableCell(withIdentifier: "RoutineCell", for: indexPath)  as! RoutineDesignerTableViewCell
+
+      cell.label.customize(
+        text: "Exercises:",
+        font: .Pixel,
+        size: 24,
+        textColor: UIColor.OutrunPaleYellow
+      )
+      
+      cell.descriptorLabel.customize(
+        text: "+",
+        font: .Pixel,
+        size: 30,
+        textColor: UIColor.OutrunLaserBlue
+      )
+      
+      cell.setupViews()
+      return cell
     } else {
       let cell = tableView.dequeueReusableCell(withIdentifier: "RoutineCell", for: indexPath)  as! RoutineDesignerTableViewCell
-      
       return cell
     }
-    
-    
   }
 }
 
 
 extension RoutineDesignerTableViewHandler : UITableViewDelegate {
-
-  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    
-    if indexPath.section == 2 || indexPath.section == 3 {
-      
-      routineDesignerDelegate!.segueToIntervalDesigner()
-      
-    }
-    
-    
-  }
   
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    if indexPath.section == 2 || indexPath.section == 3 {
+      routineDesignerDelegate!.segueToIntervalDesigner()
+    }
+  }
   
 }
 

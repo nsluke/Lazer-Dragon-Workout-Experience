@@ -23,7 +23,6 @@ class RoutineDesignerTableViewCell : UITableViewCell {
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     
-    
     self.contentView.addSubview(icon)
     self.contentView.addSubview(label)
     self.contentView.addSubview(descriptorLabel)

@@ -10,7 +10,7 @@ import UIKit
 
 
 
-class RoutineDesignerViewController: UIViewController {
+class RoutineDesignerViewController: OutrunViewController {
   
   var workout:WorkoutModel?
   
@@ -18,6 +18,8 @@ class RoutineDesignerViewController: UIViewController {
   
   var tableViewHandler:RoutineDesignerTableViewHandler!
   var tableView = UITableView()
+  
+  var doneButton = UIButton()
   
 
   override func viewDidLoad() {
@@ -57,11 +59,13 @@ class RoutineDesignerViewController: UIViewController {
     tableView.register(RoutineDesignerNameCell.self, forCellReuseIdentifier: "RoutineNameCell")
     tableView.register(RoutineDesignerTableViewCell.self, forCellReuseIdentifier: "RoutineCell")
     tableView.register(IntervalVisualizationCell.self, forCellReuseIdentifier: "VisualizationCell")
-
-
     
     containerView.addArrangedSubview(tableView)
-
+    
+    doneButton.titleLabel?.text = "Done"
+    containerView.addArrangedSubview(doneButton)
+    doneButton.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
+    
     NSLayoutConstraint.activate([
       containerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
       containerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
@@ -74,6 +78,14 @@ class RoutineDesignerViewController: UIViewController {
       tableView.rightAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.rightAnchor)
     ])
   }
+  
+  @objc func doneButtonTapped(sender: UIButton!) {
+    // TODO: add validation for workout
+//    CoreDataHandler().saveWorkout(workoutModel: self.workout!) {
+//      self.navigationController?.popViewController(animated: true)
+//    }
+  }
+  
   
 }
 

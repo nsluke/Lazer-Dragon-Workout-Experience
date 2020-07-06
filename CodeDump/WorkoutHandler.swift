@@ -23,7 +23,7 @@ enum WorkoutSegment:Int {
 class WorkoutHandler: NSObject {
   
   var workout:WorkoutModel
-  weak var workoutDelegate:WorkoutDelegate!
+  weak var workoutDelegate:WorkoutDelegate?
   
   var remainingTimer = Timer()
   var timer = Timer()
@@ -69,7 +69,7 @@ class WorkoutHandler: NSObject {
     }
     
     isPlaying = !isPlaying
-    workoutDelegate.updateStartStopButton(isPaused: isPlaying)
+    workoutDelegate?.updateStartStopButton(isPaused: isPlaying)
   }
   
   
@@ -98,7 +98,7 @@ class WorkoutHandler: NSObject {
     print("elapsed:")
     let formattedElapsedTime = timeToFormattedString(time: elapsedTime)
     
-    workoutDelegate.updateTimer(time: formattedSplitTime, remainingTime: formattedRemainingTime, elapsedTime: formattedElapsedTime)
+    workoutDelegate?.updateTimer(time: formattedSplitTime, remainingTime: formattedRemainingTime, elapsedTime: formattedElapsedTime)
     
     if splitTime < 1 {
       splitTime = 0
@@ -209,57 +209,57 @@ class WorkoutHandler: NSObject {
 
     if workout.warmupLength == 0 {
       workoutState = .Interval
-      workoutDelegate.updateExerciseLabel(text: "Interval")
+      workoutDelegate?.updateExerciseLabel(text: "Interval")
       splitTime = workout.intervalLength
     } else {
       workoutState = .Warmup
-      workoutDelegate.updateExerciseLabel(text: "Warmup")
+      workoutDelegate?.updateExerciseLabel(text: "Warmup")
       splitTime = workout.warmupLength
     }
   }
     
   func handlePause() {
     workoutState = .Paused
-    workoutDelegate.updateExerciseLabel(text: "Paused")
+    workoutDelegate?.updateExerciseLabel(text: "Paused")
   }
 
   func handleWarmup() {
     workoutState = .Warmup
-    workoutDelegate.updateExerciseLabel(text: "Warmup")
+    workoutDelegate?.updateExerciseLabel(text: "Warmup")
     splitTime = workout.warmupLength
     startTimer()
   }
   
   func handleInterval() {
     workoutState = .Interval
-    workoutDelegate.updateExerciseLabel(text: "Interval (exercise coming soon)")
+    workoutDelegate?.updateExerciseLabel(text: "Interval (exercise coming soon)")
     splitTime = workout.intervalLength
     startTimer()
   }
   
   func handleRest() {
     workoutState = .Rest
-    workoutDelegate.updateExerciseLabel(text: "Rest")
+    workoutDelegate?.updateExerciseLabel(text: "Rest")
     splitTime = workout.restLength
     startTimer()
   }
   
   func handleRestBetweenSets() {
     workoutState = .RestBetweenSets
-    workoutDelegate.updateExerciseLabel(text: "Rest")
+    workoutDelegate?.updateExerciseLabel(text: "Rest")
     splitTime = workout.restLength
     startTimer()
   }
   
   func handleCooldown() {
-    workoutDelegate.updateExerciseLabel(text: "Cooldown")
+    workoutDelegate?.updateExerciseLabel(text: "Cooldown")
     workoutState = .Cooldown
     splitTime = workout.cooldownLength
     startTimer()
   }
   
   func handleEnd() {
-    workoutDelegate.updateExerciseLabel(text: "Workout Complete")
+    workoutDelegate?.updateExerciseLabel(text: "Workout Complete")
     workoutState = .End
   }
   
