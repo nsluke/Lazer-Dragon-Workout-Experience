@@ -148,9 +148,17 @@ struct CoreDataHandler {
     do {
       if let workout = try persistentContainer.viewContext.fetch(fetchRequest).first {
         persistentContainer.viewContext.delete(workout)
+        
+        do {
+          try persistentContainer.viewContext.save()
+        } catch let error as NSError {
+          print("CoreDataHandler: could not save context - \(error) \(error.userInfo)")
+        }
+        
       } else {
         print("CoreDataHandler: could not delete workout, name not found?")
       }
+      
       completion()
     } catch let error as NSError {
       print("CoreDataHandler: could not delete workout \(name) - \(error) \(error.userInfo)")

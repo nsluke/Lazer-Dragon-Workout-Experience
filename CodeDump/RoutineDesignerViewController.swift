@@ -94,6 +94,8 @@ extension RoutineDesignerViewController: RoutineDesignerCellDelegate {
   
   func sequeToExercisesDesigner() {
     let exerciseVC = ExercisesDesignerViewController()
+    exerciseVC.workout = self.tableViewHandler.workout
+    exerciseVC.delegate = self
     navigationController?.pushViewController(exerciseVC, animated: true)
   }
 }
@@ -101,6 +103,12 @@ extension RoutineDesignerViewController: RoutineDesignerCellDelegate {
 extension RoutineDesignerViewController: IntervalDesignerDelegate {
   func finishedEditing(workout: WorkoutModel) {
     self.tableViewHandler.workout = workout
+  }
+}
+
+extension RoutineDesignerViewController: ExercisesDesignerCellDelegate {
+  func returnExercise(workoutModel: WorkoutModel) {
+    self.tableViewHandler.workout = workoutModel
   }
 }
 

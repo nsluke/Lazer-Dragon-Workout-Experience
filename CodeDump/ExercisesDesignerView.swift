@@ -74,6 +74,4 @@ class ExercisesDesignerView: UIView {
 
 extension ExercisesDesignerView: UITextFieldDelegate {
   
-  
-  
 }

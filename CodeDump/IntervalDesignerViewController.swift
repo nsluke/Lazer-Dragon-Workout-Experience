@@ -203,5 +203,4 @@ extension IntervalDesignerViewController : WorkoutPickerDelegate {
       
   }
   
-  
 }
