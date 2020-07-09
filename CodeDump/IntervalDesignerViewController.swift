@@ -12,9 +12,10 @@ protocol IntervalDesignerDelegate {
   func finishedEditing(workout:WorkoutModel)
 }
 
-class IntervalDesignerViewController: UIViewController {
+class IntervalDesignerViewController: OutrunViewController {
   
   var workout:WorkoutModel?
+  var delegate:IntervalDesignerDelegate?
   
   let containerView = UIStackView()
   
@@ -48,8 +49,20 @@ class IntervalDesignerViewController: UIViewController {
     
     title = "Choose Your Destiny"
     navigationItem.largeTitleDisplayMode = .never
+    navigationItem.backBarButtonItem?.tintColor = UIColor.OutrunLaserBlue
+    navigationController?.navigationBar.backgroundColor = UIColor.OutrunDarkerGray
+    navigationController?.navigationBar.barTintColor = UIColor.OutrunDarkerGray
     
     setupViews()
+  }
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    self.delegate?.finishedEditing(workout: workout!)
+//    CoreDataHandler.shared.saveWorkouts(workoutModels: [workout!]) {
+//      DispatchQueue.main.async {
+//        super.viewDidDisappear(animated)
+//      }
+//    }
   }
   
   func setupViews() {
@@ -75,10 +88,10 @@ class IntervalDesignerViewController: UIViewController {
     
     intervalLengthPickerView.outrunPickerViewType = .IntervalLength
     intervalLengthPickerView.translatesAutoresizingMaskIntoConstraints = false
-    intervalLengthPickerHandler = WorkoutPickerHandler(pickerView: intervalLengthPickerView)
+    intervalLengthPickerHandler = WorkoutPickerHandler(pickerView: intervalLengthPickerView, workoutPickerDelegate: self)
     intervalLengthPickerView.dataSource = intervalLengthPickerHandler
     intervalLengthPickerView.delegate = intervalLengthPickerHandler
-    
+    intervalLengthPickerView.selectRow(workout!.intervalLength/5, inComponent: 0, animated: false)
     
     // Rest Length
     containerView.addArrangedSubview(restLengthContainerView)
@@ -94,9 +107,10 @@ class IntervalDesignerViewController: UIViewController {
 
     restLengthPickerView.outrunPickerViewType = .RestLength
     restLengthPickerView.translatesAutoresizingMaskIntoConstraints = false
-    restLengthPickerHandler = WorkoutPickerHandler(pickerView: restLengthPickerView)
+    restLengthPickerHandler = WorkoutPickerHandler(pickerView: restLengthPickerView, workoutPickerDelegate: self)
     restLengthPickerView.dataSource = restLengthPickerHandler
     restLengthPickerView.delegate = restLengthPickerHandler
+    restLengthPickerView.selectRow(workout!.restLength/5, inComponent: 0, animated: false)
     
     
     // Number of Intervals
@@ -113,10 +127,11 @@ class IntervalDesignerViewController: UIViewController {
     
     numberOfIntervalsPickerView.outrunPickerViewType = .IntervalCount
     numberOfIntervalsPickerView.translatesAutoresizingMaskIntoConstraints = false
-    numberOfIntervalsPickerHandler = WorkoutPickerHandler(pickerView: numberOfIntervalsPickerView)
+    numberOfIntervalsPickerHandler = WorkoutPickerHandler(pickerView: numberOfIntervalsPickerView, workoutPickerDelegate: self)
     numberOfIntervalsPickerView.dataSource = numberOfIntervalsPickerHandler
     numberOfIntervalsPickerView.delegate = numberOfIntervalsPickerHandler
-  
+    numberOfIntervalsPickerView.selectRow(workout!.numberOfIntervals, inComponent: 0, animated: false)
+
     
     // Number of Sets
     containerView.addArrangedSubview(numberOfSetsContainerView)
@@ -132,14 +147,10 @@ class IntervalDesignerViewController: UIViewController {
     
     numberOfSetsPickerView.outrunPickerViewType = .SetCount
     numberOfSetsPickerView.translatesAutoresizingMaskIntoConstraints = false
-    numberOfSetsPickerHandler = WorkoutPickerHandler(pickerView: numberOfSetsPickerView)
+    numberOfSetsPickerHandler = WorkoutPickerHandler(pickerView: numberOfSetsPickerView, workoutPickerDelegate: self)
     numberOfSetsPickerView.dataSource = numberOfSetsPickerHandler
     numberOfSetsPickerView.delegate = numberOfSetsPickerHandler
-    
-    
-    numberOfSetsContainerView.addArrangedSubview(numberOfSetsLabel)
-    numberOfSetsContainerView.addArrangedSubview(numberOfSetsPickerView)
-    numberOfSetsContainerView.axis = .vertical
+    numberOfSetsPickerView.selectRow(workout!.numberOfSets, inComponent: 0, animated: false)
     
     
     NSLayoutConstraint.activate([
@@ -172,3 +183,25 @@ class IntervalDesignerViewController: UIViewController {
   
 }
 
+extension IntervalDesignerViewController : WorkoutPickerDelegate {
+  
+  func valueChanged(in picker: UIPickerView, toNewValue: Int) {
+    
+    if picker === intervalLengthPickerView {
+      self.workout?.intervalLength = toNewValue * 5
+      
+    } else if picker === restLengthPickerView {
+      self.workout?.restLength = toNewValue * 5
+      
+    } else if picker === numberOfIntervalsPickerView {
+      self.workout?.numberOfIntervals = toNewValue
+      
+    } else if picker === numberOfSetsPickerView {
+      self.workout?.numberOfSets = toNewValue
+      
+    }
+      
+  }
+  
+  
+}

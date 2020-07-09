@@ -23,7 +23,7 @@ struct LaunchHandler {
       if result.count > 0 {
         DataHandler.shared.workouts = result
       } else {
-        let workoutObjects = [
+        let workoutModels = [
           WorkoutModel(name: "Neko", type: .Strength, length: 20, warmupLength: 500, intervalLength: 30, restLength: 30, numberOfIntervals: 10, numberOfSets: 2, restBetweenSetLength: 0, cooldownLength: 500),
           
           WorkoutModel(name: "Doge", type: .Strength, length: 20, warmupLength: 500, intervalLength: 40, restLength: 30, numberOfIntervals: 10, numberOfSets: 2, restBetweenSetLength: 0, cooldownLength: 500),
@@ -39,9 +39,7 @@ struct LaunchHandler {
         
         
         
-        CoreDataHandler.shared.saveWorkouts(workoutModels: workoutObjects) {
-          DataHandler.shared.workouts = CoreDataHandler.shared.workoutModelsToWorkouts(workoutModels: workoutObjects)
-        }
+        DataHandler.shared.saveWorkouts(workoutModels: workoutModels) {}
       }
     })
   }

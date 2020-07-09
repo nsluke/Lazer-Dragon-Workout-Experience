@@ -8,19 +8,23 @@
 
 import UIKit
 
+protocol WorkoutPickerDelegate {
+  func valueChanged(in picker:UIPickerView, toNewValue:Int)
+}
 
 // =================== Interval Length =================== //
 class WorkoutPickerHandler:NSObject {
   private var pickerView:OutrunPickerView
-  private var items = Array(stride(from: 5, to: 60, by: 5))  // ["5","10","15","20","25","30","35","40","45","50","55","60"]
-  private var intervals = Array(stride(from: 1, to: 10, by: 1)) // ["1","2","3","4","5","6","7","8","9","10"]
+  private var items = Array(stride(from: 5, to: 65, by: 5))  // ["5","10","15","20","25","30","35","40","45","50","55","60"]
+  private var intervals = Array(stride(from: 1, to: 11, by: 1)) // ["1","2","3","4","5","6","7","8","9","10"]
+  var delegate:WorkoutPickerDelegate
 
-
-  init(pickerView: OutrunPickerView) {
+  init(pickerView: OutrunPickerView, workoutPickerDelegate:WorkoutPickerDelegate) {
       self.pickerView = pickerView
+    self.delegate = workoutPickerDelegate
   }
-
 }
+
 extension WorkoutPickerHandler : UIPickerViewDataSource {
   func numberOfComponents(in pickerView: UIPickerView) -> Int {
     return 1
@@ -40,7 +44,6 @@ extension WorkoutPickerHandler : UIPickerViewDataSource {
       return 0
     }
   }
-
 }
 
 extension WorkoutPickerHandler: UIPickerViewDelegate {
@@ -68,4 +71,9 @@ extension WorkoutPickerHandler: UIPickerViewDelegate {
 
     return pickerLabel!;
   }
+  
+  func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    self.delegate.valueChanged(in: pickerView, toNewValue: row)
+  }
+  
 }

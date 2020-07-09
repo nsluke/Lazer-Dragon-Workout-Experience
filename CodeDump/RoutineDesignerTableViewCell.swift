@@ -11,6 +11,7 @@ import UIKit
 protocol RoutineDesignerCellDelegate {
   func returnValue()
   func segueToIntervalDesigner()
+  func sequeToExercisesDesigner()
 }
 
 class RoutineDesignerTableViewCell : UITableViewCell {
@@ -23,48 +24,63 @@ class RoutineDesignerTableViewCell : UITableViewCell {
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     
-    self.contentView.addSubview(icon)
-    self.contentView.addSubview(label)
-    self.contentView.addSubview(descriptorLabel)
+//    self.contentView.addSubview(icon)
+//    self.contentView.addSubview(label)
+//    self.contentView.addSubview(descriptorLabel)
     
-    icon.anchor(
-      top: topAnchor,
-      left: leftAnchor,
-      bottom: bottomAnchor,
-      right: label.leftAnchor,
-      paddingTop: 0,
-      paddingLeft: 0,
-      paddingBottom: 0,
-      paddingRight: 0,
-      width: 30,
-      height: 0,
-      enableInsets: false)
+    self.contentView.addSubview(containerView)
+    containerView.translatesAutoresizingMaskIntoConstraints = false
+    containerView.axis = .horizontal
+    containerView.distribution = .fillProportionally
+    containerView.alignment = .center
     
-    label.anchor(
-      top: topAnchor,
-      left: icon.rightAnchor,
-      bottom: bottomAnchor,
-      right: descriptorLabel.leftAnchor,
-      paddingTop: 8,
-      paddingLeft: 8,
-      paddingBottom: 8,
-      paddingRight: 8,
-      width: 0,
-      height: 0,
-      enableInsets: true)
-
-    descriptorLabel.anchor(
-      top: topAnchor,
-      left: label.rightAnchor,
-      bottom: bottomAnchor,
-      right: rightAnchor,
-      paddingTop: 8,
-      paddingLeft: 8,
-      paddingBottom: 8,
-      paddingRight: 8,
-      width: 200,
-      height: 0,
-      enableInsets: true)
+    self.containerView.addArrangedSubview(icon)
+    self.containerView.addArrangedSubview(label)
+    self.containerView.addArrangedSubview(descriptorLabel)
+    
+    containerView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0, enableInsets: false)
+    
+//    icon.anchor(
+//      top: topAnchor,
+//      left: leftAnchor,
+//      bottom: bottomAnchor,
+//      right: label.leftAnchor,
+//      paddingTop: 0,
+//      paddingLeft: 0,
+//      paddingBottom: 0,
+//      paddingRight: 0,
+//      width: 0,
+//      height: 0,
+//      enableInsets: false
+//    )
+//
+//    label.anchor(
+//      top: topAnchor,
+//      left: leftAnchor,
+//      bottom: bottomAnchor,
+//      right: descriptorLabel.leftAnchor,
+//      paddingTop: 8,
+//      paddingLeft: 8,
+//      paddingBottom: 8,
+//      paddingRight: 8,
+//      width: 0,
+//      height: 0,
+//      enableInsets: true
+//    )
+//
+//    descriptorLabel.anchor(
+//      top: topAnchor,
+//      left: leftAnchor,
+//      bottom: bottomAnchor,
+//      right: rightAnchor,
+//      paddingTop: 8,
+//      paddingLeft: 8,
+//      paddingBottom: 8,
+//      paddingRight: 8,
+//      width: 0,
+//      height: 0,
+//      enableInsets: true
+//    )
     descriptorLabel.textAlignment = .right
   }
   
@@ -79,7 +95,6 @@ class RoutineDesignerTableViewCell : UITableViewCell {
 }
 
 
-
 class RoutineDesignerNameCell : UITableViewCell {
 
   var icon = UIImageView()
@@ -91,51 +106,62 @@ class RoutineDesignerNameCell : UITableViewCell {
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     
+//    self.contentView.addSubview(icon)
+//    self.contentView.addSubview(label)
+//    self.contentView.addSubview(textField)
     
-    self.contentView.addSubview(icon)
-    self.contentView.addSubview(label)
-    self.contentView.addSubview(textField)
+    self.contentView.addSubview(containerView)
+    containerView.translatesAutoresizingMaskIntoConstraints = false
+    containerView.axis = .horizontal
+    containerView.distribution = .fillProportionally
+    containerView.alignment = .center
     
-    icon.anchor(
-      top: topAnchor,
-      left: leftAnchor,
-      bottom: bottomAnchor,
-      right: label.leftAnchor,
-      paddingTop: 0,
-      paddingLeft: 0,
-      paddingBottom: 0,
-      paddingRight: 0,
-      width: 30,
-      height: 0,
-      enableInsets: false)
+    self.containerView.addArrangedSubview(icon)
+    self.containerView.addArrangedSubview(label)
+    self.containerView.addArrangedSubview(textField)
     
-    label.anchor(
-      top: topAnchor,
-      left: icon.rightAnchor,
-      bottom: bottomAnchor,
-      right: textField.leftAnchor,
-      paddingTop: 8,
-      paddingLeft: 8,
-      paddingBottom: 8,
-      paddingRight: 8,
-      width: 0,
-      height: 0,
-      enableInsets: true)
+    containerView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0, enableInsets: false)
     
-    textField.anchor(
-      top: topAnchor,
-      left: label.rightAnchor,
-      bottom: bottomAnchor,
-      right: rightAnchor,
-      paddingTop: 8,
-      paddingLeft: 8,
-      paddingBottom: 8,
-      paddingRight: 8,
-      width: 200,
-      height: 0,
-      enableInsets: true)
+    
+//    icon.anchor(
+//      top: topAnchor,
+//      left: leftAnchor,
+//      bottom: bottomAnchor,
+//      right: label.leftAnchor,
+//      paddingTop: 0,
+//      paddingLeft: 0,
+//      paddingBottom: 0,
+//      paddingRight: 0,
+//      width: 0,
+//      height: 0,
+//      enableInsets: false)
+//
+//    label.anchor(
+//      top: topAnchor,
+//      left: icon.rightAnchor,
+//      bottom: bottomAnchor,
+//      right: textField.leftAnchor,
+//      paddingTop: 8,
+//      paddingLeft: 8,
+//      paddingBottom: 8,
+//      paddingRight: 8,
+//      width: 0,
+//      height: 0,
+//      enableInsets: true)
+//
+//    textField.anchor(
+//      top: topAnchor,
+//      left: label.rightAnchor,
+//      bottom: bottomAnchor,
+//      right: rightAnchor,
+//      paddingTop: 8,
+//      paddingLeft: 8,
+//      paddingBottom: 8,
+//      paddingRight: 8,
+//      width: 0,
+//      height: 0,
+//      enableInsets: true)
     textField.textAlignment = .right
-      
     }
   
   required init?(coder: NSCoder) {

@@ -29,7 +29,7 @@ struct CoreDataHandler {
     return container
   }()
 
-  // MARK - Save
+  // MARK: - Save
   
   func saveWorkout(workoutModel:WorkoutModel) {
     let workout = NSEntityDescription.insertNewObject(forEntityName: "Workout", into: persistentContainer.viewContext) as! Workout
@@ -49,7 +49,7 @@ struct CoreDataHandler {
     do {
       try persistentContainer.viewContext.save()
     } catch let error as NSError {
-      print("CoreDataHandlerL could not save Workouts - \(error) \(error.userInfo)")
+      print("CoreDataHandler could not save Workout - \(error) \(error.userInfo)")
     }
   }
   
@@ -81,7 +81,7 @@ struct CoreDataHandler {
     }
   }
 
-  // MARK - Memory OBJ to NSManagedObjects
+  // MARK: - Memory OBJ to NSManagedObjects
   
   func workoutModelsToWorkouts(workoutModels:[WorkoutModel]) -> [Workout] {
     var workouts = [Workout]()
@@ -107,7 +107,7 @@ struct CoreDataHandler {
     return workouts
   }
   
-  // MARK - Fetch
+  // MARK: - Fetch
   
   func fetchWorkouts(completion: ([Workout]) -> Void) {
     var results = [Workout]()
@@ -137,93 +137,25 @@ struct CoreDataHandler {
       completion(nil)
     }
   }
-  
-}
 
+  // MARK: - Delete
 
+  func deleteWorkoutWithName(name: String, completion:() -> Void) {
+    let fetchRequest:NSFetchRequest<Workout> = Workout.fetchRequest()
 
-   
-//    let entity = NSEntityDescription.entity(forEntityName: "Workout", in: CoreDataHandler.managedContext)!
-//    let workoutEntity = NSManagedObject(entity: entity, insertInto: CoreDataHandler.managedContext)
-//
-//
-//    workoutEntity.setValue(workoutModel.name, forKeyPath: "name")
-//    workoutEntity.setValue(workoutModel.type.rawValue , forKeyPath: "type")
-//    workoutEntity.setValue(workoutModel.length , forKeyPath: "length")
-//
-//    workoutEntity.setValue(workoutModel.warmupLength , forKeyPath: "warmupLength")
-//    workoutEntity.setValue(workoutModel.intervalLength , forKeyPath: "intervalLength")
-//    workoutEntity.setValue(workoutModel.restLength , forKeyPath: "restLength")
-//
-//    workoutEntity.setValue(workoutModel.numberOfIntervals , forKeyPath: "numberOfIntervals")
-//    workoutEntity.setValue(workoutModel.numberOfSets , forKeyPath: "numberOfSets")
-//    workoutEntity.setValue(workoutModel.cooldownLength , forKeyPath: "cooldownLength")
-//
-//    //    workoutEntity.setValue(workoutModel.exercises , forKeyPath: "exercises")
-//
-//
-//    do {
-//      try CoreDataHandler.managedContext.save()
-//      completion()
-//    } catch let error as NSError {
-//      print("Could not save Workouts. \(error), \(error.userInfo)")
-//    }
+    fetchRequest.predicate = NSPredicate(format: "name = %@", name)
     
-//    do {
-//      let workouts = try CoreDataHandler.managedContext.fetch(fetchRequest) as! [Workout]
-//
-//      var result = [WorkoutModel]()
-//
-//      for workout in workouts {
-//        let workoutName = workout.name!
-//
-//        //Converting the string back into an enum value
-//        let workoutType = workout.type!
-//        var convertedWorkoutType = WorkoutType(rawValue: "")
-//
-//        switch workoutType {
-//        case WorkoutType.HIIT.rawValue:
-//          convertedWorkoutType = .HIIT
-//        case WorkoutType.Run.rawValue:
-//          convertedWorkoutType = .Run
-//        case WorkoutType.Yoga.rawValue:
-//          convertedWorkoutType = .Yoga
-//        case WorkoutType.Strength.rawValue:
-//          convertedWorkoutType = .Strength
-//        case WorkoutType.Custom.rawValue:
-//          convertedWorkoutType = .Custom
-//        default:
-//          fatalError("undefined workoutType fetched from CoreData")
-//          convertedWorkoutType = .Custom
-//        }
-//
-//        let workoutLength = Int(workout.length)
-//        let workoutWarmupLength = Int(workout.warmupLength)
-//        let workoutIntervalLength = Int(workout.intervalLength)
-//        let workoutRestLength = Int(workout.restLength)
-//        let workoutNumberOfIntervals = Int(workout.numberOfIntervals)
-//        let workoutNumberOfSets = Int(workout.numberOfSets)
-//        let workoutRestBetweenSetLength = Int(workout.restBetweenSetLength)
-//        let workoutCooldownLength = Int(workout.cooldownLength)
-//
-//        // do exercises later?
-//
-//        let workoutModel = WorkoutModel(
-//          name: workoutName,
-//          type: convertedWorkoutType!,
-//          length: workoutLength,
-//          warmupLength: workoutWarmupLength,
-//          intervalLength: workoutIntervalLength,
-//          restLength: workoutRestLength,
-//          numberOfIntervals: workoutNumberOfIntervals,
-//          numberOfSets: workoutNumberOfSets,
-//          restBetweenSetLength: workoutRestBetweenSetLength,
-//          cooldownLength: workoutCooldownLength)
-//        result.append(workoutModel)
-//
-//      }
-//      completion(result)
-//
-//    } catch let error as NSError {
-//      print("Could not fetch Workouts. \(error), \(error.userInfo)")
-//    }
+    do {
+      if let workout = try persistentContainer.viewContext.fetch(fetchRequest).first {
+        persistentContainer.viewContext.delete(workout)
+      } else {
+        print("CoreDataHandler: could not delete workout, name not found?")
+      }
+      completion()
+    } catch let error as NSError {
+      print("CoreDataHandler: could not delete workout \(name) - \(error) \(error.userInfo)")
+      completion()
+    }
+  }
+
+}

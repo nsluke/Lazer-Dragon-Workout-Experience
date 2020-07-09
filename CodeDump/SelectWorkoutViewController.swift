@@ -21,8 +21,17 @@ class SelectWorkoutViewController: UIViewController {
     
     setupViews()
     DataHandler.shared.getWorkouts { (results) in
+      self.workouts = results
       DispatchQueue.main.async {
-        self.workouts = results
+        self.tableView.reloadData()
+      }
+    }
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    DataHandler.shared.getWorkouts { (results) in
+      self.workouts = results
+      DispatchQueue.main.async {
         self.tableView.reloadData()
       }
     }
@@ -31,7 +40,9 @@ class SelectWorkoutViewController: UIViewController {
   func setupViews() {
     navigationController?.navigationBar.prefersLargeTitles = true
     title = "Select your Workout"
-    
+    navigationController?.navigationBar.backgroundColor = UIColor.OutrunDarkerGray
+    navigationController?.navigationBar.barTintColor = UIColor.OutrunDarkerGray
+
     view.backgroundColor = UIColor.OutrunDarkerGray
     navigationController?.navigationBar.titleTextAttributes = [
       .foregroundColor : UIColor.OutrunLaserBlue,
@@ -82,7 +93,7 @@ extension SelectWorkoutViewController:UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "CellID")
     
-    cell?.textLabel?.text = self.workouts[indexPath.row].name ?? "error"  // Constants.WorkoutObject[indexPath.row].name
+    cell?.textLabel?.text = self.workouts[indexPath.row].name ?? "error"
     cell?.textLabel?.textColor = UIColor.OutrunPaleYellow
     
     cell?.textLabel?.font = UIFont(name: "Pixel-01", size: 30) ?? UIFont.systemFont(ofSize: 20)
@@ -102,28 +113,38 @@ extension SelectWorkoutViewController:UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-    let workout = Constants.WorkoutObject[indexPath.row]
+    let workout = DataHandler.shared.workoutsToWorkoutModels(workouts: [self.workouts[indexPath.row]])[0]
     let workoutVC = WorkoutViewController()
-    let workoutDesignerVC = IntervalDesignerViewController()
     
-    switch workout.type {
-    case .HIIT:
+//    switch WorkoutType {
+//    case .HIIT:
+//      navigationController?.pushViewController(workoutVC, animated: true)
+//      workoutVC.workout = workout
+//    case .Run:
+//      navigationController?.pushViewController(workoutVC, animated: true)
+//      workoutVC.workout = workout
+//    case .Yoga:
+//      navigationController?.pushViewController(workoutVC, animated: true)
+//      workoutVC.workout = workout
+//    case .Strength:
+//      navigationController?.pushViewController(workoutVC, animated: true)
+//      workoutVC.workout = workout
+//    case .Custom:
+//      navigationController?.pushViewController(workoutDesignerVC, animated: true)
+//    default:
       navigationController?.pushViewController(workoutVC, animated: true)
       workoutVC.workout = workout
-    case .Run:
-      navigationController?.pushViewController(workoutVC, animated: true)
-      workoutVC.workout = workout
-    case .Yoga:
-      navigationController?.pushViewController(workoutVC, animated: true)
-      workoutVC.workout = workout
-    case .Strength:
-      navigationController?.pushViewController(workoutVC, animated: true)
-      workoutVC.workout = workout
-    case .Custom:
-      navigationController?.pushViewController(workoutDesignerVC, animated: true)
-    default:
-      navigationController?.pushViewController(workoutVC, animated: true)
-      workoutVC.workout = workout
+//    }
+  }
+  
+  func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    if editingStyle == .delete {
+      let workoutToRemove = workouts[indexPath.row]
+      self.workouts.remove(at: indexPath.row)
+      DataHandler.shared.deleteWorkout(workoutName: workoutToRemove.name ?? "") {
+        DispatchQueue.main.async {}
+      }
+      tableView.deleteRows(at: [indexPath], with: .fade)
     }
   }
   

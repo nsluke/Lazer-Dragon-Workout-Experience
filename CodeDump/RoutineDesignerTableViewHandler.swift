@@ -8,29 +8,32 @@
 
 import UIKit
 
-
 class RoutineDesignerTableViewHandler:NSObject {
   
   private var tableView:UITableView
   
   var workout:WorkoutModel
-  var exercises:[String]
+  var exercises = [String]()
   
   var intervalCellDelegate:IntervalVisualizationCellDelegate?
-  var routineDesignerDelegate:RoutineDesignerCellDelegate?
+  var routineDesignerCellDelegate:RoutineDesignerCellDelegate?
   var textFieldDelegate:UITextFieldDelegate?
+
   
-  
-  init(tableView:UITableView, workout:WorkoutModel?) {
+  init(tableView:UITableView, workout:WorkoutModel, routineCellDelegate: RoutineDesignerCellDelegate, textFieldDelegate:UITextFieldDelegate) {
     self.tableView = tableView
     
-    if let workout = workout {
-      self.workout = workout
-    } else {
-      self.workout = WorkoutModel(name: "", type: .Custom, length: 0, warmupLength: 0, intervalLength: 0, restLength: 0, numberOfIntervals: 0, numberOfSets: 0, restBetweenSetLength: 0, cooldownLength: 0)
-    }
+    self.workout = workout
     
-    self.exercises = [String]()
+    self.routineDesignerCellDelegate = routineCellDelegate
+    self.textFieldDelegate = textFieldDelegate
+    super.init()
+    
+    self.intervalCellDelegate = self
+  }
+  
+  @objc func broadcastDoneTapped() {
+    NotificationCenter.default.post(name: NSNotification.Name(rawValue: doneNotification), object: nil, userInfo: ["workout":self.workout])
   }
   
 }
@@ -46,17 +49,17 @@ extension RoutineDesignerTableViewHandler : UITableViewDataSource {
   }
   
   func numberOfSections(in tableView: UITableView) -> Int {
-    return 6 + self.exercises.count
-  }
-  
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return 1
   }
   
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return 7 + exercises.count
+  }
+  
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
+    
     // ============================ Name your workout cell ============================ //
-    if indexPath.section == 0 {
+    if indexPath.row == 0 {
       let cell = tableView.dequeueReusableCell(withIdentifier: "RoutineNameCell", for: indexPath)  as! RoutineDesignerNameCell
       
       cell.label.customize(
@@ -72,7 +75,7 @@ extension RoutineDesignerTableViewHandler : UITableViewDataSource {
       return cell
 
     // ============================ Warmup ============================ //
-    } else if indexPath.section == 1 {
+    } else if indexPath.row == 1 {
       let cell = tableView.dequeueReusableCell(withIdentifier: "RoutineCell", for: indexPath)  as! RoutineDesignerTableViewCell
 
       cell.label.customize(
@@ -93,7 +96,7 @@ extension RoutineDesignerTableViewHandler : UITableViewDataSource {
       return cell
       
       // ============================ CoolDown ============================ //
-      } else if indexPath.section == 2 {
+      } else if indexPath.row == 2 {
       
         let cell = tableView.dequeueReusableCell(withIdentifier: "RoutineCell", for: indexPath)  as! RoutineDesignerTableViewCell
 
@@ -115,7 +118,7 @@ extension RoutineDesignerTableViewHandler : UITableViewDataSource {
         return cell
 
     // ============================ Intervals ============================ //
-    } else if indexPath.section == 3 {
+    } else if indexPath.row == 3 {
       let cell = tableView.dequeueReusableCell(withIdentifier: "RoutineCell", for: indexPath)  as! RoutineDesignerTableViewCell
       
       cell.label.customize(
@@ -135,9 +138,8 @@ extension RoutineDesignerTableViewHandler : UITableViewDataSource {
       cell.setupViews()
       return cell
 
-      
     // ============================ Interval Visualization Cell ============================ //
-    } else if indexPath.section == 4 {
+    } else if indexPath.row == 4 {
       let intervalVisualizationCell = tableView.dequeueReusableCell(withIdentifier: "VisualizationCell", for: indexPath)  as! IntervalVisualizationCell
 
       let viewModel = IntervalVisualizationViewModel(warmupLength: 500, intervalCount: 10, intervalLength: 60, restLength: 30, cooldownLength: 500)
@@ -147,9 +149,12 @@ extension RoutineDesignerTableViewHandler : UITableViewDataSource {
       return intervalVisualizationCell
       
     // ============================ Exercises ============================ //
-    } else if indexPath.section == 5 {
+    } else if indexPath.row == 5 {
       let cell = tableView.dequeueReusableCell(withIdentifier: "RoutineCell", for: indexPath)  as! RoutineDesignerTableViewCell
-
+      cell.label.text = ""
+      cell.descriptorLabel.text = ""
+      
+      
       cell.label.customize(
         text: "Exercises:",
         font: .Pixel,
@@ -167,55 +172,68 @@ extension RoutineDesignerTableViewHandler : UITableViewDataSource {
       cell.setupViews()
       return cell
 
-    // ============================ Done Cell ============================ //
-    } else if indexPath.section == 6 {
+    } else if indexPath.row > 5 {
       let cell = tableView.dequeueReusableCell(withIdentifier: "RoutineCell", for: indexPath)  as! RoutineDesignerTableViewCell
 
-      cell.label.customize(
-        text: "Exercises:",
-        font: .Pixel,
-        size: 24,
-        textColor: UIColor.OutrunPaleYellow
-      )
+      cell.label.text = ""
+      cell.descriptorLabel.text = ""
       
-      cell.descriptorLabel.customize(
-        text: "+",
-        font: .Pixel,
-        size: 30,
-        textColor: UIColor.OutrunLaserBlue
-      )
+      if self.exercises.count < 0 {
+        cell.label.customize(
+          text: self.exercises[indexPath.row + 6],
+          font: .Pixel,
+          size: 24,
+          textColor: UIColor.OutrunPaleYellow
+        )
+      }
       
       cell.setupViews()
       return cell
     } else {
       let cell = tableView.dequeueReusableCell(withIdentifier: "RoutineCell", for: indexPath)  as! RoutineDesignerTableViewCell
+      
+      cell.setupViews()
+      
       return cell
     }
   }
-}
+  
+  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 50))
+    view.backgroundColor = UIColor.OutrunDarkerGray
 
+    let button = OutrunButton(frame: CGRect(x: (tableView.frame.width/2) - 75, y: 0, width: 150, height: 80))
+    view.addSubview(button)
+
+    button.customize(
+      text: "Done",
+      font: .Future,
+      size: 40,
+      textColor: .OutrunLaserBlue
+    )
+
+    button.addTarget(self, action: #selector(broadcastDoneTapped), for: .touchUpInside)
+    return view
+  }
+}
 
 extension RoutineDesignerTableViewHandler : UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    if indexPath.section == 2 || indexPath.section == 3 {
-      routineDesignerDelegate!.segueToIntervalDesigner()
+    
+    if indexPath.row == 3 {
+      routineDesignerCellDelegate!.segueToIntervalDesigner()
+    } else if indexPath.row == 5 {
+      routineDesignerCellDelegate!.sequeToExercisesDesigner()
+    } else {
+      print("tapped")
     }
   }
   
 }
 
-extension RoutineDesignerTableViewHandler: UITextFieldDelegate {
-  
-  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    guard let textFieldText = textField.text else {
-      return true
-    }
+extension RoutineDesignerTableViewHandler: IntervalVisualizationCellDelegate {
+  func returnValue() {
     
-    self.workout.name = textFieldText
-    textField.resignFirstResponder()
-
-    return true
   }
-  
 }

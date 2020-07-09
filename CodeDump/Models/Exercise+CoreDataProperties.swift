@@ -9,7 +9,7 @@
 
 import Foundation
 import CoreData
-
+import UIKit
 
 extension Exercise {
 
@@ -23,3 +23,4 @@ extension Exercise {
     @NSManaged public var workout: Workout?
 
 }
+
