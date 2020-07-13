@@ -1,0 +1,6 @@
+framework module Pods_CodeDumpTests {
+  umbrella header "Pods-CodeDumpTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

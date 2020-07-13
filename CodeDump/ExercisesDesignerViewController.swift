@@ -15,63 +15,96 @@ protocol ExercisesDesignerCellDelegate {
 
 class ExercisesDesignerViewController: OutrunViewController {
   
-//  var exercisesDesignerView:ExercisesDesignerView?
   var delegate:ExercisesDesignerCellDelegate?
   var workout:WorkoutModel?
   
-  var containerView = OutrunStackView()
-  var textField = OutrunTextField()
+  var exerciseName = String()
   
+  // views
+  var exerciseNameLabel = OutrunLabel()
+  var textField = OutrunTextField(placeholder: "_")
+//  var containerView = OutrunStackView(
+//    anchor: false,
+//    backgroundColor: .OutrunDarkerGray,
+//    axis: .vertical,
+//    distribution: .fill,
+//    alignment: .center
+//  )
+//  var fillView = UIView()
+
+  var doneButton = OutrunButton(title: "Done", font: .Future, size: 40.0, textColor: .OutrunLaserBlue, backgroundColor: .OutrunBlack, cornerRadius: 5.0)
   
+
   override func viewDidLoad() {
     super.viewDidLoad()
-    
-//    let exercisesDesignerViewModel = ExercisesDesignerViewModel(designerViewDelegate: self)
-//    let view = ExercisesDesignerView()
-//    self.exercisesDesignerView = view
-//    self.exercisesDesignerView?.configure(viewModel: exercisesDesignerViewModel)
-    
     setupViews()
   }
   
   override func viewWillDisappear(_ animated: Bool) {
-    self.workout?.name = textField.text!
-    self.delegate?.returnExercise(workoutModel: workout!)
+//    self.workout?.name = textField.text!
+//    self.delegate?.returnExercise(workoutModel: workout!)
   }
   
   func setupViews() {
     self.title = "Name your Exercise"
+    
     navigationItem.largeTitleDisplayMode = .never
-    navigationItem.backBarButtonItem?.tintColor = UIColor.OutrunLaserBlue
-    navigationController?.navigationBar.backgroundColor = UIColor.OutrunDarkerGray
-    navigationController?.navigationBar.barTintColor = UIColor.OutrunDarkerGray
+
+//    view.addSubview(containerView)
+//    containerView.addArrangedSubview(textField)
+//    containerView.addArrangedSubview(doneButton)
     
-    view.backgroundColor = UIColor.OutrunDarkerGray
+//    containerView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.safeAreaLayoutGuide.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.safeAreaLayoutGuide.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0, enableInsets: false)
     
-    // TableView
-    view.addSubview(containerView)
-    containerView.translatesAutoresizingMaskIntoConstraints = false
-    containerView.addBackground(color: UIColor.OutrunDarkerGray)
-    containerView.axis = .vertical
-    containerView.distribution = .fillProportionally
-    containerView.alignment = .center
-    
-    textField.translatesAutoresizingMaskIntoConstraints = false
-    textField.customizeWithStandardValues(placeholder: "_")
     textField.delegate = self
+    view.addSubview(textField)
     
-    containerView.addArrangedSubview(textField)
+    textField.anchor(
+      top: nil,
+      left: view.safeAreaLayoutGuide.leftAnchor,
+      bottom: nil,
+      right: view.safeAreaLayoutGuide.rightAnchor,
+      paddingTop: 0,
+      paddingLeft: 16,
+      paddingBottom: 0,
+      paddingRight: 16,
+      width: 0,
+      height: 60,
+      enableInsets: true
+    )
     
-    NSLayoutConstraint.activate([
-      containerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-      containerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-      containerView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
-      containerView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
-      
-      textField.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 12.0),
-      textField.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: 12.0)
-    ])
+    textField.centerInSuperview()
+    view.addSubview(doneButton)
+    
+    doneButton.anchor(
+      top: textField.bottomAnchor,
+      left: nil,
+      bottom: nil,
+      right: nil,
+      paddingTop: 20,
+      paddingLeft: 0,
+      paddingBottom: 0,
+      paddingRight: 0,
+      width: 150,
+      height: 80,
+      enableInsets: true
+    )
+    doneButton.centerXInSuperview()
   }
+  
+  @objc func handleDoneButtonTapped(sender:UIButton!) {
+    if let safeWorkout = workout {
+      safeWorkout.exercises.append(
+        ExerciseModel(
+          name: exerciseName,
+          image: UIImage(),
+          splitLength: 0
+        )
+      )
+      delegate?.returnExercise(workoutModel: safeWorkout)
+    }
+  }
+  
 }
 
 extension ExercisesDesignerViewController: UITextFieldDelegate {
@@ -80,7 +113,7 @@ extension ExercisesDesignerViewController: UITextFieldDelegate {
       return true
     }
     
-    self.workout?.name = textFieldText
+    self.exerciseName = textFieldText
     textField.resignFirstResponder()
 
     return true
@@ -91,7 +124,7 @@ extension ExercisesDesignerViewController: UITextFieldDelegate {
       return
     }
     
-    self.workout?.name = textFieldText
+    self.exerciseName = textFieldText
   }
   
   func textFieldDidEndEditing(_ textField: UITextField) {
@@ -99,7 +132,7 @@ extension ExercisesDesignerViewController: UITextFieldDelegate {
       return
     }
     
-    self.workout?.name = textFieldText
+    self.exerciseName = textFieldText
   }
   
   func textFieldShouldClear(_ textField: UITextField) -> Bool {
@@ -107,7 +140,7 @@ extension ExercisesDesignerViewController: UITextFieldDelegate {
       return true
     }
     
-    self.workout?.name = ""
+    self.exerciseName = ""
 
     return true
   }

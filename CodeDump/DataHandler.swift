@@ -34,7 +34,7 @@ struct DataHandler {
   
   mutating func saveWorkouts(workoutModels: [WorkoutModel], completion: @escaping () -> ()) {
     let workoutObjcs = CoreDataHandler.shared.workoutModelsToWorkouts(workoutModels: workoutModels)
-    self.workouts.append(contentsOf: workoutObjcs)
+//    self.workouts.append(contentsOf: workoutObjcs)
     CoreDataHandler.shared.saveWorkouts(workoutModels: workoutModels) {
       completion()
     }
@@ -57,11 +57,11 @@ struct DataHandler {
     
       for workout in workouts {
         let workoutName = workout.name!
-
+        
         //Converting the string back into an enum value
         let workoutType = workout.type!
         var convertedWorkoutType = WorkoutType(rawValue: "")
-
+        
         switch workoutType {
         case WorkoutType.HIIT.rawValue:
           convertedWorkoutType = .HIIT
@@ -77,7 +77,7 @@ struct DataHandler {
           fatalError("undefined workoutType fetched from CoreData")
           convertedWorkoutType = .Custom
         }
-
+        
         let workoutLength = Int(workout.length)
         let workoutWarmupLength = Int(workout.warmupLength)
         let workoutIntervalLength = Int(workout.intervalLength)
@@ -86,9 +86,8 @@ struct DataHandler {
         let workoutNumberOfSets = Int(workout.numberOfSets)
         let workoutRestBetweenSetLength = Int(workout.restBetweenSetLength)
         let workoutCooldownLength = Int(workout.cooldownLength)
-
-        // do exercises later?
-
+        let exercises = workout.exercises?.allObjects as! [ExerciseModel]
+        
         let workoutModel = WorkoutModel(
           name: workoutName,
           type: convertedWorkoutType!,
@@ -99,7 +98,9 @@ struct DataHandler {
           numberOfIntervals: workoutNumberOfIntervals,
           numberOfSets: workoutNumberOfSets,
           restBetweenSetLength: workoutRestBetweenSetLength,
-          cooldownLength: workoutCooldownLength)
+          cooldownLength: workoutCooldownLength,
+          exercises: exercises
+        )
         workoutModels.append(workoutModel)
       }
     

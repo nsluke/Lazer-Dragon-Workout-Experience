@@ -46,6 +46,7 @@ struct CoreDataHandler {
     workout.numberOfSets = Int16(workoutModel.numberOfSets)
     workout.cooldownLength = Int16(workoutModel.cooldownLength)
     
+    workout.exercises = NSSet(arrayLiteral: workoutModel.exercises)
     do {
       try persistentContainer.viewContext.save()
     } catch let error as NSError {
@@ -68,12 +69,12 @@ struct CoreDataHandler {
   
 
   
-//  func saveExercise(exercise: Exercise) {
-  func saveExercise(name: String) {
+  func saveExercise(exerciseModel: ExerciseModel) {
     let exercise = NSEntityDescription.insertNewObject(forEntityName: "Exercise", into: persistentContainer.viewContext) as! Exercise
-//      exercise.image = exercise.image
-      exercise.name = name
-//      exercise.splitLength = exercise.splitLength
+    exercise.image = exerciseModel.image.pngData()
+    exercise.name = exerciseModel.name
+    exercise.splitLength = Int16(exerciseModel.splitLength)
+    
     do {
       try persistentContainer.viewContext.save()
     } catch let error as NSError {
@@ -100,6 +101,8 @@ struct CoreDataHandler {
       workout.numberOfIntervals = Int16(workoutModel.numberOfIntervals)
       workout.numberOfSets = Int16(workoutModel.numberOfSets)
       workout.cooldownLength = Int16(workoutModel.cooldownLength)
+      
+      workout.exercises = NSSet(array: workoutModel.exercises)
       
       workouts.append(workout)
     }

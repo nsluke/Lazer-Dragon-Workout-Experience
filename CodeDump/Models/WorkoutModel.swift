@@ -31,7 +31,7 @@ class WorkoutModel {
   var numberOfSets:Int
   var restBetweenSetLength:Int
   var cooldownLength:Int
-//  var exercises:[Exercise]
+  var exercises:[ExerciseModel]
 
   init(
     name:String,
@@ -45,8 +45,8 @@ class WorkoutModel {
     numberOfIntervals:Int,
     numberOfSets:Int,
     restBetweenSetLength:Int,
-    cooldownLength:Int
-//    _ exercises:[Exercise]
+    cooldownLength:Int,
+    exercises:[ExerciseModel]
     ) {
 
     self.name = name
@@ -61,7 +61,7 @@ class WorkoutModel {
     self.numberOfSets = numberOfSets
     self.restBetweenSetLength = restBetweenSetLength
     self.cooldownLength = cooldownLength
-//    self.exercises = exercises
+    self.exercises = exercises
   }
 
 //  init(workout: NSManagedObject) {
@@ -80,7 +80,8 @@ class WorkoutModel {
 
 }
 
-//struct ExerciseModel {
-//  var name:String
-//  var image:UIImage
-//}
+struct ExerciseModel {
+  var name:String
+  var image:UIImage
+  var splitLength:Int
+}

@@ -178,8 +178,7 @@ class WorkoutViewController:OutrunViewController {
       containerView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
       containerView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
       
-      containerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-      timerStackView.leftAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.leftAnchor, constant: 8),
+//      timerStackView.leftAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.leftAnchor, constant: 8),
       timerStackView.rightAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.rightAnchor, constant: -8),
 //      elapsedTimerLabel.centerXAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.centerXAnchor),
       

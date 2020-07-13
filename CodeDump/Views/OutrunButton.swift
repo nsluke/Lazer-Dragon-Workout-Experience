@@ -18,15 +18,34 @@ class OutrunButton: UIButton {
     }
     */
   
+  convenience init(
+    title: String,
+    font: OutrunFonts,
+    size: CGFloat,
+    textColor: UIColor,
+    backgroundColor: UIColor,
+    cornerRadius: CGFloat
+  ) {
+    self.init()
+    
+    self.backgroundColor = UIColor.OutrunBlack
+
+    self.setAttributedTitle(NSAttributedString(
+      string: title,
+      attributes: [
+      .foregroundColor : textColor,
+      .font : UIFont(name: font.rawValue, size: size) ?? UIFont.systemFont(ofSize: size)
+    ]), for: .normal)
+    
+    self.layer.cornerRadius = CGFloat(10)
+  }
   
   func customize(text: String, font:OutrunFonts, size: CGFloat, textColor: UIColor) {
     self.backgroundColor = UIColor.OutrunBlack
     
-//    self.titleLabel?.text = text
-//    self.titleLabel?.font = UIFont(name: font.rawValue, size: size) ?? UIFont.systemFont(ofSize: size)
-//    self.titleLabel?.textColor = textColor
-    
-    self.setAttributedTitle(NSAttributedString(string: text, attributes: [
+    self.setAttributedTitle(NSAttributedString(
+      string: text,
+      attributes: [
       .foregroundColor : textColor,
       .font : UIFont(name: font.rawValue, size: size) ?? UIFont.systemFont(ofSize: size)
     ]), for: .normal)

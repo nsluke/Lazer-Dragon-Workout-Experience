@@ -11,8 +11,24 @@ import UIKit
 
 class OutrunViewController: UIViewController {
   
+  var outrunStackView = OutrunStackView()
+
+  
+  convenience init(anchor: Bool = true) {
+    self.init()
+    if anchor {
+      outrunStackView.pinToSuper()
+    }
+  }
+  
+  
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    view.backgroundColor = UIColor.OutrunDarkerGray
+    navigationItem.backBarButtonItem?.tintColor = UIColor.OutrunLaserBlue
+    navigationController?.navigationBar.backgroundColor = UIColor.OutrunDarkerGray
+    navigationController?.navigationBar.barTintColor = UIColor.OutrunDarkerGray
     
     // Back Button Color & Font
     let backButtonItem = UIBarButtonItem(
