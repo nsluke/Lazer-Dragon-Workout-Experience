@@ -27,7 +27,7 @@ extension Workout {
     @NSManaged public var restLength: Int16
     @NSManaged public var type: String?
     @NSManaged public var warmupLength: Int16
-    @NSManaged public var exercises: NSSet?
+    @NSManaged public var exercises: [Exercise]
 
 }
 

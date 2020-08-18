@@ -37,7 +37,6 @@
 		D55A19B4247C375700FDC7D6 /* UIView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55A19B3247C375700FDC7D6 /* UIView+extension.swift */; };
 		D55A19B6247C454D00FDC7D6 /* IntervalVisualizationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55A19B5247C454D00FDC7D6 /* IntervalVisualizationCell.swift */; };
 		D55A19B8247C5F2800FDC7D6 /* OutrunTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55A19B7247C5F2800FDC7D6 /* OutrunTextField.swift */; };
-		D55D077024BB76AE001B61F5 /* CodeDumpTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BA33CE245CF23D001DE467 /* CodeDumpTests.swift */; };
 		D55E21EE249D581000F1D252 /* OutrunNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55E21ED249D581000F1D252 /* OutrunNavigationController.swift */; };
 		D55E21F0249D671700F1D252 /* OutrunViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55E21EF249D671700F1D252 /* OutrunViewController.swift */; };
 		D56B081B24B377CB00E1351F /* ExercisesDesignerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56B081A24B377CB00E1351F /* ExercisesDesignerViewController.swift */; };
@@ -685,7 +684,6 @@
 				D55A19B6247C454D00FDC7D6 /* IntervalVisualizationCell.swift in Sources */,
 				D5F2E3E624805E8600C868EC /* WorkoutHandler.swift in Sources */,
 				D56B081D24B37D1C00E1351F /* ExercisesDesignerView.swift in Sources */,
-				D55D077024BB76AE001B61F5 /* CodeDumpTests.swift in Sources */,
 				D5113BE124A548A7002EB1A4 /* Exercise+CoreDataClass.swift in Sources */,
 				D5A70CC4246F4CCB009FD146 /* ProfileViewController.swift in Sources */,
 				D504F2DE24B15ADC00A99ED7 /* LaunchHandler.swift in Sources */,

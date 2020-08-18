@@ -53,7 +53,7 @@ extension RoutineDesignerTableViewHandler : UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 7 + exercises.count
+    return 7 + self.workout.exercises.count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

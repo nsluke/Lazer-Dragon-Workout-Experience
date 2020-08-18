@@ -20,19 +20,18 @@ class SelectWorkoutViewController: UIViewController {
     super.viewDidLoad()
     
     setupViews()
-    DataHandler.shared.getWorkouts { (results) in
-      self.workouts = results
-      DispatchQueue.main.async {
-        self.tableView.reloadData()
-      }
-    }
   }
   
   override func viewDidAppear(_ animated: Bool) {
-    DataHandler.shared.getWorkouts { (results) in
-      self.workouts = results
-      DispatchQueue.main.async {
-        self.tableView.reloadData()
+    DataHandler.shared.getWorkouts { (result) in
+      if case .success(let workouts) = result {
+        self.workouts = workouts
+        DispatchQueue.main.async {
+          self.tableView.reloadData()
+        }
+      } else if case .failure = result {
+        print("SelectWorkoutViewController - viewDidLoad: Error fetching Data for Table View")
+        // TODO: Show alert view
       }
     }
   }
@@ -115,7 +114,8 @@ extension SelectWorkoutViewController:UITableViewDelegate {
 
     let workout = DataHandler.shared.workoutsToWorkoutModels(workouts: [self.workouts[indexPath.row]])[0]
     let workoutVC = WorkoutViewController()
-    
+    workoutVC.workout = workout
+
 //    switch WorkoutType {
 //    case .HIIT:
 //      navigationController?.pushViewController(workoutVC, animated: true)
@@ -133,7 +133,6 @@ extension SelectWorkoutViewController:UITableViewDelegate {
 //      navigationController?.pushViewController(workoutDesignerVC, animated: true)
 //    default:
       navigationController?.pushViewController(workoutVC, animated: true)
-      workoutVC.workout = workout
 //    }
   }
   

@@ -72,9 +72,18 @@ class RoutineDesignerViewController: OutrunViewController {
       print("workout needs a name")
     }
     
-    DataHandler.shared.saveWorkouts(workoutModels: [self.tableViewHandler.workout], completion: {
-      print("Workout saved")
-      self.navigationController?.popViewController(animated: true)
+    DataHandler.shared.insertWorkouts(workoutModels: [self.tableViewHandler.workout], completion: { result  in
+      
+      if case .success(let workouts) = result {
+        print("Workout saved")
+        self.navigationController?.popViewController(animated: true)
+      } else if case .failure = result {
+        print("Error saving workout")
+        // TODO: Show alert view 
+        self.navigationController?.popViewController(animated: true)
+      }
+      
+
     })
   }
   
@@ -109,6 +118,7 @@ extension RoutineDesignerViewController: IntervalDesignerDelegate {
 extension RoutineDesignerViewController: ExercisesDesignerCellDelegate {
   func returnExercise(workoutModel: WorkoutModel) {
     self.tableViewHandler.workout = workoutModel
+    self.tableView.reloadData()
   }
 }
 

@@ -60,8 +60,8 @@ extension UIView {
       leftInset = insets.left
       rightInset = insets.right
       
-      print("TopInset: \(topInset)")
-      print("BottomInset: \(bottomInset)")
+//      print("TopInset: \(topInset)")
+//      print("BottomInset: \(bottomInset)")
     }
     
     translatesAutoresizingMaskIntoConstraints = false

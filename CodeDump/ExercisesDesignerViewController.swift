@@ -20,17 +20,8 @@ class ExercisesDesignerViewController: OutrunViewController {
   
   var exerciseName = String()
   
-  // views
   var exerciseNameLabel = OutrunLabel()
   var textField = OutrunTextField(placeholder: "_")
-//  var containerView = OutrunStackView(
-//    anchor: false,
-//    backgroundColor: .OutrunDarkerGray,
-//    axis: .vertical,
-//    distribution: .fill,
-//    alignment: .center
-//  )
-//  var fillView = UIView()
 
   var doneButton = OutrunButton(title: "Done", font: .Future, size: 40.0, textColor: .OutrunLaserBlue, backgroundColor: .OutrunBlack, cornerRadius: 5.0)
   
@@ -50,12 +41,6 @@ class ExercisesDesignerViewController: OutrunViewController {
     
     navigationItem.largeTitleDisplayMode = .never
 
-//    view.addSubview(containerView)
-//    containerView.addArrangedSubview(textField)
-//    containerView.addArrangedSubview(doneButton)
-    
-//    containerView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.safeAreaLayoutGuide.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.safeAreaLayoutGuide.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0, enableInsets: false)
-    
     textField.delegate = self
     view.addSubview(textField)
     
@@ -90,18 +75,20 @@ class ExercisesDesignerViewController: OutrunViewController {
       enableInsets: true
     )
     doneButton.centerXInSuperview()
+    doneButton.addTarget(self, action: #selector(handleDoneButtonTapped(sender:)), for: .touchUpInside)
   }
   
   @objc func handleDoneButtonTapped(sender:UIButton!) {
     if let safeWorkout = workout {
       safeWorkout.exercises.append(
         ExerciseModel(
-          name: exerciseName,
+          name: textField.text ?? "",
           image: UIImage(),
           splitLength: 0
         )
       )
       delegate?.returnExercise(workoutModel: safeWorkout)
+      navigationController?.popViewController(animated: true)
     }
   }
   
