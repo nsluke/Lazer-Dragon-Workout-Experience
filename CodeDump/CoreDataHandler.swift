@@ -43,8 +43,6 @@ struct CoreDataHandler {
   }
   
   
-  
-  
   // =================================================================================
   //                                  MARK: - Save
   // =================================================================================
@@ -129,7 +127,6 @@ struct CoreDataHandler {
     }
   }
   
-  
   func fetchWorkoutWithName(name: String, completion: @escaping (Result<Workout, Error>) -> Void) {
     let fetchRequest:NSFetchRequest<Workout> = Workout.fetchRequest()
     fetchRequest.predicate = NSPredicate(format: "name = %@", name)
@@ -151,7 +148,7 @@ struct CoreDataHandler {
     CoreDataHandler.dispatchQueue.sync {
       let fetchRequest = NSFetchRequest<Exercise>(entityName: "Exercise")
       fetchRequest.predicate = NSPredicate(format: "workout.name = %@", name)
-
+      
       do {
         let exercises = try persistentContainer.viewContext.fetch(fetchRequest)
         let sortedExercises = exercises.sorted { (e1, e2) -> Bool in

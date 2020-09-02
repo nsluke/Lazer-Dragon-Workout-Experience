@@ -185,7 +185,8 @@ class DataHandler {
               order: Int(exercise.order),
               name: exercise.name ?? " ",
               image: UIImage(data: exercise.image ?? nildata) ?? image,
-              splitLength: Int(exercise.splitLength)
+              splitLength: Int(exercise.splitLength),
+              reps: Int(exercise.order)
             )
             exerciseModels.append(exerciseModel)
           }

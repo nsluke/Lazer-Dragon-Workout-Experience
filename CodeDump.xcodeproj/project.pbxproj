@@ -34,6 +34,8 @@
 		D52114DD2469C26300D1F0ED /* IntervalDesignerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52114DC2469C26300D1F0ED /* IntervalDesignerViewController.swift */; };
 		D52114E02469CC9900D1F0ED /* IntervalPickerDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52114DF2469CC9900D1F0ED /* IntervalPickerDataSource.swift */; };
 		D52114E22469F4E500D1F0ED /* OutrunLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52114E12469F4E500D1F0ED /* OutrunLabel.swift */; };
+		D525E26B25002DA8006DAD84 /* PreviewWorkoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D525E26A25002DA8006DAD84 /* PreviewWorkoutViewController.swift */; };
+		D525E26D25002FE9006DAD84 /* UnitTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D525E26C25002FE9006DAD84 /* UnitTestHelpers.swift */; };
 		D55A19B4247C375700FDC7D6 /* UIView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55A19B3247C375700FDC7D6 /* UIView+extension.swift */; };
 		D55A19B6247C454D00FDC7D6 /* IntervalVisualizationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55A19B5247C454D00FDC7D6 /* IntervalVisualizationCell.swift */; };
 		D55A19B8247C5F2800FDC7D6 /* OutrunTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55A19B7247C5F2800FDC7D6 /* OutrunTextField.swift */; };
@@ -107,6 +109,8 @@
 		D52114DC2469C26300D1F0ED /* IntervalDesignerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntervalDesignerViewController.swift; sourceTree = "<group>"; };
 		D52114DF2469CC9900D1F0ED /* IntervalPickerDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntervalPickerDataSource.swift; sourceTree = "<group>"; };
 		D52114E12469F4E500D1F0ED /* OutrunLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutrunLabel.swift; sourceTree = "<group>"; };
+		D525E26A25002DA8006DAD84 /* PreviewWorkoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewWorkoutViewController.swift; sourceTree = "<group>"; };
+		D525E26C25002FE9006DAD84 /* UnitTestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitTestHelpers.swift; sourceTree = "<group>"; };
 		D548391D246E2C480003B3E5 /* CodeDump.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CodeDump.entitlements; sourceTree = "<group>"; };
 		D55A19B3247C375700FDC7D6 /* UIView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIView+extension.swift"; path = "CodeDump/UIView+extension.swift"; sourceTree = SOURCE_ROOT; };
 		D55A19B5247C454D00FDC7D6 /* IntervalVisualizationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntervalVisualizationCell.swift; sourceTree = SOURCE_ROOT; };
@@ -268,6 +272,7 @@
 			children = (
 				D5BA33B8245CF239001DE467 /* SelectWorkoutViewController.swift */,
 				D5CEDC1B2460E5D000F79129 /* WorkoutViewController.swift */,
+				D525E26A25002DA8006DAD84 /* PreviewWorkoutViewController.swift */,
 				D5F2E3E524805E8600C868EC /* WorkoutHandler.swift */,
 			);
 			name = ViewControllers;
@@ -362,6 +367,7 @@
 			isa = PBXGroup;
 			children = (
 				D5BA33CE245CF23D001DE467 /* CodeDumpTests.swift */,
+				D525E26C25002FE9006DAD84 /* UnitTestHelpers.swift */,
 				D5BA33D0245CF23D001DE467 /* Info.plist */,
 			);
 			path = CodeDumpTests;
@@ -678,6 +684,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D525E26B25002DA8006DAD84 /* PreviewWorkoutViewController.swift in Sources */,
 				D5CEDC1C2460E5D000F79129 /* WorkoutViewController.swift in Sources */,
 				D57E4070246A383200DBD3A5 /* RoutineDesignerViewController.swift in Sources */,
 				D55E21EE249D581000F1D252 /* OutrunNavigationController.swift in Sources */,
@@ -722,6 +729,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D5BA33CF245CF23D001DE467 /* CodeDumpTests.swift in Sources */,
+				D525E26D25002FE9006DAD84 /* UnitTestHelpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

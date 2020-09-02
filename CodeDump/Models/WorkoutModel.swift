@@ -64,20 +64,6 @@ class WorkoutModel {
     self.exercises = exercises
   }
 
-//  init(workout: NSManagedObject) {
-//    self.name = workout.value(forKeyPath: "name") as! String
-//    self.type = workout.value(forKeyPath: "type") as! WorkoutType // add handling to convert from string to workoutType
-//    self.length = workout.value(forKeyPath: "length") as! Int
-//
-//    self.warmupLength = workout.value(forKeyPath: "warmupLength") as! Int
-//    self.intervalLength = workout.value(forKeyPath: "intervalLength") as! Int
-//    self.restLength = workout.value(forKeyPath: "restLength") as! Int
-//
-//    self.numberOfIntervals = workout.value(forKeyPath: "numberOfIntervals") as! Int
-//    self.numberOfSets = workout.value(forKeyPath: "numberOfSets") as! Int
-//    self.exercises = workout.value(forKeyPath: "exercises") as! [Exercise]
-//  }
-
 }
 
 struct ExerciseModel {
@@ -85,4 +71,5 @@ struct ExerciseModel {
   var name:String
   var image:UIImage
   var splitLength:Int
+  var reps:Int
 }

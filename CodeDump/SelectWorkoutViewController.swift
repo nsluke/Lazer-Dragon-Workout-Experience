@@ -24,17 +24,6 @@ class SelectWorkoutViewController: UIViewController {
   }
   
   override func viewDidAppear(_ animated: Bool) {
-//    DataHandler.shared.getWorkouts { (result) in
-//      if case .success(let workouts) = result {
-//        self.workouts = workouts
-//        DispatchQueue.main.async {
-//          self.tableView.reloadData()
-//        }
-//      } else if case .failure = result {
-//        print("SelectWorkoutViewController - viewDidLoad: Error fetching Data for Table View")
-//        // TODO: Show alert view
-//      }
-//    }
     
     DataHandler.shared.getWorkoutModels { (result) in
       if case .success(let workouts) = result {

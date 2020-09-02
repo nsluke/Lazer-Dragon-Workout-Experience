@@ -1,10 +1,10 @@
 PODS:
-  - Alamofire (5.2.1)
+  - Alamofire (5.2.2)
   - JGProgressHUD (2.1)
   - Repeat (0.6.0)
-  - SDWebImage (5.8.3):
-    - SDWebImage/Core (= 5.8.3)
-  - SDWebImage/Core (5.8.3)
+  - SDWebImage (5.9.0):
+    - SDWebImage/Core (= 5.9.0)
+  - SDWebImage/Core (5.9.0)
 
 DEPENDENCIES:
   - Alamofire
@@ -20,11 +20,11 @@ SPEC REPOS:
     - SDWebImage
 
 SPEC CHECKSUMS:
-  Alamofire: e911732990610fe89af59ac0077f923d72dc3dfd
+  Alamofire: 814429acc853c6c54ff123fc3d2ef66803823ce0
   JGProgressHUD: aa403e9a5b45cae98903c4600cccdd98c0c3ec90
   Repeat: fd80848f4b3d6f133b18fdee04fd193aff6b31ff
-  SDWebImage: 112503ec94a5a2a41869503844a15e8d8f1ead5c
+  SDWebImage: 62ae4a18473520c67b79e9724c31a63599cc9423
 
 PODFILE CHECKSUM: 7ededae5f1c89cdf0379c7c52484629aae1a10f4
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.9.3
