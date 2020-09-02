@@ -147,6 +147,24 @@ struct CoreDataHandler {
     }
   }
   
+  func fetchExercisesWithName(name: String, completion: @escaping (Result<[Exercise], Error>) -> Void) {
+    CoreDataHandler.dispatchQueue.sync {
+      let fetchRequest = NSFetchRequest<Exercise>(entityName: "Exercise")
+      fetchRequest.predicate = NSPredicate(format: "workout.name = %@", name)
+
+      do {
+        let exercises = try persistentContainer.viewContext.fetch(fetchRequest)
+        let sortedExercises = exercises.sorted { (e1, e2) -> Bool in
+          e1.order < e2.order
+        }
+        completion(.success(sortedExercises))
+      } catch let error as NSError {
+        print("CoreDataHandler: could not fetch exercises - \(error) \(error.userInfo)")
+        completion(.failure(error))
+      }
+    }
+  }
+  
   // =================================================================================
   //                                 MARK: - Delete
   // =================================================================================
@@ -213,6 +231,7 @@ struct CoreDataHandler {
       //      workout.exercises = NSSet(array: workoutModel.exercises)
       for exerciseModel in workoutModel.exercises {
         let exercise = Exercise(context: persistentContainer.viewContext)
+        exercise.order = Int16(exerciseModel.order)
         exercise.image = exerciseModel.image.pngData()
         exercise.name = exerciseModel.name
         exercise.splitLength = Int16(exerciseModel.splitLength)

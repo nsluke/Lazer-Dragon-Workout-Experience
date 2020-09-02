@@ -68,7 +68,6 @@ class RoutineDesignerTableViewCell : UITableViewCell {
 
 
 class RoutineDesignerNameCell : UITableViewCell {
-
   var icon = UIImageView()
   var label = OutrunLabel()
   var textField = OutrunTextField()
@@ -117,7 +116,7 @@ class RoutineDesignerNameCell : UITableViewCell {
     
     label.setContentHuggingPriority(.defaultLow + 1, for: .horizontal)
     label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
-
+    
     textField.setContentHuggingPriority(.defaultLow, for: .horizontal)
     textField.setContentCompressionResistancePriority(.defaultHigh + 1, for: .horizontal)
     

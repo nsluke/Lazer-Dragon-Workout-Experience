@@ -82,6 +82,7 @@ class ExercisesDesignerViewController: OutrunViewController {
     if let safeWorkout = workout {
       safeWorkout.exercises.append(
         ExerciseModel(
+          order: 0, //todo: 
           name: textField.text ?? "",
           image: UIImage(),
           splitLength: 0

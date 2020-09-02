@@ -81,6 +81,7 @@ class WorkoutModel {
 }
 
 struct ExerciseModel {
+  var order:Int
   var name:String
   var image:UIImage
   var splitLength:Int

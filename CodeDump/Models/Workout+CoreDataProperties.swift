@@ -20,7 +20,7 @@ extension Workout {
     @NSManaged public var cooldownLength: Int16
     @NSManaged public var intervalLength: Int16
     @NSManaged public var length: Int16
-    @NSManaged public var name: String?
+    @NSManaged public var name: String
     @NSManaged public var numberOfIntervals: Int16
     @NSManaged public var numberOfSets: Int16
     @NSManaged public var restBetweenSetLength: Int16

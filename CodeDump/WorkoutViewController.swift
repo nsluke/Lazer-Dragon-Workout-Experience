@@ -8,12 +8,12 @@
 //  ==================================
 // |                                  |
 // |elapsed   split timer    remaining|
+// |           Exercise Title         |
 // |                                  |
 // |                                  |
 // |                                  |
 // |                                  |
 // |           |Character|            |
-// |          Exercise Title          |
 // |                                  |
 // |                                  |
 // |                                  |
@@ -21,8 +21,8 @@
 // |                                  |
 // |                                  |
 // |                                  |
-// |music         stop          finish|
-// |                                  |
+// |previous      stop          next  |
+// |              end                 |
 //  ==================================
 
 
@@ -52,10 +52,12 @@ class WorkoutViewController:OutrunViewController {
   var exerciseTitleLabel = OutrunLabel()
 
   var controlStackView = OutrunStackView()
-  var musicButton = UIButton()
+  var previousExerciseButton = UIButton()
+  var startEndStackView = OutrunStackView()
   var startStopButton = UIButton()
   var endButton = UIButton()
-  
+  var nextExerciseButton = UIButton()
+
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -65,9 +67,7 @@ class WorkoutViewController:OutrunViewController {
     }
     
     handler = WorkoutHandler(workout: workout, delegate: self)
-    
     title = handler.workout.name
-    
     navigationItem.largeTitleDisplayMode = .never
 
     setupViews()
@@ -126,17 +126,36 @@ class WorkoutViewController:OutrunViewController {
     
     // controls
     containerView.addArrangedSubview(controlStackView)
-    controlStackView.addArrangedSubview(musicButton)
-    controlStackView.addArrangedSubview(startStopButton)
-    controlStackView.addArrangedSubview(endButton)
+    controlStackView.addArrangedSubview(previousExerciseButton)
+    controlStackView.addArrangedSubview(startEndStackView)
+    controlStackView.addArrangedSubview(nextExerciseButton)
     controlStackView.alignment = .center
     controlStackView.distribution = .equalSpacing
     controlStackView.axis = .horizontal
     controlStackView.spacing = CGFloat(20.0)
     
+    startEndStackView.addArrangedSubview(startStopButton)
+    startEndStackView.addArrangedSubview(endButton)
+    startEndStackView.alignment = .center
+    startEndStackView.distribution = .equalSpacing
+    startEndStackView.axis = .vertical
+    startEndStackView.spacing = CGFloat(20.0)
     
-    // musicButton
-    
+    // previousButton
+    previousExerciseButton.setAttributedTitle(
+      NSAttributedString(
+        string: "<",
+        attributes: [
+          .foregroundColor: UIColor.OutrunLaserBlue,
+          .font : UIFont(name: "Pixel-01", size: 40) ?? UIFont.systemFont(ofSize: 18)
+        ]
+      ),
+      for: .normal
+    )
+    previousExerciseButton.addTarget(self, action: #selector(self.previousExerciseButtonTapped), for: .touchUpInside)
+    previousExerciseButton.layer.cornerRadius = 3
+    previousExerciseButton.titleEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+    previousExerciseButton.backgroundColor = UIColor.darkGray
     
     // startStopButton
     startStopButton.setAttributedTitle(
@@ -154,8 +173,7 @@ class WorkoutViewController:OutrunViewController {
     startStopButton.titleEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     startStopButton.backgroundColor = UIColor.darkGray
 
-    
-    // finishButton
+    // endButton
     endButton.setAttributedTitle(
       NSAttributedString(
         string: "End",
@@ -172,15 +190,29 @@ class WorkoutViewController:OutrunViewController {
     endButton.backgroundColor = UIColor.darkGray
     
     
+    // nextbutton
+    nextExerciseButton.setAttributedTitle(
+      NSAttributedString(
+        string: ">",
+        attributes: [
+          .foregroundColor: UIColor.OutrunLaserBlue,
+          .font : UIFont(name: "Pixel-01", size: 40) ?? UIFont.systemFont(ofSize: 18)
+        ]
+      ),
+      for: .normal
+    )
+    nextExerciseButton.addTarget(self, action: #selector(self.nextExerciseButtonTapped), for: .touchUpInside)
+    nextExerciseButton.layer.cornerRadius = 3
+    nextExerciseButton.titleEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+    nextExerciseButton.backgroundColor = UIColor.darkGray
+    
     NSLayoutConstraint.activate([
       containerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
       containerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
       containerView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
       containerView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
       
-//      timerStackView.leftAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.leftAnchor, constant: 8),
       timerStackView.rightAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.rightAnchor, constant: -8),
-//      elapsedTimerLabel.centerXAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.centerXAnchor),
       
       startStopButton.widthAnchor.constraint(equalToConstant: 140),
       startStopButton.heightAnchor.constraint(equalToConstant: 80),
@@ -188,25 +220,50 @@ class WorkoutViewController:OutrunViewController {
       endButton.widthAnchor.constraint(equalToConstant: 70),
       endButton.heightAnchor.constraint(equalToConstant: 40)
     ])
-    
-    view.backgroundColor = UIColor.white
   }
   
   func setTimerText(label: OutrunLabel, time: String) {
     label.text = time
   }
   
-  //tapHandler - play pause
   @objc func playPauseButtonTapped() {
     handler.playPauseTapped()
   }
-    
-  func handleTimerEnded() {
-    
-  }
   
   @objc func endButtonTapped() {
-    // present an alert?
+
+    print("End Button Tapped")
+    let alertController = UIAlertController(
+      title: "Are you Sure?",
+      message: "Leaving in the middle of a workout will cause you to lose all progress.",
+      preferredStyle: .alert
+    )
+    alertController.addAction(
+      UIAlertAction(
+        title: NSLocalizedString("OK", comment: "Default action"),
+        style: .default,
+        handler: { _ in
+          self.handler.handleEnd()
+          self.handler = nil
+          self.navigationController?.popViewController(animated: true)
+      })
+    )
+    alertController.addAction(
+      UIAlertAction(
+        title: NSLocalizedString("Cancel", comment: "Cancel Action"),
+        style: .default,
+        handler: nil
+      )
+    )
+    self.present(alertController, animated: true, completion: nil)
+  }
+  
+  @objc func previousExerciseButtonTapped() {
+    handler.previousExercise()
+  }
+  
+  @objc func nextExerciseButtonTapped() {
+    handler.nextExercise()
   }
   
 }
@@ -238,9 +295,9 @@ extension WorkoutViewController : WorkoutDelegate {
   }
   
   func updateTimer(time: String, remainingTime: String, elapsedTime: String) {
-    setTimerText(label: self.elapsedTimerLabel, time: elapsedTime)
-    setTimerText(label: self.splitTimerLabel, time: time)
-    setTimerText(label: self.remainingTimerLabel, time: remainingTime)
+    self.setTimerText(label: self.elapsedTimerLabel, time: elapsedTime)
+    self.setTimerText(label: self.splitTimerLabel, time: time)
+    self.setTimerText(label: self.remainingTimerLabel, time: remainingTime)
   }
   
   

@@ -54,7 +54,6 @@ class CoreDataTests: XCTestCase {
       
     })
     
-    XCTAssert()
 //    XCTAssertTrue()
   }
   

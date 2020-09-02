@@ -14,7 +14,8 @@ class SelectWorkoutViewController: UIViewController {
   
   var tableView:UITableView = UITableView()
   
-  var workouts = [Workout]()
+//  var workouts = [Workout]()
+  var workoutModels = [WorkoutModel]()
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -23,17 +24,29 @@ class SelectWorkoutViewController: UIViewController {
   }
   
   override func viewDidAppear(_ animated: Bool) {
-    DataHandler.shared.getWorkouts { (result) in
+//    DataHandler.shared.getWorkouts { (result) in
+//      if case .success(let workouts) = result {
+//        self.workouts = workouts
+//        DispatchQueue.main.async {
+//          self.tableView.reloadData()
+//        }
+//      } else if case .failure = result {
+//        print("SelectWorkoutViewController - viewDidLoad: Error fetching Data for Table View")
+//        // TODO: Show alert view
+//      }
+//    }
+    
+    DataHandler.shared.getWorkoutModels { (result) in
       if case .success(let workouts) = result {
-        self.workouts = workouts
+        self.workoutModels = workouts
         DispatchQueue.main.async {
           self.tableView.reloadData()
         }
       } else if case .failure = result {
         print("SelectWorkoutViewController - viewDidLoad: Error fetching Data for Table View")
-        // TODO: Show alert view
       }
     }
+    
   }
   
   func setupViews() {
@@ -82,7 +95,7 @@ class SelectWorkoutViewController: UIViewController {
 }
 extension SelectWorkoutViewController:UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return self.workouts.count
+    return self.workoutModels.count
   }
   
   func numberOfSections(in tableView: UITableView) -> Int {
@@ -92,7 +105,7 @@ extension SelectWorkoutViewController:UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "CellID")
     
-    cell?.textLabel?.text = self.workouts[indexPath.row].name ?? "error"
+    cell?.textLabel?.text = self.workoutModels[indexPath.row].name
     cell?.textLabel?.textColor = UIColor.OutrunPaleYellow
     
     cell?.textLabel?.font = UIFont(name: "Pixel-01", size: 30) ?? UIFont.systemFont(ofSize: 20)
@@ -111,36 +124,18 @@ extension SelectWorkoutViewController:UITableViewDataSource {
 extension SelectWorkoutViewController:UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
-    let workout = DataHandler.shared.workoutsToWorkoutModels(workouts: [self.workouts[indexPath.row]])[0]
+    let workout = self.workoutModels[indexPath.row]
     let workoutVC = WorkoutViewController()
     workoutVC.workout = workout
 
-//    switch WorkoutType {
-//    case .HIIT:
-//      navigationController?.pushViewController(workoutVC, animated: true)
-//      workoutVC.workout = workout
-//    case .Run:
-//      navigationController?.pushViewController(workoutVC, animated: true)
-//      workoutVC.workout = workout
-//    case .Yoga:
-//      navigationController?.pushViewController(workoutVC, animated: true)
-//      workoutVC.workout = workout
-//    case .Strength:
-//      navigationController?.pushViewController(workoutVC, animated: true)
-//      workoutVC.workout = workout
-//    case .Custom:
-//      navigationController?.pushViewController(workoutDesignerVC, animated: true)
-//    default:
-      navigationController?.pushViewController(workoutVC, animated: true)
-//    }
+    navigationController?.pushViewController(workoutVC, animated: true)
   }
   
   func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
     if editingStyle == .delete {
-      let workoutToRemove = workouts[indexPath.row]
-      self.workouts.remove(at: indexPath.row)
-      DataHandler.shared.deleteWorkout(workoutName: workoutToRemove.name ?? "") {
+      let workoutToRemove = self.workoutModels[indexPath.row]
+      self.workoutModels.remove(at: indexPath.row)
+      DataHandler.shared.deleteWorkout(workoutName: workoutToRemove.name) {
         DispatchQueue.main.async {}
       }
       tableView.deleteRows(at: [indexPath], with: .fade)

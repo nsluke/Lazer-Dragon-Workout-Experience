@@ -9,7 +9,8 @@ target 'CodeDump' do
   pod 'Alamofire'
   pod 'SDWebImage'
   pod 'JGProgressHUD'
-
+  pod 'Repeat'
+  
   target 'CodeDumpTests' do
     inherit! :search_paths
     # Pods for testing

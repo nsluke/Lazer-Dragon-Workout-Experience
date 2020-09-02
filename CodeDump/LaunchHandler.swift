@@ -33,17 +33,17 @@ struct LaunchHandler {
     
   func saveInitialWorkouts() {
     let exercises = [
-      ExerciseModel(name: "Burpee", image: UIImage(), splitLength: 30),
-      ExerciseModel(name: "Situp", image: UIImage(), splitLength: 30),
-      ExerciseModel(name: "Pushup", image: UIImage(), splitLength: 30),
-      ExerciseModel(name: "Bicep Curl", image: UIImage(), splitLength: 30),
-      ExerciseModel(name: "Tricep extension", image: UIImage(), splitLength: 30),
+      ExerciseModel(order: 1, name: "Burpee", image: UIImage(), splitLength: 30),
+      ExerciseModel(order: 2, name: "Situp", image: UIImage(), splitLength: 30),
+      ExerciseModel(order: 3, name: "Pushup", image: UIImage(), splitLength: 30),
+      ExerciseModel(order: 4, name: "Bicep Curl", image: UIImage(), splitLength: 30),
+      ExerciseModel(order: 5, name: "Tricep extension", image: UIImage(), splitLength: 30),
 
-      ExerciseModel(name: "Lunge", image: UIImage(), splitLength: 30),
-      ExerciseModel(name: "Squat", image: UIImage(), splitLength: 30),
-      ExerciseModel(name: "Plank", image: UIImage(), splitLength: 30),
-      ExerciseModel(name: "Pull-up", image: UIImage(), splitLength: 30),
-      ExerciseModel(name: "Seated Back Row", image: UIImage(), splitLength: 30)
+      ExerciseModel(order: 6, name: "Lunge", image: UIImage(), splitLength: 30),
+      ExerciseModel(order: 7, name: "Squat", image: UIImage(), splitLength: 30),
+      ExerciseModel(order: 8, name: "Plank", image: UIImage(), splitLength: 30),
+      ExerciseModel(order: 9, name: "Pull-up", image: UIImage(), splitLength: 30),
+      ExerciseModel(order: 10, name: "Seated Back Row", image: UIImage(), splitLength: 30)
     ]
     
     let workoutModels = [
