@@ -33,17 +33,17 @@ struct LaunchHandler {
     
   func saveInitialWorkouts() {
     let exercises = [
-      ExerciseModel(order: 1, name: "Burpee", image: UIImage(), splitLength: 30),
-      ExerciseModel(order: 2, name: "Situp", image: UIImage(), splitLength: 30),
-      ExerciseModel(order: 3, name: "Pushup", image: UIImage(), splitLength: 30),
-      ExerciseModel(order: 4, name: "Bicep Curl", image: UIImage(), splitLength: 30),
-      ExerciseModel(order: 5, name: "Tricep extension", image: UIImage(), splitLength: 30),
+      ExerciseModel(order: 1, name: "Burpee", image: UIImage(), splitLength: 30, reps: 10),
+      ExerciseModel(order: 2, name: "Situp", image: UIImage(), splitLength: 30, reps: 30),
+      ExerciseModel(order: 3, name: "Pushup", image: UIImage(), splitLength: 30, reps: 10),
+      ExerciseModel(order: 4, name: "Bicep Curl", image: UIImage(), splitLength: 30, reps: 10),
+      ExerciseModel(order: 5, name: "Tricep extension", image: UIImage(), splitLength: 30, reps: 10),
 
-      ExerciseModel(order: 6, name: "Lunge", image: UIImage(), splitLength: 30),
-      ExerciseModel(order: 7, name: "Squat", image: UIImage(), splitLength: 30),
-      ExerciseModel(order: 8, name: "Plank", image: UIImage(), splitLength: 30),
-      ExerciseModel(order: 9, name: "Pull-up", image: UIImage(), splitLength: 30),
-      ExerciseModel(order: 10, name: "Seated Back Row", image: UIImage(), splitLength: 30)
+      ExerciseModel(order: 6, name: "Lunge", image: UIImage(), splitLength: 30, reps: 10),
+      ExerciseModel(order: 7, name: "Squat", image: UIImage(), splitLength: 30, reps: 10),
+      ExerciseModel(order: 8, name: "Plank", image: UIImage(), splitLength: 30, reps: 0),
+      ExerciseModel(order: 9, name: "Pull-up", image: UIImage(), splitLength: 30, reps: 8),
+      ExerciseModel(order: 10, name: "Seated Back Row", image: UIImage(), splitLength: 30, reps: 10)
     ]
     
     let workoutModels = [
@@ -57,7 +57,7 @@ struct LaunchHandler {
       
       WorkoutModel(name: "光線竜", type: .HIIT, length: 30, warmupLength: 500, intervalLength: 75, restLength: 10, numberOfIntervals: 10, numberOfSets: 3, restBetweenSetLength: 0, cooldownLength: 500, exercises: exercises),
       
-      WorkoutModel(name: "Test", type: .Strength, length: 20, warmupLength: 5, intervalLength: 5, restLength: 5, numberOfIntervals: 3, numberOfSets: 2, restBetweenSetLength: 5, cooldownLength: 5, exercises: exercises),
+      WorkoutModel(name: "Test", type: .Strength, length: 20, warmupLength: 5, intervalLength: 5, restLength: 5, numberOfIntervals: exercises.count, numberOfSets: 2, restBetweenSetLength: 5, cooldownLength: 5, exercises: exercises),
     ]
 
     DataHandler.shared.insertWorkouts(workoutModels: workoutModels) {_ in }

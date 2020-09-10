@@ -66,6 +66,18 @@ class WorkoutViewController:OutrunViewController {
       fatalError("You must pass a workout to show this view controller")
     }
     
+    // override back button from Super
+    let backButtonItem = UIBarButtonItem(
+      title: "",
+      style: .plain,
+      target: nil,
+      action: nil
+    )
+    self.navigationItem.setLeftBarButton(backButtonItem, animated: false)
+    self.navigationItem.leftBarButtonItem?.isEnabled = false
+    self.navigationItem.hidesBackButton = true
+
+    
     handler = WorkoutHandler(workout: workout, delegate: self)
     title = handler.workout.name
     navigationItem.largeTitleDisplayMode = .never
@@ -118,7 +130,7 @@ class WorkoutViewController:OutrunViewController {
     containerView.addArrangedSubview(workoutView)
     containerView.addArrangedSubview(exerciseTitleLabel)
     workoutView.translatesAutoresizingMaskIntoConstraints = false
-    //    workoutView.image = #imageLiteral(resourceName: "situp")
+//    workoutView.image = #imageLiteral(resourceName: "situp")
     exerciseTitleLabel.translatesAutoresizingMaskIntoConstraints = false
     exerciseTitleLabel.font = UIFont(name: "Pixel-01", size: 30) ?? UIFont.systemFont(ofSize: 30)
     exerciseTitleLabel.textColor = UIColor.OutrunPaleYellow
@@ -231,8 +243,6 @@ class WorkoutViewController:OutrunViewController {
   }
   
   @objc func endButtonTapped() {
-
-    print("End Button Tapped")
     let alertController = UIAlertController(
       title: "Are you Sure?",
       message: "Leaving in the middle of a workout will cause you to lose all progress.",
@@ -244,8 +254,7 @@ class WorkoutViewController:OutrunViewController {
         style: .default,
         handler: { _ in
           self.handler.handleEnd()
-          self.handler = nil
-          self.navigationController?.popViewController(animated: true)
+          self.navigationController?.popToRootViewController(animated: true)
       })
     )
     alertController.addAction(

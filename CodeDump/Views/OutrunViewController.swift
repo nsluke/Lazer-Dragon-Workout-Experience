@@ -11,6 +11,7 @@ import UIKit
 
 class OutrunViewController: UIViewController {
   
+  // MARK: Interface
   var outrunStackView = OutrunStackView()
 
   
@@ -21,7 +22,7 @@ class OutrunViewController: UIViewController {
     }
   }
   
-  
+  // MARK: View Lifecycle
   override func viewDidLoad() {
     super.viewDidLoad()
     

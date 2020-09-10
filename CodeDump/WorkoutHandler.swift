@@ -88,13 +88,13 @@ class WorkoutHandler: NSObject {
           print("timer executing")
           print("")
           print("split:")
-          let formattedSplitTime = self.timeToFormattedString(time: self.splitTime)
+          let formattedSplitTime = String.timeToFormattedString(time: self.splitTime)
           print("")
           print("remaining:")
-          let formattedRemainingTime = self.timeToFormattedString(time: self.remainingTime)
+          let formattedRemainingTime = String.timeToFormattedString(time: self.remainingTime)
           print("")
           print("elapsed:")
-          let formattedElapsedTime = self.timeToFormattedString(time: self.elapsedTime)
+          let formattedElapsedTime = String.timeToFormattedString(time: self.elapsedTime)
           
           DispatchQueue.main.async {
             self.workoutDelegate?.updateTimer(time: formattedSplitTime, remainingTime: formattedRemainingTime, elapsedTime: formattedElapsedTime)
@@ -113,13 +113,13 @@ class WorkoutHandler: NSObject {
   func updateTimer() {
     print("")
     print("split:")
-    let formattedSplitTime = timeToFormattedString(time: splitTime)
+    let formattedSplitTime = String.timeToFormattedString(time: splitTime)
     print("")
     print("remaining:")
-    let formattedRemainingTime = timeToFormattedString(time: remainingTime)
+    let formattedRemainingTime = String.timeToFormattedString(time: remainingTime)
     print("")
     print("elapsed:")
-    let formattedElapsedTime = timeToFormattedString(time: elapsedTime)
+    let formattedElapsedTime = String.timeToFormattedString(time: elapsedTime)
     
     self.workoutDelegate?.updateTimer(time: formattedSplitTime, remainingTime: formattedRemainingTime, elapsedTime: formattedElapsedTime)
     
@@ -141,42 +141,6 @@ class WorkoutHandler: NSObject {
     }
     
     elapsedTime += i
-  }
-  
-  func timeToFormattedString(time:Int) -> String {
-    let time = time
-    
-    // TODO: put new timer logic here
-    let hours = time/3600
-    
-    var minutes = time / 60
-    
-    var seconds = time % 60
-    
-    
-    if hours > 1 {
-      minutes = (time % (60 * 60)) / 60
-    }
-    
-    if minutes > 1 {
-      seconds = time % 60
-    }
-    
-    var formattedTimeString = ""
-    
-    if hours < 1 {
-      formattedTimeString = String(format: "%2i:%02i", minutes, seconds)
-    } else {
-      formattedTimeString = String(format: "%2i:%02i:%02i", hours, minutes, seconds)
-    }
-    
-    print("time: \(time)")
-    print("hours: \(hours)")
-    print("minutes: \(minutes)")
-    print("seconds: \(seconds)")
-    print("formattedTimeString: \(formattedTimeString)")
-    
-    return formattedTimeString
   }
   
   func handleTimerEnded() {

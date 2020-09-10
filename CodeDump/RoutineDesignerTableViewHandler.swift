@@ -33,6 +33,7 @@ class RoutineDesignerTableViewHandler:NSObject {
   }
   
   @objc func broadcastDoneTapped() {
+    
     NotificationCenter.default.post(name: NSNotification.Name(rawValue: doneNotification), object: nil, userInfo: ["workout":self.workout])
   }
   
@@ -73,7 +74,7 @@ extension RoutineDesignerTableViewHandler : UITableViewDataSource {
       cell.textField.customizeWithStandardValues(placeholder: "_")
       cell.setupViews()
       return cell
-
+      
     // ============================ Warmup ============================ //
     } else if indexPath.row == 1 {
       let cell = tableView.dequeueReusableCell(withIdentifier: "RoutineCell", for: indexPath)  as! RoutineDesignerTableViewCell
@@ -199,7 +200,7 @@ extension RoutineDesignerTableViewHandler : UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 50))
+    let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 80))
     view.backgroundColor = UIColor.OutrunDarkerGray
 
     let button = OutrunButton(frame: CGRect(x: (tableView.frame.width/2) - 75, y: 0, width: 150, height: 80))
@@ -214,6 +215,10 @@ extension RoutineDesignerTableViewHandler : UITableViewDataSource {
 
     button.addTarget(self, action: #selector(broadcastDoneTapped), for: .touchUpInside)
     return view
+  }
+  
+  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    return 80.0
   }
 }
 

@@ -4,7 +4,7 @@
 //
 //  Created by Luke Solomon on 7/6/20.
 //  Copyright © 2020 Observatory. All rights reserved.
-//
+///
 
 import UIKit
 
@@ -22,12 +22,15 @@ class ExercisesDesignerViewController: OutrunViewController {
   
   var exerciseNameLabel = OutrunLabel()
   var textField = OutrunTextField(placeholder: "_")
+  // splitlength
+  // reps
 
   var doneButton = OutrunButton(title: "Done", font: .Future, size: 40.0, textColor: .OutrunLaserBlue, backgroundColor: .OutrunBlack, cornerRadius: 5.0)
   
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    
     setupViews()
   }
   
@@ -85,7 +88,8 @@ class ExercisesDesignerViewController: OutrunViewController {
           order: 0, //todo: 
           name: textField.text ?? "",
           image: UIImage(),
-          splitLength: 0
+          splitLength: 0,
+          reps: 0
         )
       )
       delegate?.returnExercise(workoutModel: safeWorkout)

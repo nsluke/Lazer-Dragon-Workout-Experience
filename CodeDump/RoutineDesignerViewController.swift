@@ -32,6 +32,7 @@ class RoutineDesignerViewController: OutrunViewController {
   
   func setupViews() {
     self.title = "Design your Workout"
+    
     navigationItem.largeTitleDisplayMode = .never
     navigationItem.backBarButtonItem?.tintColor = UIColor.OutrunLaserBlue
     navigationController?.navigationBar.backgroundColor = UIColor.OutrunDarkerGray

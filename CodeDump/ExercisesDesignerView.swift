@@ -9,7 +9,7 @@
 import UIKit
 
 
-protocol ExercisesDesignerViewDelegate {
+protocol ExercisesDesignerViewDelegate:UIViewController {
   func doneButtonTapped(text: String)
 }
 
@@ -19,12 +19,12 @@ struct ExercisesDesignerViewModel {
 
 class ExercisesDesignerView: UIView {
   
+  var viewModel:ExercisesDesignerViewModel?
+  weak var delegate:ExercisesDesignerViewDelegate!
   var containerView = OutrunStackView()
   var textField = OutrunTextField()
-  var viewModel:ExercisesDesignerViewModel?
   var doneButton = UIButton()
   var tapGesture = UITapGestureRecognizer()
-  var delegate:ExercisesDesignerViewDelegate!
   // pickerview as well
   
   required init?(coder: NSCoder) {

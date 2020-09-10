@@ -12,9 +12,8 @@ import UIKit
 
 class SelectWorkoutViewController: UIViewController {
   
-  var tableView:UITableView = UITableView()
+  var tableView:UITableView = UITableView() 
   
-//  var workouts = [Workout]()
   var workoutModels = [WorkoutModel]()
   
   override func viewDidLoad() {
@@ -27,9 +26,11 @@ class SelectWorkoutViewController: UIViewController {
     
     DataHandler.shared.getWorkoutModels { (result) in
       if case .success(let workouts) = result {
-        self.workoutModels = workouts
-        DispatchQueue.main.async {
-          self.tableView.reloadData()
+        if self.workoutModels != workouts {
+          self.workoutModels = workouts
+          DispatchQueue.main.async {
+            self.tableView.reloadData()
+          }
         }
       } else if case .failure = result {
         print("SelectWorkoutViewController - viewDidLoad: Error fetching Data for Table View")
@@ -60,7 +61,7 @@ class SelectWorkoutViewController: UIViewController {
     
     tableView.dataSource = self
     tableView.delegate = self
-    tableView.register(UITableViewCell.self, forCellReuseIdentifier: "CellID")
+    tableView.register(OutrunTableViewCell.self, forCellReuseIdentifier: "CellID")
     tableView.translatesAutoresizingMaskIntoConstraints = false
     tableView.separatorStyle = .none
     tableView.backgroundColor = UIColor.OutrunDarkerGray
@@ -92,32 +93,49 @@ extension SelectWorkoutViewController:UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: "CellID")
+    let cell = tableView.dequeueReusableCell(withIdentifier: "CellID") as? OutrunTableViewCell
     
-    cell?.textLabel?.text = self.workoutModels[indexPath.row].name
-    cell?.textLabel?.textColor = UIColor.OutrunPaleYellow
+    guard let safeCell = cell else { return UITableViewCell() }
     
-    cell?.textLabel?.font = UIFont(name: "Pixel-01", size: 30) ?? UIFont.systemFont(ofSize: 20)
+    var viewModel = OutrunTableViewCellModel(
+      titleText: self.workoutModels[indexPath.row].name,
+      font: OutrunFonts.Pixel,
+      fontSize: 34,
+      textColor: UIColor.OutrunPaleYellow
+    )
+
+    if self.workoutModels[indexPath.row].name.containsNonEnglishCharacters() {
+      viewModel.fontSize = 34
+    }
     
-    cell?.backgroundColor = UIColor.OutrunDarkerGray
-    cell?.selectionStyle = .default
+    
+    safeCell.configure(viewModel: viewModel)
+    
+    safeCell.selectionStyle = .default
     
     let selectedBackgroundView = UIView.init()
     selectedBackgroundView.backgroundColor = UIColor.OutrunDarkGray
-    cell?.selectedBackgroundView = selectedBackgroundView
+    safeCell.selectedBackgroundView = selectedBackgroundView
     
-    return cell!
+    return safeCell
   }
 }
 
 extension SelectWorkoutViewController:UITableViewDelegate {
   
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    return 50
+  }
+  
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let workout = self.workoutModels[indexPath.row]
-    let workoutVC = WorkoutViewController()
-    workoutVC.workout = workout
-
-    navigationController?.pushViewController(workoutVC, animated: true)
+    
+    let viewModel = PreviewWorkoutViewModel()
+    viewModel.workout = self.workoutModels[indexPath.row]
+    
+    let previewWorkoutVC = PreviewWorkoutViewController()
+    previewWorkoutVC.viewModel = viewModel
+    previewWorkoutVC.modalPresentationStyle = .overCurrentContext
+    navigationController?.pushViewController(previewWorkoutVC, animated: true)
   }
   
   func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {

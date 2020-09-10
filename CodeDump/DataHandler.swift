@@ -179,7 +179,7 @@ class DataHandler {
           
           for exercise in exercises {
             let nildata = Data()
-            let image = UIImage(imageLiteralResourceName: "situp")
+            let image = UIImage(imageLiteralResourceName: "situp") // TODO: fix this!
             
             let exerciseModel = ExerciseModel(
               order: Int(exercise.order),

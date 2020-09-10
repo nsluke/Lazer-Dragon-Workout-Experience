@@ -60,11 +60,38 @@ class WorkoutModel {
     self.numberOfIntervals = numberOfIntervals
     self.numberOfSets = numberOfSets
     self.restBetweenSetLength = restBetweenSetLength
+    
     self.cooldownLength = cooldownLength
+    
     self.exercises = exercises
   }
 
 }
+extension WorkoutModel: Equatable {
+  static func == (lhs: WorkoutModel, rhs: WorkoutModel) -> Bool {
+    if lhs.name == rhs.name
+    && lhs.type == rhs.type
+    && lhs.length == rhs.length
+        
+    && lhs.warmupLength == rhs.warmupLength
+    && lhs.intervalLength == rhs.intervalLength
+    && lhs.restLength == rhs.restLength
+        
+    && lhs.numberOfIntervals == rhs.numberOfIntervals
+    && lhs.numberOfSets == rhs.numberOfSets
+    && lhs.restBetweenSetLength == rhs.restBetweenSetLength
+        
+    && lhs.cooldownLength == rhs.cooldownLength
+    
+    && lhs.exercises == rhs.exercises
+    {
+      return true
+    } else {
+      return false
+    }
+  }
+}
+
 
 struct ExerciseModel {
   var order:Int
@@ -72,4 +99,18 @@ struct ExerciseModel {
   var image:UIImage
   var splitLength:Int
   var reps:Int
+}
+extension ExerciseModel: Equatable {
+  static func == (lhs: ExerciseModel, rhs: ExerciseModel) -> Bool {
+    if lhs.order == rhs.order
+    && lhs.name == rhs.name
+    && lhs.image == rhs.image
+    && lhs.splitLength == rhs.splitLength
+    && lhs.reps == rhs.reps
+    {
+      return true
+    } else {
+      return false
+    }
+  }
 }

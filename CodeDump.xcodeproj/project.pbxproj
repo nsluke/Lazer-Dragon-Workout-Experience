@@ -36,6 +36,10 @@
 		D52114E22469F4E500D1F0ED /* OutrunLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52114E12469F4E500D1F0ED /* OutrunLabel.swift */; };
 		D525E26B25002DA8006DAD84 /* PreviewWorkoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D525E26A25002DA8006DAD84 /* PreviewWorkoutViewController.swift */; };
 		D525E26D25002FE9006DAD84 /* UnitTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D525E26C25002FE9006DAD84 /* UnitTestHelpers.swift */; };
+		D525E26F25004081006DAD84 /* PreviewWorkoutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D525E26E25004081006DAD84 /* PreviewWorkoutViewModel.swift */; };
+		D525E27225006780006DAD84 /* PreviewWorkoutCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D525E27125006780006DAD84 /* PreviewWorkoutCell.swift */; };
+		D525E27425006FCE006DAD84 /* String+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D525E27325006FCE006DAD84 /* String+extension.swift */; };
+		D525E2762500A530006DAD84 /* OutrunTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D525E2752500A530006DAD84 /* OutrunTableViewCell.swift */; };
 		D55A19B4247C375700FDC7D6 /* UIView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55A19B3247C375700FDC7D6 /* UIView+extension.swift */; };
 		D55A19B6247C454D00FDC7D6 /* IntervalVisualizationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55A19B5247C454D00FDC7D6 /* IntervalVisualizationCell.swift */; };
 		D55A19B8247C5F2800FDC7D6 /* OutrunTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55A19B7247C5F2800FDC7D6 /* OutrunTextField.swift */; };
@@ -111,6 +115,10 @@
 		D52114E12469F4E500D1F0ED /* OutrunLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutrunLabel.swift; sourceTree = "<group>"; };
 		D525E26A25002DA8006DAD84 /* PreviewWorkoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewWorkoutViewController.swift; sourceTree = "<group>"; };
 		D525E26C25002FE9006DAD84 /* UnitTestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitTestHelpers.swift; sourceTree = "<group>"; };
+		D525E26E25004081006DAD84 /* PreviewWorkoutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewWorkoutViewModel.swift; sourceTree = "<group>"; };
+		D525E27125006780006DAD84 /* PreviewWorkoutCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewWorkoutCell.swift; sourceTree = "<group>"; };
+		D525E27325006FCE006DAD84 /* String+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+extension.swift"; sourceTree = "<group>"; };
+		D525E2752500A530006DAD84 /* OutrunTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutrunTableViewCell.swift; sourceTree = "<group>"; };
 		D548391D246E2C480003B3E5 /* CodeDump.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CodeDump.entitlements; sourceTree = "<group>"; };
 		D55A19B3247C375700FDC7D6 /* UIView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIView+extension.swift"; path = "CodeDump/UIView+extension.swift"; sourceTree = SOURCE_ROOT; };
 		D55A19B5247C454D00FDC7D6 /* IntervalVisualizationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntervalVisualizationCell.swift; sourceTree = SOURCE_ROOT; };
@@ -247,6 +255,7 @@
 			isa = PBXGroup;
 			children = (
 				D57E406E246A103000DBD3A5 /* ViewControllers */,
+				D525E27025004540006DAD84 /* PreviewWorkout */,
 				D57E4073246C6A3800DBD3A5 /* RoutineDesigner */,
 				D56B081E24B37D2100E1351F /* ExercisesDesigner */,
 				D57E4074246C6A4400DBD3A5 /* IntervalDesigner */,
@@ -255,6 +264,16 @@
 				D5A70CC0246F21A2009FD146 /* Settings */,
 			);
 			name = Controllers;
+			sourceTree = "<group>";
+		};
+		D525E27025004540006DAD84 /* PreviewWorkout */ = {
+			isa = PBXGroup;
+			children = (
+				D525E26A25002DA8006DAD84 /* PreviewWorkoutViewController.swift */,
+				D525E26E25004081006DAD84 /* PreviewWorkoutViewModel.swift */,
+				D525E27125006780006DAD84 /* PreviewWorkoutCell.swift */,
+			);
+			name = PreviewWorkout;
 			sourceTree = "<group>";
 		};
 		D56B081E24B37D2100E1351F /* ExercisesDesigner */ = {
@@ -272,7 +291,6 @@
 			children = (
 				D5BA33B8245CF239001DE467 /* SelectWorkoutViewController.swift */,
 				D5CEDC1B2460E5D000F79129 /* WorkoutViewController.swift */,
-				D525E26A25002DA8006DAD84 /* PreviewWorkoutViewController.swift */,
 				D5F2E3E524805E8600C868EC /* WorkoutHandler.swift */,
 			);
 			name = ViewControllers;
@@ -385,6 +403,7 @@
 		D5BA33E8245CF250001DE467 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D525E2752500A530006DAD84 /* OutrunTableViewCell.swift */,
 				D55E21ED249D581000F1D252 /* OutrunNavigationController.swift */,
 				D55E21EF249D671700F1D252 /* OutrunViewController.swift */,
 				D56B082124B65F6E00E1351F /* OutrunButton.swift */,
@@ -404,6 +423,7 @@
 				D5BA33E9245CF25E001DE467 /* Constants.swift */,
 				D52114C224662F4300D1F0ED /* Colors.swift */,
 				D5BA33C5245CF23D001DE467 /* Info.plist */,
+				D525E27325006FCE006DAD84 /* String+extension.swift */,
 			);
 			path = Reference;
 			sourceTree = "<group>";
@@ -498,7 +518,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1140;
-				LastUpgradeCheck = 1140;
+				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = Observatory;
 				TargetAttributes = {
 					D5BA33B0245CF239001DE467 = {
@@ -705,16 +725,20 @@
 				D52114DD2469C26300D1F0ED /* IntervalDesignerViewController.swift in Sources */,
 				D5A70CC2246F344F009FD146 /* OutrunTabBar.swift in Sources */,
 				D5BA33EA245CF25E001DE467 /* Constants.swift in Sources */,
+				D525E27225006780006DAD84 /* PreviewWorkoutCell.swift in Sources */,
 				D55A19B4247C375700FDC7D6 /* UIView+extension.swift in Sources */,
 				D5CEDC1E246221B100F79129 /* WorkoutModel.swift in Sources */,
 				D5916648246CA97800497830 /* CoreDataHandler.swift in Sources */,
 				D5BA33B9245CF239001DE467 /* SelectWorkoutViewController.swift in Sources */,
+				D525E27425006FCE006DAD84 /* String+extension.swift in Sources */,
 				D5A70CC72470901C009FD146 /* OutrunStackView.swift in Sources */,
 				D5113BE024A548A7002EB1A4 /* Workout+CoreDataProperties.swift in Sources */,
 				D5BA33B5245CF239001DE467 /* AppDelegate.swift in Sources */,
 				D5113BDF24A548A7002EB1A4 /* Workout+CoreDataClass.swift in Sources */,
 				D5BA33BF245CF239001DE467 /* CodeDump.xcdatamodeld in Sources */,
 				D57E4076246C84A300DBD3A5 /* RoutineDesignerTableViewCell.swift in Sources */,
+				D525E26F25004081006DAD84 /* PreviewWorkoutViewModel.swift in Sources */,
+				D525E2762500A530006DAD84 /* OutrunTableViewCell.swift in Sources */,
 				D56B082224B65F6E00E1351F /* OutrunButton.swift in Sources */,
 				D5BA33B7245CF239001DE467 /* SceneDelegate.swift in Sources */,
 				D57E4072246C6A2C00DBD3A5 /* RoutineDesignerTableViewHandler.swift in Sources */,
@@ -802,6 +826,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -862,6 +887,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
