@@ -37,9 +37,9 @@ protocol WorkoutDelegate: WorkoutViewController {
 
 class WorkoutViewController:OutrunViewController {
   
-  var workout:WorkoutModel!
+  var workout:WorkoutModel?
   
-  var handler:WorkoutHandler!
+  var handler:WorkoutHandler?
   
   var containerView = OutrunStackView()
   
@@ -66,24 +66,15 @@ class WorkoutViewController:OutrunViewController {
       fatalError("You must pass a workout to show this view controller")
     }
     
-    // override back button from Super
-    let backButtonItem = UIBarButtonItem(
-      title: "",
-      style: .plain,
-      target: nil,
-      action: nil
-    )
-    self.navigationItem.setLeftBarButton(backButtonItem, animated: false)
-    self.navigationItem.leftBarButtonItem?.isEnabled = false
-    self.navigationItem.hidesBackButton = true
+    self.hideBackButton()
 
     
     handler = WorkoutHandler(workout: workout, delegate: self)
-    title = handler.workout.name
+    title = handler?.workout.name
     navigationItem.largeTitleDisplayMode = .never
 
     setupViews()
-    self.handler.updateTimer()
+    self.handler?.updateTimer()
   }
   
   func setupViews() {
@@ -239,10 +230,12 @@ class WorkoutViewController:OutrunViewController {
   }
   
   @objc func playPauseButtonTapped() {
-    handler.playPauseTapped()
+    handler?.playPauseTapped()
   }
   
   @objc func endButtonTapped() {
+    handler?.playPauseTapped()
+    
     let alertController = UIAlertController(
       title: "Are you Sure?",
       message: "Leaving in the middle of a workout will cause you to lose all progress.",
@@ -252,8 +245,8 @@ class WorkoutViewController:OutrunViewController {
       UIAlertAction(
         title: NSLocalizedString("OK", comment: "Default action"),
         style: .default,
-        handler: { _ in
-          self.handler.handleEnd()
+        handler: { [unowned self] _ in
+          self.handler?.handleEnd()
           self.navigationController?.popToRootViewController(animated: true)
       })
     )
@@ -261,18 +254,20 @@ class WorkoutViewController:OutrunViewController {
       UIAlertAction(
         title: NSLocalizedString("Cancel", comment: "Cancel Action"),
         style: .default,
-        handler: nil
+        handler: { [unowned self] _ in
+          self.handler?.playPauseTapped()
+        }
       )
     )
     self.present(alertController, animated: true, completion: nil)
   }
   
   @objc func previousExerciseButtonTapped() {
-    handler.previousExercise()
+    handler?.previousExercise()
   }
   
   @objc func nextExerciseButtonTapped() {
-    handler.nextExercise()
+    handler?.nextExercise()
   }
   
 }

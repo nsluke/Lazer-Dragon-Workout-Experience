@@ -41,7 +41,7 @@ class DataHandler {
   func getWorkouts(completion: @escaping (Result<[Workout], Error>) -> ()) {
     print("DataManager getting workouts")
     
-    DataHandler.dispatchQueue.sync {
+//    DataHandler.dispatchQueue.sync {
       if DataHandler.workouts.count == 0 {
         print("DataManager has \(DataHandler.workouts.count) workouts")
         
@@ -59,13 +59,13 @@ class DataHandler {
         print("DataManager is returning \(DataHandler.workouts.count) from memory")
         completion(.success(DataHandler.workouts))
       }
-    }
+//    }
   }
   
   func getWorkoutModels(completion: @escaping (Result<[WorkoutModel], Error>) -> ()) {
     print("DataManager getting workout models")
     
-    DataHandler.dispatchQueue.sync {
+//    DataHandler.dispatchQueue.sync { [unowned self] in
       if self.workoutModels.count == 0 && DataHandler.workouts.count == 0 {
         // fetch, convert to models & return
         print("DataManager has \(DataHandler.workouts.count) workouts")
@@ -92,7 +92,7 @@ class DataHandler {
         print("DataManager is returning \(self.workoutModels.count) from memory")
         completion(.success(self.workoutModels))
       }
-    }
+//    }
   }
   
   // =================================================================================
@@ -100,7 +100,7 @@ class DataHandler {
   // =================================================================================
   
   func insertWorkouts(workoutModels: [WorkoutModel], completion: @escaping (Result<Bool, Error>) -> ()) {
-    DataHandler.dispatchQueue.sync {
+//    DataHandler.dispatchQueue.sync {
       //      let workoutObjcs = self.coreDataHandler.workoutModelsToWorkouts(workoutModels: workoutModels)
       print()
       print("DataManager.insertWorkouts: Adding \(workoutModels.count) to CoreData")
@@ -110,7 +110,7 @@ class DataHandler {
           completion(.success(true))
         }
       }
-    }
+//    }
   }
   
   // =================================================================================
@@ -118,7 +118,7 @@ class DataHandler {
   // =================================================================================
   
   func deleteWorkout(workoutName: String, completion: @escaping () -> ()) {
-    DataHandler.dispatchQueue.sync {
+//    DataHandler.dispatchQueue.sync {
       for (i,workout) in DataHandler.workouts.enumerated() {
         if workout.name == workoutName && i < DataHandler.workouts.count {
           DataHandler.workouts.remove(at: i)
@@ -130,7 +130,7 @@ class DataHandler {
           }
         }
       }
-    }
+//    }
   }
   
   // =================================================================================

@@ -119,6 +119,7 @@
 		D525E27125006780006DAD84 /* PreviewWorkoutCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewWorkoutCell.swift; sourceTree = "<group>"; };
 		D525E27325006FCE006DAD84 /* String+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+extension.swift"; sourceTree = "<group>"; };
 		D525E2752500A530006DAD84 /* OutrunTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutrunTableViewCell.swift; sourceTree = "<group>"; };
+		D5340F9D250AE8EC00500793 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D548391D246E2C480003B3E5 /* CodeDump.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CodeDump.entitlements; sourceTree = "<group>"; };
 		D55A19B3247C375700FDC7D6 /* UIView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIView+extension.swift"; path = "CodeDump/UIView+extension.swift"; sourceTree = SOURCE_ROOT; };
 		D55A19B5247C454D00FDC7D6 /* IntervalVisualizationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntervalVisualizationCell.swift; sourceTree = SOURCE_ROOT; };
@@ -148,7 +149,6 @@
 		D5BA33BE245CF239001DE467 /* CodeDump.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CodeDump.xcdatamodel; sourceTree = "<group>"; };
 		D5BA33C0245CF23D001DE467 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D5BA33C3245CF23D001DE467 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		D5BA33C5245CF23D001DE467 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Info.plist; sourceTree = "<group>"; };
 		D5BA33CA245CF23D001DE467 /* CodeDumpTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CodeDumpTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5BA33CE245CF23D001DE467 /* CodeDumpTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeDumpTests.swift; sourceTree = "<group>"; };
 		D5BA33D0245CF23D001DE467 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -422,8 +422,8 @@
 				D55A19B3247C375700FDC7D6 /* UIView+extension.swift */,
 				D5BA33E9245CF25E001DE467 /* Constants.swift */,
 				D52114C224662F4300D1F0ED /* Colors.swift */,
-				D5BA33C5245CF23D001DE467 /* Info.plist */,
 				D525E27325006FCE006DAD84 /* String+extension.swift */,
+				D5340F9D250AE8EC00500793 /* Info.plist */,
 			);
 			path = Reference;
 			sourceTree = "<group>";
@@ -923,14 +923,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = CodeDump/CodeDump.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6TK8Q4KD6G;
-				INFOPLIST_FILE = CodeDump/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/CodeDump/Reference/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Observatory.CodeDump;
 				PRODUCT_NAME = "Lazer Dragon";
 				SUPPORTS_MACCATALYST = YES;
@@ -946,14 +947,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = CodeDump/CodeDump.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6TK8Q4KD6G;
-				INFOPLIST_FILE = CodeDump/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/CodeDump/Reference/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Observatory.CodeDump;
 				PRODUCT_NAME = "Lazer Dragon";
 				SUPPORTS_MACCATALYST = YES;

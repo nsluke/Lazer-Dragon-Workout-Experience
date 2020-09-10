@@ -51,4 +51,17 @@ class OutrunViewController: UIViewController {
     self.navigationController?.popViewController(animated: true)
   }
   
+  func hideBackButton() {
+    // override back button from Super
+    let backButtonItem = UIBarButtonItem(
+      title: "",
+      style: .plain,
+      target: nil,
+      action: nil
+    )
+    self.navigationItem.setLeftBarButton(backButtonItem, animated: false)
+    self.navigationItem.leftBarButtonItem?.isEnabled = false
+    self.navigationItem.hidesBackButton = true
+  }
+  
 }

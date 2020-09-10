@@ -10,7 +10,7 @@
 import UIKit
 
 
-class SelectWorkoutViewController: UIViewController {
+class SelectWorkoutViewController: OutrunViewController {
   
   var tableView:UITableView = UITableView() 
   
@@ -19,16 +19,17 @@ class SelectWorkoutViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    self.hideBackButton()
+
     setupViews()
   }
   
   override func viewDidAppear(_ animated: Bool) {
-    
-    DataHandler.shared.getWorkoutModels { (result) in
+    DataHandler.shared.getWorkoutModels { [unowned self] (result) in
       if case .success(let workouts) = result {
         if self.workoutModels != workouts {
           self.workoutModels = workouts
-          DispatchQueue.main.async {
+          DispatchQueue.main.async { [unowned self] in
             self.tableView.reloadData()
           }
         }
@@ -36,7 +37,6 @@ class SelectWorkoutViewController: UIViewController {
         print("SelectWorkoutViewController - viewDidLoad: Error fetching Data for Table View")
       }
     }
-    
   }
   
   func setupViews() {
