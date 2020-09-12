@@ -21,6 +21,7 @@ class ExercisesDesignerView: UIView {
   
   var viewModel:ExercisesDesignerViewModel?
   weak var delegate:ExercisesDesignerViewDelegate!
+  
   var containerView = OutrunStackView()
   var textField = OutrunTextField()
   var doneButton = UIButton()

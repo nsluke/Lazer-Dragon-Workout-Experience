@@ -40,6 +40,7 @@
 		D525E27225006780006DAD84 /* PreviewWorkoutCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D525E27125006780006DAD84 /* PreviewWorkoutCell.swift */; };
 		D525E27425006FCE006DAD84 /* String+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D525E27325006FCE006DAD84 /* String+extension.swift */; };
 		D525E2762500A530006DAD84 /* OutrunTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D525E2752500A530006DAD84 /* OutrunTableViewCell.swift */; };
+		D5340FA2250AF97B00500793 /* WorkoutCompletedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5340FA1250AF97B00500793 /* WorkoutCompletedViewController.swift */; };
 		D55A19B4247C375700FDC7D6 /* UIView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55A19B3247C375700FDC7D6 /* UIView+extension.swift */; };
 		D55A19B6247C454D00FDC7D6 /* IntervalVisualizationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55A19B5247C454D00FDC7D6 /* IntervalVisualizationCell.swift */; };
 		D55A19B8247C5F2800FDC7D6 /* OutrunTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55A19B7247C5F2800FDC7D6 /* OutrunTextField.swift */; };
@@ -120,6 +121,7 @@
 		D525E27325006FCE006DAD84 /* String+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+extension.swift"; sourceTree = "<group>"; };
 		D525E2752500A530006DAD84 /* OutrunTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutrunTableViewCell.swift; sourceTree = "<group>"; };
 		D5340F9D250AE8EC00500793 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D5340FA1250AF97B00500793 /* WorkoutCompletedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutCompletedViewController.swift; sourceTree = "<group>"; };
 		D548391D246E2C480003B3E5 /* CodeDump.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CodeDump.entitlements; sourceTree = "<group>"; };
 		D55A19B3247C375700FDC7D6 /* UIView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIView+extension.swift"; path = "CodeDump/UIView+extension.swift"; sourceTree = SOURCE_ROOT; };
 		D55A19B5247C454D00FDC7D6 /* IntervalVisualizationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntervalVisualizationCell.swift; sourceTree = SOURCE_ROOT; };
@@ -259,6 +261,7 @@
 				D57E4073246C6A3800DBD3A5 /* RoutineDesigner */,
 				D56B081E24B37D2100E1351F /* ExercisesDesigner */,
 				D57E4074246C6A4400DBD3A5 /* IntervalDesigner */,
+				D5340FA0250AF93800500793 /* WorkoutCompletedViewController */,
 				D5A70CBF246F2197009FD146 /* Handlers */,
 				D5A70CC5246F4CD4009FD146 /* ProfileView */,
 				D5A70CC0246F21A2009FD146 /* Settings */,
@@ -274,6 +277,14 @@
 				D525E27125006780006DAD84 /* PreviewWorkoutCell.swift */,
 			);
 			name = PreviewWorkout;
+			sourceTree = "<group>";
+		};
+		D5340FA0250AF93800500793 /* WorkoutCompletedViewController */ = {
+			isa = PBXGroup;
+			children = (
+				D5340FA1250AF97B00500793 /* WorkoutCompletedViewController.swift */,
+			);
+			path = WorkoutCompletedViewController;
 			sourceTree = "<group>";
 		};
 		D56B081E24B37D2100E1351F /* ExercisesDesigner */ = {
@@ -710,6 +721,7 @@
 				D55E21EE249D581000F1D252 /* OutrunNavigationController.swift in Sources */,
 				D55A19B6247C454D00FDC7D6 /* IntervalVisualizationCell.swift in Sources */,
 				D5F2E3E624805E8600C868EC /* WorkoutHandler.swift in Sources */,
+				D5340FA2250AF97B00500793 /* WorkoutCompletedViewController.swift in Sources */,
 				D56B081D24B37D1C00E1351F /* ExercisesDesignerView.swift in Sources */,
 				D5113BE124A548A7002EB1A4 /* Exercise+CoreDataClass.swift in Sources */,
 				D5A70CC4246F4CCB009FD146 /* ProfileViewController.swift in Sources */,

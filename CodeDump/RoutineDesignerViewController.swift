@@ -74,8 +74,7 @@ class RoutineDesignerViewController: OutrunViewController {
     }
     
     DataHandler.shared.insertWorkouts(workoutModels: [self.tableViewHandler.workout], completion: { result  in
-      
-      if case .success(let workouts) = result {
+      if case .success = result {
         print("Workout saved")
         self.navigationController?.popViewController(animated: true)
       } else if case .failure = result {

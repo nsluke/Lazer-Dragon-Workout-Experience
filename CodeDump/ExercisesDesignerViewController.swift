@@ -22,6 +22,7 @@ class ExercisesDesignerViewController: OutrunViewController {
   
   var exerciseNameLabel = OutrunLabel()
   var textField = OutrunTextField(placeholder: "_")
+  // 
   // splitlength
   // reps
 

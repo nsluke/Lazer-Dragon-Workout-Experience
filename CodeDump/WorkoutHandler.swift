@@ -185,28 +185,38 @@ class WorkoutHandler: NSObject {
   }
   
   func previousExercise() {
-    playPauseTapped()
-    updateSplits(workout.intervalLength)
-    intervalsRemaining += 1
-    if intervalsRemaining == workout.numberOfIntervals {
-      setsRemaining += 1
-      if setsRemaining == workout.numberOfSets {
-        handleWarmup()
+    debugState()
+    if isPlaying {
+      playPauseTapped()
+    }
+    if workoutState != .Warmup {
+      updateSplits(-workout.intervalLength)
+      
+      intervalsRemaining += 1
+      if intervalsRemaining == workout.numberOfIntervals {
+        setsRemaining += 1
+        if setsRemaining == workout.numberOfSets {
+          handleWarmup()
+        } else {
+          handleRestBetweenSets()
+        }
       } else {
-        handleRestBetweenSets()
+        handleInterval()
       }
-    } else {
-      handleInterval()
     }
   }
   
   func nextExercise() {
-    playPauseTapped()
+    if isPlaying {
+      playPauseTapped()
+    }
+    
     updateSplits(workout.intervalLength)
     handleNextExercise()
   }
   
   func handleNextExercise() {
+    debugState()
     intervalsRemaining -= 1
     if intervalsRemaining < 0 {
       intervalsRemaining = 0
@@ -247,30 +257,38 @@ class WorkoutHandler: NSObject {
   
   func handleInterval() {
     workoutState = .Interval
-    workoutDelegate?.updateExerciseLabel(text: workout.exercises[intervalsRemaining].name)
+    
+    let exerciseIndex = max(0, min(workout.exercises.count - 1, intervalsRemaining))
+    var exerciseLabelText = "\(workout.exercises[exerciseIndex].name)"
+    if workout.exercises[exerciseIndex].reps > 0 {
+      exerciseLabelText.append("x \(workout.exercises[exerciseIndex].reps)")
+    }
+    
+    workoutDelegate?.updateExerciseLabel(text: exerciseLabelText)
     splitTime = workout.intervalLength
-    startTimer()
+    
+//    startTimer()
   }
   
   func handleRest() {
     workoutState = .Rest
     workoutDelegate?.updateExerciseLabel(text: "Rest")
     splitTime = workout.restLength
-    startTimer()
+//    startTimer()
   }
   
   func handleRestBetweenSets() {
     workoutState = .RestBetweenSets
     workoutDelegate?.updateExerciseLabel(text: "Rest")
     splitTime = workout.restLength
-    startTimer()
+//    startTimer()
   }
   
   func handleCooldown() {
     workoutDelegate?.updateExerciseLabel(text: "Cooldown")
     workoutState = .Cooldown
     splitTime = workout.cooldownLength
-    startTimer()
+//    startTimer()
   }
   
   func handleEnd() {
@@ -283,4 +301,31 @@ class WorkoutHandler: NSObject {
     workoutState = .End
   }
   
+  func debugState() {
+    print(splitTime, elapsedTime, remainingTime, isPlaying, workoutState, intervalsRemaining, setsRemaining)
+  }
+  
 }
+
+/*
+ var timer : Repeater?
+ 
+ var timerQueue = DispatchQueue.init(
+   label: "workoutTimer",
+   qos: .userInteractive,
+   attributes: .initiallyInactive,
+   autoreleaseFrequency: .inherit,
+   target: .main
+ )
+ 
+ var splitTime:Int
+ 
+ var elapsedTime:Int = 0
+ var remainingTime:Int
+ 
+ var isPlaying = false
+ var workoutState = WorkoutSegment.Stopped
+ 
+ var intervalsRemaining:Int
+ var setsRemaining:Int
+ */
