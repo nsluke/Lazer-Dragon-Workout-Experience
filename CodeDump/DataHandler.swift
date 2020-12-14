@@ -38,6 +38,8 @@ class DataHandler {
   //                                 MARK: - Fetch
   // =================================================================================
   
+  /*
+   */
   func getWorkouts(completion: @escaping (Result<[Workout], Error>) -> ()) {
     print("DataManager getting workouts")
     
