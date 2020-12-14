@@ -23,7 +23,6 @@ extension UIColor {
   
   class var OutrunLaserBlue:UIColor {
     return self.init(red: 45/255, green: 226/255, blue: 230/255, alpha: 1.0)
-    
   }
   
   class var OutrunDarkGray:UIColor {

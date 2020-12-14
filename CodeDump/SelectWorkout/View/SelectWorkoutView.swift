@@ -1,56 +1,65 @@
 //
-//  SelectWorkoutViewController.swift
-//  CodeDump
-//
-//  Created by Luke Solomon on 5/1/20.
-//  Copyright © 2020 Observatory. All rights reserved.
+// Created by VIPER
+// Copyright (c) 2020 VIPER. All rights reserved.
 //
 
-
+import Foundation
 import UIKit
 
-
-class SelectWorkoutViewController: OutrunViewController {
+class SelectWorkoutView: OutrunViewController, SelectWorkoutViewProtocol {
   
-  var tableView:UITableView = UITableView() 
+  var presenter: SelectWorkoutPresenterProtocol?
   
-  var workoutModels = [WorkoutModel]()
-  
-  override func viewDidLoad() {
-    super.viewDidLoad()
+  var tableView:UITableView = {
+    let table = UITableView()
     
-    self.hideBackButton()
-
-    setupViews()
-  }
+    table.register(OutrunTableViewCell.self, forCellReuseIdentifier: "CellID")
+    table.translatesAutoresizingMaskIntoConstraints = false
+    table.separatorStyle = .none
+    table.backgroundColor = UIColor.OutrunDarkerGray
+    
+    return table
+  }()
   
-  override func viewDidAppear(_ animated: Bool) {
-    DataHandler.shared.getWorkoutModels { [unowned self] (result) in
-      if case .success(let workouts) = result {
-        if self.workoutModels != workouts {
-          self.workoutModels = workouts
-          DispatchQueue.main.async { [unowned self] in
-            self.tableView.reloadData()
-          }
-        }
-      } else if case .failure = result {
-        print("SelectWorkoutViewController - viewDidLoad: Error fetching Data for Table View")
-      }
+  var workoutModels:[WorkoutModel]  = [] {
+    didSet {
+      guard oldValue != workoutModels else { return }
+      
+      tableView.reloadSections([0], with: .automatic)
     }
   }
   
+  
+  // MARK: - View Lifecycle
+//  override func loadView() {
+//    
+//  }
+//  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    self.hideBackButton()
+
+    presenter?.viewDidLoad()
+
+//    tableView.tableFooterView = UIView()
+    setupViews()
+  }
+  
   func setupViews() {
-    navigationController?.navigationBar.prefersLargeTitles = true
+    
     title = "Select your Workout"
+    view.backgroundColor = UIColor.OutrunDarkerGray
+    view.addSubview(tableView)
+    tableView.dataSource = self
+    tableView.delegate = self
+    
+    navigationController?.navigationBar.prefersLargeTitles = true
     navigationController?.navigationBar.backgroundColor = UIColor.OutrunDarkerGray
     navigationController?.navigationBar.barTintColor = UIColor.OutrunDarkerGray
-
-    view.backgroundColor = UIColor.OutrunDarkerGray
     navigationController?.navigationBar.titleTextAttributes = [
       .foregroundColor : UIColor.OutrunLaserBlue,
       .font : UIFont(name: "OutrunFuture", size: 18) ?? UIFont.systemFont(ofSize: 18)
     ]
-    
     navigationController?.navigationBar.largeTitleTextAttributes = [
       .foregroundColor : UIColor.OutrunLaserBlue,
       .font : UIFont(name: "OutrunFuture", size: 30) ?? UIFont.systemFont(ofSize: 30)
@@ -58,15 +67,6 @@ class SelectWorkoutViewController: OutrunViewController {
     
     navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.addItemTapped))
     navigationItem.rightBarButtonItem?.tintColor = UIColor.OutrunLaserBlue
-    
-    tableView.dataSource = self
-    tableView.delegate = self
-    tableView.register(OutrunTableViewCell.self, forCellReuseIdentifier: "CellID")
-    tableView.translatesAutoresizingMaskIntoConstraints = false
-    tableView.separatorStyle = .none
-    tableView.backgroundColor = UIColor.OutrunDarkerGray
-    
-    view.addSubview(tableView)
     
     NSLayoutConstraint.activate([
       tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -81,9 +81,13 @@ class SelectWorkoutViewController: OutrunViewController {
     navigationController?.pushViewController(routineDesignerVC, animated: true)
   }
   
+  // MARK: - Presenter Input
+  func loadWorkouts(with workouts:[WorkoutModel]) {
+    self.workoutModels = workouts
+  }
   
 }
-extension SelectWorkoutViewController:UITableViewDataSource {
+extension SelectWorkoutView:UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return self.workoutModels.count
   }
@@ -108,9 +112,7 @@ extension SelectWorkoutViewController:UITableViewDataSource {
       viewModel.fontSize = 34
     }
     
-    
     safeCell.configure(viewModel: viewModel)
-    
     safeCell.selectionStyle = .default
     
     let selectedBackgroundView = UIView.init()
@@ -121,21 +123,14 @@ extension SelectWorkoutViewController:UITableViewDataSource {
   }
 }
 
-extension SelectWorkoutViewController:UITableViewDelegate {
+extension SelectWorkoutView:UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     return 50
   }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    
-    let viewModel = PreviewWorkoutViewModel()
-    viewModel.workout = self.workoutModels[indexPath.row]
-    
-    let previewWorkoutVC = PreviewWorkoutViewController()
-    previewWorkoutVC.viewModel = viewModel
-    previewWorkoutVC.modalPresentationStyle = .overCurrentContext
-    navigationController?.pushViewController(previewWorkoutVC, animated: true)
+    self.presenter?.showWorkoutDetail(forWorkout: workoutModels[indexPath.row])
   }
   
   func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {

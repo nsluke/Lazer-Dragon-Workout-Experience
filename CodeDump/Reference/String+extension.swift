@@ -46,7 +46,7 @@ extension String {
     return formattedTimeString
   }
   
-  func containsNonEnglishCharacters() -> Bool { // TODO: Make this work!
+  func containsNonEnglishCharacters() -> Bool {
     let characterset = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
     
     if self.rangeOfCharacter(from: characterset) == nil {

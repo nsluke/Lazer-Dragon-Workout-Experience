@@ -26,7 +26,7 @@ class OutrunViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    view.backgroundColor = UIColor.OutrunDarkerGray
+    self.view.backgroundColor = UIColor.OutrunDarkerGray
     navigationItem.backBarButtonItem?.tintColor = UIColor.OutrunLaserBlue
     navigationController?.navigationBar.backgroundColor = UIColor.OutrunDarkerGray
     navigationController?.navigationBar.barTintColor = UIColor.OutrunDarkerGray

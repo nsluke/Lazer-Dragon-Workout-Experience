@@ -16,13 +16,14 @@ struct OutrunTableViewCellModel {
 }
 
 class OutrunTableViewCell: UITableViewCell {
+  
   var icon = UIImageView()
   var label = OutrunLabel()
   var descriptorLabel = OutrunLabel()
-  
   var containerView = OutrunStackView()
   
   var viewModel:OutrunTableViewCellModel? = nil
+  
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -49,7 +50,8 @@ class OutrunTableViewCell: UITableViewCell {
       paddingRight: 8,
       width: 0,
       height: 0,
-      enableInsets: true)
+      enableInsets: true
+    )
     
     label.setContentHuggingPriority(.defaultLow + 1, for: .horizontal)
     label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
