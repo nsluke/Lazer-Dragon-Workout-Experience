@@ -3,7 +3,7 @@
 // Copyright (c) 2020 VIPER. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class PreviewWorkoutRouter: PreviewWorkoutRouterProtocol {
   
@@ -23,7 +23,11 @@ class PreviewWorkoutRouter: PreviewWorkoutRouterProtocol {
   }
   
   func presentWorkoutScreen(from view: PreviewWorkoutViewProtocol, forWorkout workout: WorkoutModel) {
-    // router time!
+    let workoutScreen = WorkoutSceneRouter.presentWorkoutSceneModule(fromView: view, withWorkout: workout)
+ 
+      if let sourceView = view as? UIViewController {
+         sourceView.navigationController?.pushViewController(workoutScreen, animated: true)
+      }
   }
   
 }
