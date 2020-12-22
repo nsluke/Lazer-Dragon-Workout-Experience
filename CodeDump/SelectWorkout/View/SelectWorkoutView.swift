@@ -78,7 +78,7 @@ class SelectWorkoutView: OutrunViewController, SelectWorkoutViewProtocol {
   
   @objc func addItemTapped(sender:UIButton) {
     let routineDesignerVC = RoutineDesignerViewController()
-    navigationController?.pushViewController(routineDesignerVC, animated: true)
+    navigationController?.present(routineDesignerVC, animated: true)
   }
   
   // MARK: - Presenter Input

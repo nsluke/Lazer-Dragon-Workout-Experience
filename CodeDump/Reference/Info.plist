@@ -4,6 +4,10 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>NSHealthShareUsageDescription</key>
+	<string>THE LAZER DRAGON FORMALLY REQUESTS ACCESS TO YOUR HEALTH DATA!</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>THE LAZER DRAGON FORMALLY REQUESTS ACCESS TO YOUR HEALTH DATA!</string>
 	<key>CFBundleDisplayName</key>
 	<string>Lazer_Dragon</string>
 	<key>CFBundleExecutable</key>

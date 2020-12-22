@@ -35,6 +35,7 @@
 		D52114E02469CC9900D1F0ED /* IntervalPickerDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52114DF2469CC9900D1F0ED /* IntervalPickerDataSource.swift */; };
 		D52114E22469F4E500D1F0ED /* OutrunLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52114E12469F4E500D1F0ED /* OutrunLabel.swift */; };
 		D523D09225896D0300996CA5 /* WorkoutSceneLocalDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D523D08F25896D0300996CA5 /* WorkoutSceneLocalDataManager.swift */; };
+		D524C0072591500A004D3209 /* RoutineDesignerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D524C0062591500A004D3209 /* RoutineDesignerView.swift */; };
 		D525E26D25002FE9006DAD84 /* UnitTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D525E26C25002FE9006DAD84 /* UnitTestHelpers.swift */; };
 		D525E27225006780006DAD84 /* PreviewWorkoutCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D525E27125006780006DAD84 /* PreviewWorkoutCell.swift */; };
 		D525E27425006FCE006DAD84 /* String+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D525E27325006FCE006DAD84 /* String+extension.swift */; };
@@ -93,6 +94,7 @@
 		D5D496CC254B4C3D00548BA8 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D496CB254B4C3D00548BA8 /* ComplicationController.swift */; };
 		D5D496CE254B4C3E00548BA8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5D496CD254B4C3E00548BA8 /* Assets.xcassets */; };
 		D5D496D3254B4C3E00548BA8 /* LDWEWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = D5D496B4254B4C3A00548BA8 /* LDWEWatch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D5EEE8BF2592682A006A8086 /* HealthDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EEE8BE2592682A006A8086 /* HealthDataManager.swift */; };
 		D5F2E3E624805E8600C868EC /* WorkoutHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F2E3E524805E8600C868EC /* WorkoutHandler.swift */; };
 /* End PBXBuildFile section */
 
@@ -175,6 +177,7 @@
 		D52114DF2469CC9900D1F0ED /* IntervalPickerDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntervalPickerDataSource.swift; sourceTree = "<group>"; };
 		D52114E12469F4E500D1F0ED /* OutrunLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutrunLabel.swift; sourceTree = "<group>"; };
 		D523D08F25896D0300996CA5 /* WorkoutSceneLocalDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutSceneLocalDataManager.swift; sourceTree = "<group>"; };
+		D524C0062591500A004D3209 /* RoutineDesignerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineDesignerView.swift; sourceTree = "<group>"; };
 		D525E26C25002FE9006DAD84 /* UnitTestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitTestHelpers.swift; sourceTree = "<group>"; };
 		D525E27125006780006DAD84 /* PreviewWorkoutCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewWorkoutCell.swift; sourceTree = "<group>"; };
 		D525E27325006FCE006DAD84 /* String+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+extension.swift"; sourceTree = "<group>"; };
@@ -244,6 +247,7 @@
 		D5D496CD254B4C3E00548BA8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D5D496CF254B4C3E00548BA8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D5D496D0254B4C3E00548BA8 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
+		D5EEE8BE2592682A006A8086 /* HealthDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthDataManager.swift; sourceTree = "<group>"; };
 		D5F2E3E524805E8600C868EC /* WorkoutHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutHandler.swift; sourceTree = "<group>"; };
 		DEAB20B5C1C886A429347B4C /* Pods-CodeDump.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CodeDump.release.xcconfig"; path = "Target Support Files/Pods-CodeDump/Pods-CodeDump.release.xcconfig"; sourceTree = "<group>"; };
 		EDEAC8C9162DA2F1D1B6E5D9 /* Pods_CodeDump.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CodeDump.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -377,6 +381,26 @@
 			path = DataHandler;
 			sourceTree = "<group>";
 		};
+		D524C00D25915012004D3209 /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				D57E406F246A383200DBD3A5 /* RoutineDesignerViewController.swift */,
+				D57E4071246C6A2C00DBD3A5 /* RoutineDesignerTableViewHandler.swift */,
+				D57E4075246C84A300DBD3A5 /* RoutineDesignerTableViewCell.swift */,
+				D55A19B5247C454D00FDC7D6 /* IntervalVisualizationCell.swift */,
+			);
+			name = UIKit;
+			sourceTree = "<group>";
+		};
+		D524C00E25915019004D3209 /* SwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				D5EEE8BE2592682A006A8086 /* HealthDataManager.swift */,
+				D524C0062591500A004D3209 /* RoutineDesignerView.swift */,
+			);
+			name = SwiftUI;
+			sourceTree = "<group>";
+		};
 		D5340FA0250AF93800500793 /* WorkoutCompletedViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -459,10 +483,8 @@
 		D57E4073246C6A3800DBD3A5 /* RoutineDesigner */ = {
 			isa = PBXGroup;
 			children = (
-				D57E406F246A383200DBD3A5 /* RoutineDesignerViewController.swift */,
-				D57E4071246C6A2C00DBD3A5 /* RoutineDesignerTableViewHandler.swift */,
-				D57E4075246C84A300DBD3A5 /* RoutineDesignerTableViewCell.swift */,
-				D55A19B5247C454D00FDC7D6 /* IntervalVisualizationCell.swift */,
+				D524C00D25915012004D3209 /* UIKit */,
+				D524C00E25915019004D3209 /* SwiftUI */,
 			);
 			name = RoutineDesigner;
 			sourceTree = "<group>";
@@ -1096,6 +1118,7 @@
 				D587EE4E2584135A00A023FC /* SelectWorkoutInteractor.swift in Sources */,
 				D587EE4D2584135A00A023FC /* SelectWorkoutProtocols.swift in Sources */,
 				D5A70CC4246F4CCB009FD146 /* ProfileViewController.swift in Sources */,
+				D524C0072591500A004D3209 /* RoutineDesignerView.swift in Sources */,
 				D572900A25892C94007B65DE /* WorkoutSceneInteractor.swift in Sources */,
 				D504F2DE24B15ADC00A99ED7 /* LaunchHandler.swift in Sources */,
 				D52114E22469F4E500D1F0ED /* OutrunLabel.swift in Sources */,
@@ -1134,6 +1157,7 @@
 				D587EE9925843F2800A023FC /* PreviewWorkoutPresenter.swift in Sources */,
 				D5728FDD25881567007B65DE /* WorkoutSceneView.swift in Sources */,
 				D587EE9E25843F2800A023FC /* PreviewWorkoutRouter.swift in Sources */,
+				D5EEE8BF2592682A006A8086 /* HealthDataManager.swift in Sources */,
 				D56B082024B65A5200E1351F /* ExerciseCell.swift in Sources */,
 				D5A70CBE246F218D009FD146 /* SettingsViewController.swift in Sources */,
 				D587EE9A25843F2800A023FC /* PreviewWorkoutView.swift in Sources */,

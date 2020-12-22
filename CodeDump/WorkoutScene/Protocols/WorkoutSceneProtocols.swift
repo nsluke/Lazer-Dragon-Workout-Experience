@@ -5,8 +5,6 @@
 
 import Foundation
 
-
-
 // PRESENTER -> VIEW
 protocol WorkoutSceneViewProtocol: class {
   var presenter: WorkoutScenePresenterProtocol? { get set }
