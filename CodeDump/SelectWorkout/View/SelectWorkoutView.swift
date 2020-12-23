@@ -5,6 +5,7 @@
 
 import Foundation
 import UIKit
+import SwiftUI
 
 class SelectWorkoutView: OutrunViewController, SelectWorkoutViewProtocol {
   
@@ -77,8 +78,13 @@ class SelectWorkoutView: OutrunViewController, SelectWorkoutViewProtocol {
   }
   
   @objc func addItemTapped(sender:UIButton) {
-    let routineDesignerVC = RoutineDesignerViewController()
-    navigationController?.present(routineDesignerVC, animated: true)
+//    let routineDesignerVC = RoutineDesignerViewController()
+    
+
+    let hostingController = UIHostingController(rootView: RoutineDesignerSwiftUIView())
+//    self.addChild(hostingController)
+    
+    navigationController?.pushViewController(hostingController, animated: true)
   }
   
   // MARK: - Presenter Input

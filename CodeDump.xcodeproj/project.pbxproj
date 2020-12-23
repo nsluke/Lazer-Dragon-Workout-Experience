@@ -15,6 +15,7 @@
 		D5113BE024A548A7002EB1A4 /* Workout+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5113BDC24A548A7002EB1A4 /* Workout+CoreDataProperties.swift */; };
 		D5113BE124A548A7002EB1A4 /* Exercise+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5113BDD24A548A7002EB1A4 /* Exercise+CoreDataClass.swift */; };
 		D5113BE224A548A7002EB1A4 /* Exercise+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5113BDE24A548A7002EB1A4 /* Exercise+CoreDataProperties.swift */; };
+		D518D5902592EA32000EC45B /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D518D58F2592EA32000EC45B /* HealthKit.framework */; };
 		D52114C324662F4300D1F0ED /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52114C224662F4300D1F0ED /* Colors.swift */; };
 		D52114C72466377E00D1F0ED /* OutrunFutureBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D52114C42466377D00D1F0ED /* OutrunFutureBold.otf */; };
 		D52114C82466377E00D1F0ED /* OutrunFutureBoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = D52114C52466377E00D1F0ED /* OutrunFutureBoldItalic.otf */; };
@@ -94,6 +95,7 @@
 		D5D496CC254B4C3D00548BA8 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D496CB254B4C3D00548BA8 /* ComplicationController.swift */; };
 		D5D496CE254B4C3E00548BA8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5D496CD254B4C3E00548BA8 /* Assets.xcassets */; };
 		D5D496D3254B4C3E00548BA8 /* LDWEWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = D5D496B4254B4C3A00548BA8 /* LDWEWatch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D5E657982592C57A0059AF83 /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E657972592C57A0059AF83 /* GraphView.swift */; };
 		D5EEE8BF2592682A006A8086 /* HealthDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EEE8BE2592682A006A8086 /* HealthDataManager.swift */; };
 		D5F2E3E624805E8600C868EC /* WorkoutHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F2E3E524805E8600C868EC /* WorkoutHandler.swift */; };
 /* End PBXBuildFile section */
@@ -167,6 +169,7 @@
 		D5113BDC24A548A7002EB1A4 /* Workout+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Workout+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D5113BDD24A548A7002EB1A4 /* Exercise+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Exercise+CoreDataClass.swift"; sourceTree = "<group>"; };
 		D5113BDE24A548A7002EB1A4 /* Exercise+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Exercise+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D518D58F2592EA32000EC45B /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		D52114C224662F4300D1F0ED /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		D52114C42466377D00D1F0ED /* OutrunFutureBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = OutrunFutureBold.otf; sourceTree = "<group>"; };
 		D52114C52466377E00D1F0ED /* OutrunFutureBoldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = OutrunFutureBoldItalic.otf; sourceTree = "<group>"; };
@@ -247,6 +250,7 @@
 		D5D496CD254B4C3E00548BA8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D5D496CF254B4C3E00548BA8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D5D496D0254B4C3E00548BA8 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
+		D5E657972592C57A0059AF83 /* GraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
 		D5EEE8BE2592682A006A8086 /* HealthDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthDataManager.swift; sourceTree = "<group>"; };
 		D5F2E3E524805E8600C868EC /* WorkoutHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutHandler.swift; sourceTree = "<group>"; };
 		DEAB20B5C1C886A429347B4C /* Pods-CodeDump.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CodeDump.release.xcconfig"; path = "Target Support Files/Pods-CodeDump/Pods-CodeDump.release.xcconfig"; sourceTree = "<group>"; };
@@ -266,6 +270,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B9E592792AFBF12CD1F0F47D /* Pods_CodeDump.framework in Frameworks */,
+				D518D5902592EA32000EC45B /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -311,6 +316,7 @@
 		72A6F1407F56278E77EB4DF3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D518D58F2592EA32000EC45B /* HealthKit.framework */,
 				D55D076E24BB7583001B61F5 /* XCTest.framework */,
 				EDEAC8C9162DA2F1D1B6E5D9 /* Pods_CodeDump.framework */,
 				9F9AA85219C745D31C883E72 /* Pods_CodeDump_CodeDumpUITests.framework */,
@@ -397,6 +403,7 @@
 			children = (
 				D5EEE8BE2592682A006A8086 /* HealthDataManager.swift */,
 				D524C0062591500A004D3209 /* RoutineDesignerView.swift */,
+				D5E657972592C57A0059AF83 /* GraphView.swift */,
 			);
 			name = SwiftUI;
 			sourceTree = "<group>";
@@ -1147,6 +1154,7 @@
 				D587EE312584125400A023FC /* Scripts.swift in Sources */,
 				D5113BDF24A548A7002EB1A4 /* Workout+CoreDataClass.swift in Sources */,
 				D5BA33BF245CF239001DE467 /* CodeDump.xcdatamodeld in Sources */,
+				D5E657982592C57A0059AF83 /* GraphView.swift in Sources */,
 				D57E4076246C84A300DBD3A5 /* RoutineDesignerTableViewCell.swift in Sources */,
 				D525E2762500A530006DAD84 /* OutrunTableViewCell.swift in Sources */,
 				D56B082224B65F6E00E1351F /* OutrunButton.swift in Sources */,
@@ -1288,7 +1296,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1343,7 +1351,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -1363,7 +1371,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6TK8Q4KD6G;
 				INFOPLIST_FILE = "$(SRCROOT)/CodeDump/Reference/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1387,7 +1395,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6TK8Q4KD6G;
 				INFOPLIST_FILE = "$(SRCROOT)/CodeDump/Reference/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
