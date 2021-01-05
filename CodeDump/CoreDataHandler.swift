@@ -59,7 +59,6 @@ struct CoreDataHandler {
     }
   }
   
-  
   func insertWorkout(workoutModel:WorkoutModel, completion: @escaping (Result<Bool, Error>) -> Void) {
     guard let workout = NSEntityDescription.insertNewObject(forEntityName: "Workout", into: persistentContainer.viewContext) as? Workout else { return }
     workout.name = workoutModel.name
@@ -91,7 +90,6 @@ struct CoreDataHandler {
 //      completion(.failure(error))
 //    }
   }
-  
   
   func saveExercise(exerciseModel: ExerciseModel) {
     let exercise = NSEntityDescription.insertNewObject(forEntityName: "Exercise", into: persistentContainer.viewContext) as! Exercise
