@@ -199,7 +199,7 @@ struct WorkoutRow: View {
                 Text(workout.name)
                     .font(.outrunFuture(22))
                     .foregroundColor(.outrunYellow)
-                Text("\(workout.exercises.count) exercises  ·  \(workout.numberOfSets) set\(workout.numberOfSets == 1 ? "" : "s")  ·  ~\(workout.totalDurationEstimate.formattedTime)")
+                Text("\(workout.exercises.count) exercises  ·  \(workout.numberOfSets) set\(workout.numberOfSets == 1 ? "" : "s")  ·  ~\(workout.totalDurationEstimate.formattedTime)\(workout.sessions.isEmpty ? "" : "  ·  \(workout.sessions.count) session\(workout.sessions.count == 1 ? "" : "s")")")
                     .font(.outrunFuture(12))
                     .foregroundColor(.outrunCyan.opacity(0.8))
             }

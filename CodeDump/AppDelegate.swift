@@ -1,8 +1,16 @@
 import SwiftUI
 import SwiftData
+import UIKit
 
 @main
 struct LDWEApp: App {
+    init() {
+        let large = UIFont(name: "OutrunFuture", size: 34) ?? .systemFont(ofSize: 34, weight: .bold)
+        let inline = UIFont(name: "OutrunFuture", size: 17) ?? .systemFont(ofSize: 17, weight: .semibold)
+        UINavigationBar.appearance().largeTitleTextAttributes = [.font: large, .foregroundColor: UIColor(Color.outrunYellow)]
+        UINavigationBar.appearance().titleTextAttributes      = [.font: inline, .foregroundColor: UIColor(Color.outrunCyan)]
+    }
+
     var body: some Scene {
         WindowGroup {
             RootView()
@@ -32,6 +40,7 @@ struct RootView: View {
                 hasCompletedOnboarding = true
             }
         }
+        .preferredColorScheme(.dark)
     }
 }
 
