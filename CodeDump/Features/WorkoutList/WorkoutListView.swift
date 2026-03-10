@@ -6,6 +6,8 @@ struct WorkoutListView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Workout.createdAt) private var workouts: [Workout]
     @State private var showingBuilder = false
+    @State private var showingNotificationSettings = false
+    @State private var editingWorkout: Workout? = nil
 
     var body: some View {
         ZStack {
@@ -22,19 +24,33 @@ struct WorkoutListView: View {
         .outrunNavBar()
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    showingBuilder = true
-                } label: {
-                    Image(systemName: "plus")
-                        .foregroundColor(.outrunCyan)
-                        .fontWeight(.bold)
+                HStack(spacing: 16) {
+                    Button {
+                        showingNotificationSettings = true
+                    } label: {
+                        Image(systemName: "bell")
+                            .foregroundColor(.outrunCyan)
+                    }
+                    Button {
+                        showingBuilder = true
+                    } label: {
+                        Image(systemName: "plus")
+                            .foregroundColor(.outrunCyan)
+                            .fontWeight(.bold)
+                    }
                 }
             }
         }
         .sheet(isPresented: $showingBuilder) {
             WorkoutBuilderView()
         }
-        .onAppear(perform: seedIfNeeded)
+        .sheet(isPresented: $showingNotificationSettings) {
+            NavigationStack { NotificationSettingsView() }
+        }
+        .sheet(item: $editingWorkout) { workout in
+            WorkoutBuilderView(editing: workout)
+        }
+        .onAppear(perform: seedForDebugIfNeeded)
     }
 
     // MARK: - List
@@ -50,6 +66,14 @@ struct WorkoutListView: View {
                 .buttonStyle(.plain)
                 .listRowBackground(Color.outrunBackground)
                 .listRowSeparatorTint(Color.outrunSurface)
+                .swipeActions(edge: .leading) {
+                    Button {
+                        editingWorkout = workout
+                    } label: {
+                        Label("Edit", systemImage: "pencil")
+                    }
+                    .tint(.outrunCyan)
+                }
             }
             .onDelete(perform: deleteWorkouts)
         }
@@ -60,13 +84,44 @@ struct WorkoutListView: View {
     // MARK: - Empty State
 
     private var emptyState: some View {
-        VStack(spacing: 20) {
-            Text("NO WORKOUTS")
-                .font(.outrunFuture(28))
-                .foregroundColor(.outrunCyan)
-            Text("Tap + to build your first workout")
-                .font(.outrunFuture(16))
-                .foregroundColor(.outrunYellow)
+        VStack(spacing: 0) {
+            Spacer()
+
+            VStack(spacing: 12) {
+                Image(systemName: "bolt.fill")
+                    .font(.system(size: 52))
+                    .foregroundColor(.outrunYellow.opacity(0.4))
+
+                Text("NO WORKOUTS")
+                    .font(.outrunFuture(28))
+                    .foregroundColor(.outrunCyan)
+
+                Text("Build your first workout\nand start training.")
+                    .font(.outrunFuture(14))
+                    .foregroundColor(.white.opacity(0.4))
+                    .multilineTextAlignment(.center)
+            }
+
+            Spacer()
+
+            Button {
+                showingBuilder = true
+            } label: {
+                HStack(spacing: 10) {
+                    Image(systemName: "plus")
+                        .fontWeight(.bold)
+                    Text("CREATE WORKOUT")
+                        .font(.outrunFuture(20))
+                }
+                .foregroundColor(.outrunBlack)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 18)
+                .background(Color.outrunYellow)
+                .cornerRadius(12)
+                .shadow(color: .outrunYellow.opacity(0.3), radius: 16)
+            }
+            .padding(.horizontal, 32)
+            .padding(.bottom, 52)
         }
     }
 
@@ -78,9 +133,12 @@ struct WorkoutListView: View {
         }
     }
 
-    // MARK: - Seed Data
+    // MARK: - Seed Data (debug/simulator only)
 
-    private func seedIfNeeded() {
+    private func seedForDebugIfNeeded() {
+        #if !DEBUG
+        return
+        #endif
         guard workouts.isEmpty else { return }
 
         let exerciseData: [(String, Int, Int)] = [
@@ -141,7 +199,7 @@ struct WorkoutRow: View {
                 Text(workout.name)
                     .font(.outrunFuture(22))
                     .foregroundColor(.outrunYellow)
-                Text("\(workout.exercises.count) exercises  ·  \(workout.numberOfSets) set\(workout.numberOfSets == 1 ? "" : "s")")
+                Text("\(workout.exercises.count) exercises  ·  \(workout.numberOfSets) set\(workout.numberOfSets == 1 ? "" : "s")  ·  ~\(workout.totalDurationEstimate.formattedTime)")
                     .font(.outrunFuture(12))
                     .foregroundColor(.outrunCyan.opacity(0.8))
             }

@@ -3,6 +3,8 @@ import SwiftUI
 struct WorkoutDetailView: View {
     let workout: Workout
     @Binding var path: NavigationPath
+    @State private var showingEditor = false
+    @State private var showingHistory = false
 
     var body: some View {
         ZStack {
@@ -26,6 +28,32 @@ struct WorkoutDetailView: View {
         .navigationTitle(workout.name)
         .navigationBarTitleDisplayMode(.large)
         .outrunNavBar()
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                HStack(spacing: 16) {
+                    Button {
+                        showingHistory = true
+                    } label: {
+                        Image(systemName: "clock.arrow.circlepath")
+                            .foregroundColor(.outrunCyan)
+                    }
+                    Button {
+                        showingEditor = true
+                    } label: {
+                        Image(systemName: "pencil")
+                            .foregroundColor(.outrunCyan)
+                    }
+                }
+            }
+        }
+        .sheet(isPresented: $showingEditor) {
+            WorkoutBuilderView(editing: workout)
+        }
+        .sheet(isPresented: $showingHistory) {
+            NavigationStack {
+                WorkoutHistoryView(workout: workout)
+            }
+        }
     }
 
     // MARK: - Sections

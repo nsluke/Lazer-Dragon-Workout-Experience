@@ -38,6 +38,12 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>NSHealthShareUsageDescription</key>
+	<string>&quot;The Lazer Dragon sees all, but is politely asking for you to share your health data so that IT MAY RULE YOUR WORKOUTS.&quot;</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>&quot;The Lazer Dragon politely requests that you let it write your workouts into Apple Health.&quot;</string>
+	<key>NSSupportsLiveActivities</key>
+	<true/>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

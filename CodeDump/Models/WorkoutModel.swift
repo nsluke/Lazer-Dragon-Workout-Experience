@@ -29,6 +29,9 @@ final class Workout {
     @Relationship(deleteRule: .cascade, inverse: \Exercise.workout)
     var exercises: [Exercise] = []
 
+    @Relationship(deleteRule: .cascade, inverse: \WorkoutSession.workout)
+    var sessions: [WorkoutSession] = []
+
     init(
         name: String,
         type: WorkoutType = .custom,

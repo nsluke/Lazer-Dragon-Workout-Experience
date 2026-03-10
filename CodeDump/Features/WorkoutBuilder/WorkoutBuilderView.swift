@@ -1,9 +1,13 @@
 import SwiftUI
 
 struct WorkoutBuilderView: View {
-    @State private var viewModel = WorkoutBuilderViewModel()
+    @State private var viewModel: WorkoutBuilderViewModel
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
+
+    init(editing workout: Workout? = nil) {
+        _viewModel = State(initialValue: WorkoutBuilderViewModel(editing: workout))
+    }
 
     var body: some View {
         NavigationStack {
@@ -17,7 +21,7 @@ struct WorkoutBuilderView: View {
                 }
                 .scrollContentBackground(.hidden)
             }
-            .navigationTitle("NEW WORKOUT")
+            .navigationTitle(viewModel.isEditing ? "EDIT WORKOUT" : "NEW WORKOUT")
             .navigationBarTitleDisplayMode(.inline)
             .outrunNavBar()
             .toolbar {
@@ -27,7 +31,7 @@ struct WorkoutBuilderView: View {
                         .font(.outrunFuture(14))
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Save") {
+                    Button(viewModel.isEditing ? "Update" : "Save") {
                         viewModel.save(in: modelContext)
                         dismiss()
                     }
@@ -169,7 +173,6 @@ struct ExerciseBuilderRow: View {
                 .foregroundColor(.outrunYellow)
 
             HStack(spacing: 20) {
-                // Duration stepper
                 HStack(spacing: 6) {
                     Image(systemName: "timer")
                         .font(.caption)
@@ -181,7 +184,6 @@ struct ExerciseBuilderRow: View {
                     }
                 }
 
-                // Reps stepper
                 HStack(spacing: 6) {
                     Image(systemName: "repeat")
                         .font(.caption)

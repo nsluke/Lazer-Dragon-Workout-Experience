@@ -4,6 +4,8 @@ struct WorkoutSessionView: View {
     @Binding var path: NavigationPath
     @State private var viewModel: WorkoutSessionViewModel
     @State private var showEndAlert = false
+    @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.modelContext) private var modelContext
 
     init(workout: Workout, path: Binding<NavigationPath>) {
         _path = path
@@ -27,6 +29,17 @@ struct WorkoutSessionView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
+        .task { await HealthKitManager.shared.requestAuthorization() }
+        .onChange(of: viewModel.phase) { _, newPhase in
+            if case .completed = newPhase {
+                saveSession()
+            }
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            if newPhase == .active {
+                viewModel.handleForeground()
+            }
+        }
         .alert("End Workout?", isPresented: $showEndAlert) {
             Button("End", role: .destructive) { viewModel.endWorkout() }
             Button("Continue", role: .cancel) { viewModel.resume() }
@@ -134,18 +147,30 @@ struct WorkoutSessionView: View {
                     .contentTransition(.numericText())
                     .animation(.easeInOut(duration: 0.2), value: viewModel.splitTimeRemaining)
 
-                if case .idle = viewModel.phase {
+                switch viewModel.phase {
+                case .idle:
                     Text("tap to start")
                         .font(.outrunFuture(12))
                         .foregroundColor(.outrunCyan.opacity(0.7))
+                case .rest, .restBetweenSets:
+                    Text("tap to skip")
+                        .font(.outrunFuture(12))
+                        .foregroundColor(.outrunRed.opacity(0.7))
+                default:
+                    Color.clear.frame(height: 18)
                 }
             }
         }
         .frame(width: 270, height: 270)
         .contentShape(Circle())
         .onTapGesture {
-            if case .idle = viewModel.phase {
+            switch viewModel.phase {
+            case .idle:
                 viewModel.startWorkout()
+            case .rest, .restBetweenSets:
+                viewModel.skipForward()
+            default:
+                break
             }
         }
     }
@@ -223,5 +248,19 @@ struct WorkoutSessionView: View {
     private var playPauseIcon: String {
         if case .idle = viewModel.phase { return "play.fill" }
         return viewModel.isRunning ? "pause.fill" : "play.fill"
+    }
+
+    // MARK: - History Persistence
+
+    private func saveSession() {
+        let session = WorkoutSession(
+            totalElapsed: viewModel.totalElapsed,
+            exercisesCompleted: viewModel.exercisesCompleted,
+            setsCompleted: viewModel.setsCompleted
+        )
+        session.workout = viewModel.workout
+        viewModel.workout.sessions.append(session)
+        modelContext.insert(session)
+        try? modelContext.save()
     }
 }

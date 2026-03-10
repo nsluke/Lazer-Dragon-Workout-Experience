@@ -7,12 +7,13 @@ struct LDWEApp: App {
         WindowGroup {
             RootView()
         }
-        .modelContainer(for: [Workout.self, Exercise.self])
+        .modelContainer(for: [Workout.self, Exercise.self, WorkoutSession.self])
     }
 }
 
 struct RootView: View {
     @State private var path = NavigationPath()
+    @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
 
     var body: some View {
         NavigationStack(path: $path) {
@@ -25,6 +26,11 @@ struct RootView: View {
                         WorkoutSessionView(workout: workout, path: $path)
                     }
                 }
+        }
+        .fullScreenCover(isPresented: .constant(!hasCompletedOnboarding)) {
+            OnboardingView {
+                hasCompletedOnboarding = true
+            }
         }
     }
 }
