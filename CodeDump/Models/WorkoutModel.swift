@@ -1,116 +1,75 @@
-//
-//  Workout.swift
-//  CodeDump
-//
-//  Created by Luke Solomon on 5/5/20.
-//  Copyright © 2020 Observatory. All rights reserved.
-//
+import SwiftData
+import Foundation
 
-import UIKit
-import CoreData
+// MARK: - WorkoutType
 
-enum WorkoutType:String {
-  case HIIT = "HIIT"
-  case Run = "Run"
-  case Yoga = "Yoga"
-  case Strength = "Strength"
-  case Custom = "Custom"
+enum WorkoutType: String, CaseIterable, Codable {
+    case hiit     = "HIIT"
+    case run      = "Run"
+    case yoga     = "Yoga"
+    case strength = "Strength"
+    case custom   = "Custom"
 }
 
-class WorkoutModel {
+// MARK: - Workout
 
-  var name:String
-  var type:WorkoutType
-  var length:Int // represented in minutes
+@Model
+final class Workout {
+    var name: String
+    var type: String
+    var warmupLength: Int
+    var intervalLength: Int
+    var restLength: Int
+    var numberOfIntervals: Int
+    var numberOfSets: Int
+    var restBetweenSetLength: Int
+    var cooldownLength: Int
+    var createdAt: Date
 
-  var warmupLength:Int // represented in seconds
-  var intervalLength:Int
-  var restLength:Int
+    @Relationship(deleteRule: .cascade, inverse: \Exercise.workout)
+    var exercises: [Exercise] = []
 
-  var numberOfIntervals:Int
-  var numberOfSets:Int
-  var restBetweenSetLength:Int
-  var cooldownLength:Int
-  var exercises:[ExerciseModel]
+    @Relationship(deleteRule: .cascade, inverse: \WorkoutSession.workout)
+    var sessions: [WorkoutSession] = []
 
-  init(
-    name:String,
-    type:WorkoutType,
-    length:Int,
-
-    warmupLength:Int,
-    intervalLength:Int,
-    restLength:Int,
-
-    numberOfIntervals:Int,
-    numberOfSets:Int,
-    restBetweenSetLength:Int,
-    cooldownLength:Int,
-    exercises:[ExerciseModel]
+    init(
+        name: String,
+        type: WorkoutType = .custom,
+        warmupLength: Int = 0,
+        intervalLength: Int = 30,
+        restLength: Int = 15,
+        numberOfIntervals: Int = 5,
+        numberOfSets: Int = 1,
+        restBetweenSetLength: Int = 60,
+        cooldownLength: Int = 0
     ) {
-
-    self.name = name
-    self.type = type
-    self.length = length
-
-    self.warmupLength = warmupLength
-    self.intervalLength = intervalLength
-    self.restLength = restLength
-
-    self.numberOfIntervals = numberOfIntervals
-    self.numberOfSets = numberOfSets
-    self.restBetweenSetLength = restBetweenSetLength
-    
-    self.cooldownLength = cooldownLength
-    
-    self.exercises = exercises
-  }
-
-}
-extension WorkoutModel: Equatable {
-  static func == (lhs: WorkoutModel, rhs: WorkoutModel) -> Bool {
-    if lhs.name == rhs.name
-    && lhs.type == rhs.type
-    && lhs.length == rhs.length
-        
-    && lhs.warmupLength == rhs.warmupLength
-    && lhs.intervalLength == rhs.intervalLength
-    && lhs.restLength == rhs.restLength
-        
-    && lhs.numberOfIntervals == rhs.numberOfIntervals
-    && lhs.numberOfSets == rhs.numberOfSets
-    && lhs.restBetweenSetLength == rhs.restBetweenSetLength
-        
-    && lhs.cooldownLength == rhs.cooldownLength
-    
-    && lhs.exercises == rhs.exercises
-    {
-      return true
-    } else {
-      return false
+        self.name = name
+        self.type = type.rawValue
+        self.warmupLength = warmupLength
+        self.intervalLength = intervalLength
+        self.restLength = restLength
+        self.numberOfIntervals = numberOfIntervals
+        self.numberOfSets = numberOfSets
+        self.restBetweenSetLength = restBetweenSetLength
+        self.cooldownLength = cooldownLength
+        self.createdAt = Date()
     }
-  }
-}
 
-
-struct ExerciseModel {
-  var order:Int
-  var name:String
-  var image:UIImage
-  var splitLength:Int
-  var reps:Int
-}
-extension ExerciseModel: Equatable {
-  static func == (lhs: ExerciseModel, rhs: ExerciseModel) -> Bool {
-    if lhs.order == rhs.order
-    && lhs.name == rhs.name
-    && lhs.image == rhs.image
-    && lhs.splitLength == rhs.splitLength
-    && lhs.reps == rhs.reps
-    {
-      return true
-    } else {
-      return false
+    var workoutType: WorkoutType {
+        WorkoutType(rawValue: type) ?? .custom
     }
-  }
+
+    var sortedExercises: [Exercise] {
+        exercises.sorted { $0.order < $1.order }
+    }
+
+    var totalDurationEstimate: Int {
+        let warmup = warmupLength
+        let intervalPerSet = intervalLength * numberOfIntervals
+        let restPerSet = restLength * max(0, numberOfIntervals - 1)
+        let sets = (intervalPerSet + restPerSet) * numberOfSets
+        let setBetween = restBetweenSetLength * max(0, numberOfSets - 1)
+        let cooldown = cooldownLength
+        return warmup + sets + setBetween + cooldown
+    }
 }
