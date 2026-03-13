@@ -9,6 +9,7 @@ final class HealthKitManager {
     static let shared = HealthKitManager()
 
     private let store = HKHealthStore()
+    private(set) var authorizationRequested = false
 
     private init() {}
 
@@ -22,7 +23,16 @@ final class HealthKitManager {
             HKObjectType.workoutType(),
             HKQuantityType(.activeEnergyBurned)
         ]
-        try? await store.requestAuthorization(toShare: share, read: [])
+        let read: Set<HKObjectType> = [
+            HKCategoryType(.sleepAnalysis),
+            HKQuantityType(.heartRateVariabilitySDNN),
+        ]
+        do {
+            try await store.requestAuthorization(toShare: share, read: read)
+            authorizationRequested = true
+        } catch {
+            print("[LDWE] HealthKit authorization failed: \(error.localizedDescription)")
+        }
     }
 
     // MARK: - Save
@@ -49,7 +59,7 @@ final class HealthKitManager {
             try await builder.endCollection(at: end)
             _ = try await builder.finishWorkout()
         } catch {
-            // Silently fail — Health access may be denied or unavailable
+            print("[LDWE] HealthKit save failed: \(error.localizedDescription)")
         }
     }
 

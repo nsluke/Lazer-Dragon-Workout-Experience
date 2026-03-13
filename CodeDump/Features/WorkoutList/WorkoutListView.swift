@@ -7,7 +7,13 @@ struct WorkoutListView: View {
     @Query(sort: \Workout.createdAt) private var workouts: [Workout]
     @State private var showingBuilder = false
     @State private var showingNotificationSettings = false
+    @State private var showingEquipmentProfile = false
+    @State private var showingQuickStart = false
+    @State private var showingPrograms = false
     @State private var editingWorkout: Workout? = nil
+
+    @Query(filter: #Predicate<TrainingProgram> { $0.isActive == true })
+    private var activePrograms: [TrainingProgram]
 
     var body: some View {
         ZStack {
@@ -26,11 +32,19 @@ struct WorkoutListView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 HStack(spacing: 16) {
                     Button {
+                        showingEquipmentProfile = true
+                    } label: {
+                        Image(systemName: "gearshape")
+                            .foregroundColor(.outrunCyan)
+                    }
+                    .accessibilityLabel("Settings")
+                    Button {
                         showingNotificationSettings = true
                     } label: {
                         Image(systemName: "bell")
                             .foregroundColor(.outrunCyan)
                     }
+                    .accessibilityLabel("Notifications")
                     Button {
                         showingBuilder = true
                     } label: {
@@ -38,6 +52,7 @@ struct WorkoutListView: View {
                             .foregroundColor(.outrunCyan)
                             .fontWeight(.bold)
                     }
+                    .accessibilityLabel("Create workout")
                 }
             }
         }
@@ -50,6 +65,15 @@ struct WorkoutListView: View {
         .sheet(item: $editingWorkout) { workout in
             WorkoutBuilderView(editing: workout)
         }
+        .sheet(isPresented: $showingEquipmentProfile) {
+            EquipmentProfileView()
+        }
+        .sheet(isPresented: $showingQuickStart) {
+            QuickStartView(path: $path)
+        }
+        .sheet(isPresented: $showingPrograms) {
+            ProgramListView(path: $path)
+        }
         .onAppear(perform: seedForDebugIfNeeded)
     }
 
@@ -57,6 +81,108 @@ struct WorkoutListView: View {
 
     private var workoutList: some View {
         List {
+            // Quick Start banner
+            Section {
+                Button {
+                    showingQuickStart = true
+                } label: {
+                    HStack(spacing: 8) {
+                        Image(systemName: "bolt.fill")
+                            .font(.system(size: 16, weight: .bold))
+                        Text("QUICK START")
+                            .font(.outrunFuture(16))
+                    }
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .background(
+                        LinearGradient(
+                            colors: [.outrunPink, .outrunPurple],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .cornerRadius(10)
+                    .shadow(color: .outrunPink.opacity(0.25), radius: 12)
+                }
+                .buttonStyle(.plain)
+                .listRowBackground(Color.clear)
+                .listRowInsets(.init(top: 8, leading: 16, bottom: 8, trailing: 16))
+                .listRowSeparator(.hidden)
+            }
+
+            // Programs banner
+            Section {
+                if let active = activePrograms.first,
+                   let template = active.programTemplate {
+                    // Active program indicator
+                    Button {
+                        path.append(Route.activeProgram)
+                    } label: {
+                        HStack(spacing: 10) {
+                            Image(systemName: "flame.fill")
+                                .font(.system(size: 16, weight: .bold))
+                                .foregroundColor(.outrunOrange)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("ACTIVE: \(template.name.uppercased())")
+                                    .font(.outrunFuture(14))
+                                    .foregroundColor(.outrunYellow)
+                                Text("Week \(active.currentWeek) / \(template.durationWeeks)")
+                                    .font(.outrunFuture(10))
+                                    .foregroundColor(.white.opacity(0.5))
+                            }
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .font(.system(size: 12))
+                                .foregroundColor(.outrunCyan.opacity(0.5))
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 12)
+                        .padding(.horizontal, 14)
+                        .background(
+                            LinearGradient(
+                                colors: [.outrunCyan.opacity(0.2), .outrunGreen.opacity(0.2)],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .cornerRadius(10)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.outrunCyan.opacity(0.3), lineWidth: 1)
+                        )
+                    }
+                    .buttonStyle(.plain)
+                } else {
+                    Button {
+                        showingPrograms = true
+                    } label: {
+                        HStack(spacing: 8) {
+                            Image(systemName: "figure.run")
+                                .font(.system(size: 16, weight: .bold))
+                            Text("PROGRAMS")
+                                .font(.outrunFuture(16))
+                        }
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                        .background(
+                            LinearGradient(
+                                colors: [.outrunCyan, .outrunGreen],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .cornerRadius(10)
+                        .shadow(color: .outrunCyan.opacity(0.25), radius: 12)
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+            .listRowBackground(Color.clear)
+            .listRowInsets(.init(top: 0, leading: 16, bottom: 8, trailing: 16))
+            .listRowSeparator(.hidden)
+
             ForEach(workouts) { workout in
                 Button {
                     path.append(Route.detail(workout))
@@ -104,21 +230,69 @@ struct WorkoutListView: View {
 
             Spacer()
 
-            Button {
-                showingBuilder = true
-            } label: {
-                HStack(spacing: 10) {
-                    Image(systemName: "plus")
-                        .fontWeight(.bold)
-                    Text("CREATE WORKOUT")
-                        .font(.outrunFuture(20))
+            VStack(spacing: 14) {
+                Button {
+                    showingQuickStart = true
+                } label: {
+                    HStack(spacing: 10) {
+                        Image(systemName: "bolt.fill")
+                            .fontWeight(.bold)
+                        Text("QUICK START")
+                            .font(.outrunFuture(20))
+                    }
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 18)
+                    .background(
+                        LinearGradient(
+                            colors: [.outrunPink, .outrunPurple],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .cornerRadius(12)
+                    .shadow(color: .outrunPink.opacity(0.3), radius: 16)
                 }
-                .foregroundColor(.outrunBlack)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 18)
-                .background(Color.outrunYellow)
-                .cornerRadius(12)
-                .shadow(color: .outrunYellow.opacity(0.3), radius: 16)
+
+                Button {
+                    showingPrograms = true
+                } label: {
+                    HStack(spacing: 10) {
+                        Image(systemName: "figure.run")
+                            .fontWeight(.bold)
+                        Text("PROGRAMS")
+                            .font(.outrunFuture(20))
+                    }
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 18)
+                    .background(
+                        LinearGradient(
+                            colors: [.outrunCyan, .outrunGreen],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .cornerRadius(12)
+                    .shadow(color: .outrunCyan.opacity(0.3), radius: 16)
+                }
+
+                Button {
+                    showingBuilder = true
+                } label: {
+                    HStack(spacing: 10) {
+                        Image(systemName: "plus")
+                            .fontWeight(.bold)
+                        Text("CREATE WORKOUT")
+                            .font(.outrunFuture(20))
+                    }
+                    .foregroundColor(.outrunBlack)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 18)
+                    .background(Color.outrunYellow)
+                    .cornerRadius(12)
+                    .shadow(color: .outrunYellow.opacity(0.3), radius: 16)
+                }
             }
             .padding(.horizontal, 32)
             .padding(.bottom, 52)
@@ -199,9 +373,11 @@ struct WorkoutRow: View {
                 Text(workout.name)
                     .font(.outrunFuture(22))
                     .foregroundColor(.outrunYellow)
+                    .minimumScaleFactor(0.7)
                 Text("\(workout.exercises.count) exercises  ·  \(workout.numberOfSets) set\(workout.numberOfSets == 1 ? "" : "s")  ·  ~\(workout.totalDurationEstimate.formattedTime)\(workout.sessions.isEmpty ? "" : "  ·  \(workout.sessions.count) session\(workout.sessions.count == 1 ? "" : "s")")")
                     .font(.outrunFuture(12))
                     .foregroundColor(.outrunCyan.opacity(0.8))
+                    .minimumScaleFactor(0.7)
             }
             Spacer()
             Text(workout.workoutType.rawValue)
@@ -213,5 +389,7 @@ struct WorkoutRow: View {
                 .cornerRadius(4)
         }
         .padding(.vertical, 6)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(workout.name), \(workout.workoutType.rawValue). \(workout.exercises.count) exercises, \(workout.numberOfSets) sets, about \(workout.totalDurationEstimate.formattedTime)")
     }
 }

@@ -7,9 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0369A6C2E498C782E44B0819 /* Pods_CodeDump_CodeDumpUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F9AA85219C745D31C883E72 /* Pods_CodeDump_CodeDumpUITests.framework */; };
-		1597A41CBDAF84BA0464B869 /* Pods_CodeDumpTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8850B8620017683E2D6B1270 /* Pods_CodeDumpTests.framework */; };
+		2551B19E4B2546F783B68E04 /* WatchConnectivity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8421FB6678794FCD901C9807 /* WatchConnectivity.framework */; };
+		2907BE2F878845CDA506F48D /* WatchSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4157AEB5C940478C1392A1 /* WatchSessionView.swift */; };
+		53E6E8776E5F4CF9832EAE99 /* WorkoutLiveActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42D196B4C0F424CA36542CB /* WorkoutLiveActivityView.swift */; };
+		5F5E50D046B14AF2A57E2EFB /* LDWELiveActivity.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 2ADA1302EA3C498FB32DCFA9 /* LDWELiveActivity.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		6CE6A5B93A5C446D8CE5F685 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 114A0BAC7CF044F1B092EBDF /* WidgetKit.framework */; };
+		7A75E65514584D22BCEFAE44 /* ActivityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3E070372F60A6AF003EF4CD /* ActivityKit.framework */; };
+		A1B2C30100000001000001A1 /* WidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C30100000002000001A1 /* WidgetData.swift */; };
+		A1B2C30100000003000001A1 /* WidgetTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C30100000004000001A1 /* WidgetTheme.swift */; };
+		A1B2C30100000005000001A1 /* LDWEWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C30100000006000001A1 /* LDWEWidgetBundle.swift */; };
+		A1B2C30100000007000001A1 /* NextWorkoutWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C30100000008000001A1 /* NextWorkoutWidget.swift */; };
+		A1B2C30100000009000001A1 /* WeeklyStreakWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3010000000A000001A1 /* WeeklyStreakWidget.swift */; };
+		A1B2C3010000000B000001A1 /* MuscleHeatmapWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3010000000C000001A1 /* MuscleHeatmapWidget.swift */; };
+		A1B2C3010000000D000001A1 /* PRCelebrationWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3010000000E000001A1 /* PRCelebrationWidget.swift */; };
+		A1B2C3010000000F000001A1 /* OutrunFuture.otf in Resources */ = {isa = PBXBuildFile; fileRef = D52114C62466377E00D1F0ED /* OutrunFuture.otf */; };
+		A1B2C30100000010000001A1 /* OutrunFutureBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D52114C42466377D00D1F0ED /* OutrunFutureBold.otf */; };
+		A1B2C30100000011000001A1 /* OutrunFutureBoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = D52114C52466377E00D1F0ED /* OutrunFutureBoldItalic.otf */; };
 		A3E070382F60A6AF003EF4CD /* ActivityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3E070372F60A6AF003EF4CD /* ActivityKit.framework */; };
+		A4B4DB5DF6DD48949442505A /* LDWEWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2150DB55BE43C5ADA4D80B /* LDWEWatchApp.swift */; };
+		B9FA493509D042FEA10EAFAC /* WatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E2283EE4F44C17BD3CE984 /* WatchConnectivityManager.swift */; };
 		D518D5902592EA32000EC45B /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D518D58F2592EA32000EC45B /* HealthKit.framework */; };
 		D52114C72466377E00D1F0ED /* OutrunFutureBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D52114C42466377D00D1F0ED /* OutrunFutureBold.otf */; };
 		D52114C82466377E00D1F0ED /* OutrunFutureBoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = D52114C52466377E00D1F0ED /* OutrunFutureBoldItalic.otf */; };
@@ -34,23 +50,19 @@
 		D5BA33CF245CF23D001DE467 /* CodeDumpTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BA33CE245CF23D001DE467 /* CodeDumpTests.swift */; };
 		D5BA33DA245CF23D001DE467 /* CodeDumpUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BA33D9245CF23D001DE467 /* CodeDumpUITests.swift */; };
 		D5D496BA254B4C3D00548BA8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5D496B9254B4C3D00548BA8 /* Assets.xcassets */; };
-		D5D496C6254B4C3D00548BA8 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D496C5254B4C3D00548BA8 /* InterfaceController.swift */; };
-		D5D496C8254B4C3D00548BA8 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D496C7254B4C3D00548BA8 /* ExtensionDelegate.swift */; };
-		D5D496CA254B4C3D00548BA8 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D496C9254B4C3D00548BA8 /* NotificationController.swift */; };
-		D5D496CC254B4C3D00548BA8 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D496CB254B4C3D00548BA8 /* ComplicationController.swift */; };
 		D5D496CE254B4C3E00548BA8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5D496CD254B4C3E00548BA8 /* Assets.xcassets */; };
 		D5D496D3254B4C3E00548BA8 /* LDWEWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = D5D496B4254B4C3A00548BA8 /* LDWEWatch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		A4B4DB5DF6DD48949442505A /* LDWEWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2150DB55BE43C5ADA4D80B /* LDWEWatchApp.swift */; };
-		2907BE2F878845CDA506F48D /* WatchSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4157AEB5C940478C1392A1 /* WatchSessionView.swift */; };
-		B9FA493509D042FEA10EAFAC /* WatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E2283EE4F44C17BD3CE984 /* WatchConnectivityManager.swift */; };
-		53E6E8776E5F4CF9832EAE99 /* WorkoutLiveActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42D196B4C0F424CA36542CB /* WorkoutLiveActivityView.swift */; };
-		6CE6A5B93A5C446D8CE5F685 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 114A0BAC7CF044F1B092EBDF /* WidgetKit.framework */; };
-		7A75E65514584D22BCEFAE44 /* ActivityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3E070372F60A6AF003EF4CD /* ActivityKit.framework */; };
 		FF34CF0F55C64590B3BF19C9 /* WorkoutActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCF91C439C74CC69E78F94E /* WorkoutActivityAttributes.swift */; };
-		5F5E50D046B14AF2A57E2EFB /* LDWELiveActivity.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 2ADA1302EA3C498FB32DCFA9 /* LDWELiveActivity.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		6B94ADA23950445EA770AB12 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D5BA33A9245CF239001DE467 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C2B7D30AF46743888CEAF2BA;
+			remoteInfo = LDWELiveActivity;
+		};
 		D5BA33CB245CF23D001DE467 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D5BA33A9245CF239001DE467 /* Project object */;
@@ -72,27 +84,9 @@
 			remoteGlobalIDString = D5D496B3254B4C3A00548BA8;
 			remoteInfo = LDWEWatch;
 		};
-		6B94ADA23950445EA770AB12 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D5BA33A9245CF239001DE467 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C2B7D30AF46743888CEAF2BA;
-			remoteInfo = LDWELiveActivity;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		D5D496D4254B4C3E00548BA8 /* Embed Watch Content */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
-			dstSubfolderSpec = 16;
-			files = (
-				D5D496D3254B4C3E00548BA8 /* LDWEWatch.app in Embed Watch Content */,
-			);
-			name = "Embed Watch Content";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		219E5036B1374E72A73A0299 /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -104,13 +98,36 @@
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D5D496D4254B4C3E00548BA8 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				D5D496D3254B4C3E00548BA8 /* LDWEWatch.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		8850B8620017683E2D6B1270 /* Pods_CodeDumpTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CodeDumpTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9F9AA85219C745D31C883E72 /* Pods_CodeDump_CodeDumpUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CodeDump_CodeDumpUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A3E070372F60A6AF003EF4CD /* ActivityKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ActivityKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk/System/iOSSupport/System/Library/Frameworks/ActivityKit.framework; sourceTree = DEVELOPER_DIR; };
 		114A0BAC7CF044F1B092EBDF /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/WidgetKit.framework; sourceTree = DEVELOPER_DIR; };
+		11E2283EE4F44C17BD3CE984 /* WatchConnectivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchConnectivityManager.swift; sourceTree = "<group>"; };
+		2ADA1302EA3C498FB32DCFA9 /* LDWELiveActivity.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LDWELiveActivity.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		42E3AD6526014BF48CB225A8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5A2150DB55BE43C5ADA4D80B /* LDWEWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LDWEWatchApp.swift; sourceTree = "<group>"; };
+		8421FB6678794FCD901C9807 /* WatchConnectivity.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WatchConnectivity.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS.sdk/System/Library/Frameworks/WatchConnectivity.framework; sourceTree = DEVELOPER_DIR; };
+		A1B2C30100000002000001A1 /* WidgetData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetData.swift; sourceTree = "<group>"; };
+		A1B2C30100000004000001A1 /* WidgetTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetTheme.swift; sourceTree = "<group>"; };
+		A1B2C30100000006000001A1 /* LDWEWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LDWEWidgetBundle.swift; sourceTree = "<group>"; };
+		A1B2C30100000008000001A1 /* NextWorkoutWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextWorkoutWidget.swift; sourceTree = "<group>"; };
+		A1B2C3010000000A000001A1 /* WeeklyStreakWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyStreakWidget.swift; sourceTree = "<group>"; };
+		A1B2C3010000000C000001A1 /* MuscleHeatmapWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuscleHeatmapWidget.swift; sourceTree = "<group>"; };
+		A1B2C3010000000E000001A1 /* PRCelebrationWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PRCelebrationWidget.swift; sourceTree = "<group>"; };
+		A1B2C30100000012000001A1 /* LDWELiveActivity.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LDWELiveActivity.entitlements; sourceTree = "<group>"; };
+		A3E070372F60A6AF003EF4CD /* ActivityKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ActivityKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk/System/iOSSupport/System/Library/Frameworks/ActivityKit.framework; sourceTree = DEVELOPER_DIR; };
+		A42D196B4C0F424CA36542CB /* WorkoutLiveActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutLiveActivityView.swift; sourceTree = "<group>"; };
 		D518D58F2592EA32000EC45B /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		D52114C42466377D00D1F0ED /* OutrunFutureBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = OutrunFutureBold.otf; sourceTree = "<group>"; };
 		D52114C52466377E00D1F0ED /* OutrunFutureBoldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = OutrunFutureBoldItalic.otf; sourceTree = "<group>"; };
@@ -133,30 +150,34 @@
 		D5D496B4254B4C3A00548BA8 /* LDWEWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LDWEWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5D496B9254B4C3D00548BA8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D5D496BB254B4C3D00548BA8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D5D496C5254B4C3D00548BA8 /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
-		D5D496C7254B4C3D00548BA8 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
-		D5D496C9254B4C3D00548BA8 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
-		D5D496CB254B4C3D00548BA8 /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
 		D5D496CD254B4C3E00548BA8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D5D496CF254B4C3E00548BA8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D5D496D0254B4C3E00548BA8 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
-		EDEAC8C9162DA2F1D1B6E5D9 /* Pods_CodeDump.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CodeDump.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		2ADA1302EA3C498FB32DCFA9 /* LDWELiveActivity.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LDWELiveActivity.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		A42D196B4C0F424CA36542CB /* WorkoutLiveActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutLiveActivityView.swift; sourceTree = "<group>"; };
-		EBCF91C439C74CC69E78F94E /* WorkoutActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutActivityAttributes.swift; sourceTree = "<group>"; };
-		42E3AD6526014BF48CB225A8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5A2150DB55BE43C5ADA4D80B /* LDWEWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LDWEWatchApp.swift; sourceTree = "<group>"; };
 		EB4157AEB5C940478C1392A1 /* WatchSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSessionView.swift; sourceTree = "<group>"; };
-		11E2283EE4F44C17BD3CE984 /* WatchConnectivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchConnectivityManager.swift; sourceTree = "<group>"; };
+		EBCF91C439C74CC69E78F94E /* WorkoutActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutActivityAttributes.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
 		A3E070362F609176003EF4CD /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				ExerciseLibrary/CustomExerciseBuilderView.swift,
+				ExerciseLibrary/ExerciseLibraryView.swift,
 				Notifications/NotificationManager.swift,
 				Notifications/NotificationSettingsView.swift,
 				Onboarding/OnboardingView.swift,
+				Programs/ProgramAdaptiveEngine.swift,
+				Programs/ProgramCalendarView.swift,
+				Programs/ProgramDetailView.swift,
+				Programs/ProgramListView.swift,
+				Programs/ProgramViewModel.swift,
+				QuickStart/QuickStartView.swift,
+				QuickStart/QuickStartViewModel.swift,
+				Settings/EquipmentProfileView.swift,
+				Sharing/ShareSheetView.swift,
+				Sharing/WeeklyStatsCardView.swift,
+				Sharing/WorkoutShareCardView.swift,
+				Widgets/WidgetDataProvider.swift,
 				WorkoutBuilder/WorkoutBuilderView.swift,
 				WorkoutBuilder/WorkoutBuilderViewModel.swift,
 				WorkoutCompleted/WorkoutCompletedView.swift,
@@ -166,6 +187,7 @@
 				WorkoutSession/FeedbackEngine.swift,
 				WorkoutSession/HealthKitManager.swift,
 				WorkoutSession/LiveActivityManager.swift,
+				WorkoutSession/SetLogOverlay.swift,
 				WorkoutSession/WatchConnectivityManager.swift,
 				WorkoutSession/WorkoutActivityAttributes.swift,
 				WorkoutSession/WorkoutSessionView.swift,
@@ -185,6 +207,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2551B19E4B2546F783B68E04 /* WatchConnectivity.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		21B8E4EECFD8436B9978EC71 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6CE6A5B93A5C446D8CE5F685 /* WidgetKit.framework in Frameworks */,
+				7A75E65514584D22BCEFAE44 /* ActivityKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -201,7 +233,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1597A41CBDAF84BA0464B869 /* Pods_CodeDumpTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -209,22 +240,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0369A6C2E498C782E44B0819 /* Pods_CodeDump_CodeDumpUITests.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		21B8E4EECFD8436B9978EC71 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				6CE6A5B93A5C446D8CE5F685 /* WidgetKit.framework in Frameworks */,
-				7A75E65514584D22BCEFAE44 /* ActivityKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		615183378F02451D88D6B3FB /* LDWELiveActivity */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C30100000012000001A1 /* LDWELiveActivity.entitlements */,
+				A1B2C30100000006000001A1 /* LDWEWidgetBundle.swift */,
+				A42D196B4C0F424CA36542CB /* WorkoutLiveActivityView.swift */,
+				EBCF91C439C74CC69E78F94E /* WorkoutActivityAttributes.swift */,
+				A1B2C30100000002000001A1 /* WidgetData.swift */,
+				A1B2C30100000004000001A1 /* WidgetTheme.swift */,
+				A1B2C30100000008000001A1 /* NextWorkoutWidget.swift */,
+				A1B2C3010000000A000001A1 /* WeeklyStreakWidget.swift */,
+				A1B2C3010000000C000001A1 /* MuscleHeatmapWidget.swift */,
+				A1B2C3010000000E000001A1 /* PRCelebrationWidget.swift */,
+				42E3AD6526014BF48CB225A8 /* Info.plist */,
+			);
+			path = LDWELiveActivity;
+			sourceTree = "<group>";
+		};
 		72A6F1407F56278E77EB4DF3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -232,11 +271,16 @@
 				114A0BAC7CF044F1B092EBDF /* WidgetKit.framework */,
 				D518D58F2592EA32000EC45B /* HealthKit.framework */,
 				D55D076E24BB7583001B61F5 /* XCTest.framework */,
-				EDEAC8C9162DA2F1D1B6E5D9 /* Pods_CodeDump.framework */,
-				9F9AA85219C745D31C883E72 /* Pods_CodeDump_CodeDumpUITests.framework */,
-				8850B8620017683E2D6B1270 /* Pods_CodeDumpTests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A3E07CB12F61B16C003EF4CD /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				8421FB6678794FCD901C9807 /* WatchConnectivity.framework */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		D52114CA2466378200D1F0ED /* Fonts */ = {
@@ -286,6 +330,7 @@
 				615183378F02451D88D6B3FB /* LDWELiveActivity */,
 				D5BA33B2245CF239001DE467 /* Products */,
 				72A6F1407F56278E77EB4DF3 /* Frameworks */,
+				A3E07CB12F61B16C003EF4CD /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -365,10 +410,6 @@
 				5A2150DB55BE43C5ADA4D80B /* LDWEWatchApp.swift */,
 				EB4157AEB5C940478C1392A1 /* WatchSessionView.swift */,
 				11E2283EE4F44C17BD3CE984 /* WatchConnectivityManager.swift */,
-				D5D496C5254B4C3D00548BA8 /* InterfaceController.swift */,
-				D5D496C7254B4C3D00548BA8 /* ExtensionDelegate.swift */,
-				D5D496C9254B4C3D00548BA8 /* NotificationController.swift */,
-				D5D496CB254B4C3D00548BA8 /* ComplicationController.swift */,
 				D5D496CD254B4C3E00548BA8 /* Assets.xcassets */,
 				D5D496CF254B4C3E00548BA8 /* Info.plist */,
 				D5D496D0254B4C3E00548BA8 /* PushNotificationPayload.apns */,
@@ -376,19 +417,26 @@
 			path = "LDWEWatch Extension";
 			sourceTree = "<group>";
 		};
-		615183378F02451D88D6B3FB /* LDWELiveActivity */ = {
-			isa = PBXGroup;
-			children = (
-				A42D196B4C0F424CA36542CB /* WorkoutLiveActivityView.swift */,
-				EBCF91C439C74CC69E78F94E /* WorkoutActivityAttributes.swift */,
-				42E3AD6526014BF48CB225A8 /* Info.plist */,
-			);
-			path = LDWELiveActivity;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		C2B7D30AF46743888CEAF2BA /* LDWELiveActivity */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1B91BF7D63894E86A69E805E /* Build configuration list for PBXNativeTarget "LDWELiveActivity" */;
+			buildPhases = (
+				937F4623DF154288A49B6AD9 /* Sources */,
+				21B8E4EECFD8436B9978EC71 /* Frameworks */,
+				6AAA2A07BFCD468A82EA448C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LDWELiveActivity;
+			productName = LDWELiveActivity;
+			productReference = 2ADA1302EA3C498FB32DCFA9 /* LDWELiveActivity.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		D5BA33B0245CF239001DE467 /* CodeDump */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D5BA33DE245CF23D001DE467 /* Build configuration list for PBXNativeTarget "CodeDump" */;
@@ -418,7 +466,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D5BA33E1245CF23D001DE467 /* Build configuration list for PBXNativeTarget "CodeDumpTests" */;
 			buildPhases = (
-				F6A11A6E3B835788C9698C6F /* [CP] Check Pods Manifest.lock */,
 				D5BA33C6245CF23D001DE467 /* Sources */,
 				D5BA33C7245CF23D001DE467 /* Frameworks */,
 				D5BA33C8245CF23D001DE467 /* Resources */,
@@ -441,11 +488,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D5BA33E4245CF23D001DE467 /* Build configuration list for PBXNativeTarget "CodeDumpUITests" */;
 			buildPhases = (
-				213261CD0E76E5E66869244A /* [CP] Check Pods Manifest.lock */,
 				D5BA33D1245CF23D001DE467 /* Sources */,
 				D5BA33D2245CF23D001DE467 /* Frameworks */,
 				D5BA33D3245CF23D001DE467 /* Resources */,
-				F50D6F8EF19205272B4E8900 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -481,23 +526,6 @@
 			productName = LDWEWatch;
 			productReference = D5D496B4254B4C3A00548BA8 /* LDWEWatch.app */;
 			productType = "com.apple.product-type.application";
-		};
-		C2B7D30AF46743888CEAF2BA /* LDWELiveActivity */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 1B91BF7D63894E86A69E805E /* Build configuration list for PBXNativeTarget "LDWELiveActivity" */;
-			buildPhases = (
-				937F4623DF154288A49B6AD9 /* Sources */,
-				21B8E4EECFD8436B9978EC71 /* Frameworks */,
-				6AAA2A07BFCD468A82EA448C /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = LDWELiveActivity;
-			productName = LDWELiveActivity;
-			productReference = 2ADA1302EA3C498FB32DCFA9 /* LDWELiveActivity.appex */;
-			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -549,6 +577,16 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		6AAA2A07BFCD468A82EA448C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1B2C3010000000F000001A1 /* OutrunFuture.otf in Resources */,
+				A1B2C30100000010000001A1 /* OutrunFutureBold.otf in Resources */,
+				A1B2C30100000011000001A1 /* OutrunFutureBoldItalic.otf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D5BA33AF245CF239001DE467 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -596,84 +634,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6AAA2A07BFCD468A82EA448C /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		213261CD0E76E5E66869244A /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-CodeDump-CodeDumpUITests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F50D6F8EF19205272B4E8900 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CodeDump-CodeDumpUITests/Pods-CodeDump-CodeDumpUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CodeDump-CodeDumpUITests/Pods-CodeDump-CodeDumpUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CodeDump-CodeDumpUITests/Pods-CodeDump-CodeDumpUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F6A11A6E3B835788C9698C6F /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-CodeDumpTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
+		937F4623DF154288A49B6AD9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				53E6E8776E5F4CF9832EAE99 /* WorkoutLiveActivityView.swift in Sources */,
+				FF34CF0F55C64590B3BF19C9 /* WorkoutActivityAttributes.swift in Sources */,
+				A1B2C30100000001000001A1 /* WidgetData.swift in Sources */,
+				A1B2C30100000003000001A1 /* WidgetTheme.swift in Sources */,
+				A1B2C30100000005000001A1 /* LDWEWidgetBundle.swift in Sources */,
+				A1B2C30100000007000001A1 /* NextWorkoutWidget.swift in Sources */,
+				A1B2C30100000009000001A1 /* WeeklyStreakWidget.swift in Sources */,
+				A1B2C3010000000B000001A1 /* MuscleHeatmapWidget.swift in Sources */,
+				A1B2C3010000000D000001A1 /* PRCelebrationWidget.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D5BA33AD245CF239001DE467 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -707,25 +686,17 @@
 				A4B4DB5DF6DD48949442505A /* LDWEWatchApp.swift in Sources */,
 				2907BE2F878845CDA506F48D /* WatchSessionView.swift in Sources */,
 				B9FA493509D042FEA10EAFAC /* WatchConnectivityManager.swift in Sources */,
-				D5D496CA254B4C3D00548BA8 /* NotificationController.swift in Sources */,
-				D5D496CC254B4C3D00548BA8 /* ComplicationController.swift in Sources */,
-				D5D496C8254B4C3D00548BA8 /* ExtensionDelegate.swift in Sources */,
-				D5D496C6254B4C3D00548BA8 /* InterfaceController.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		937F4623DF154288A49B6AD9 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				53E6E8776E5F4CF9832EAE99 /* WorkoutLiveActivityView.swift in Sources */,
-				FF34CF0F55C64590B3BF19C9 /* WorkoutActivityAttributes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		BE55F51F780D44948475B73C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C2B7D30AF46743888CEAF2BA /* LDWELiveActivity */;
+			targetProxy = 6B94ADA23950445EA770AB12 /* PBXContainerItemProxy */;
+		};
 		D5BA33CC245CF23D001DE467 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D5BA33B0245CF239001DE467 /* CodeDump */;
@@ -741,11 +712,6 @@
 			target = D5D496B3254B4C3A00548BA8 /* LDWEWatch */;
 			targetProxy = D5D496D1254B4C3E00548BA8 /* PBXContainerItemProxy */;
 		};
-		BE55F51F780D44948475B73C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C2B7D30AF46743888CEAF2BA /* LDWELiveActivity */;
-			targetProxy = 6B94ADA23950445EA770AB12 /* PBXContainerItemProxy */;
-		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -760,6 +726,46 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		5010E238F3AF4A4E8DFD60C4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = LDWELiveActivity/LDWELiveActivity.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6TK8Q4KD6G;
+				INFOPLIST_FILE = LDWELiveActivity/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Observatory.CodeDump.LDWELiveActivity;
+				PRODUCT_NAME = LDWELiveActivity;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A65CA41A4F174A51B7061A22 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = LDWELiveActivity/LDWELiveActivity.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6TK8Q4KD6G;
+				INFOPLIST_FILE = LDWELiveActivity/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Observatory.CodeDump.LDWELiveActivity;
+				PRODUCT_NAME = LDWELiveActivity;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
 		D5BA33DC245CF23D001DE467 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -814,7 +820,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -873,7 +879,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -891,6 +897,7 @@
 				CODE_SIGN_ENTITLEMENTS = CodeDump/CodeDump.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6TK8Q4KD6G;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_INCOMING_NETWORK_CONNECTIONS = YES;
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
@@ -916,6 +923,7 @@
 				CODE_SIGN_ENTITLEMENTS = CodeDump/CodeDump.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6TK8Q4KD6G;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_INCOMING_NETWORK_CONNECTIONS = YES;
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
@@ -940,7 +948,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = CodeDumpTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -960,7 +968,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = CodeDumpTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1054,45 +1062,18 @@
 			};
 			name = Release;
 		};
-		A65CA41A4F174A51B7061A22 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = YES;
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = LDWELiveActivity/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
-				MARKETING_VERSION = 1.0;
-				CURRENT_PROJECT_VERSION = 1;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Observatory.CodeDump.LDWELiveActivity";
-				PRODUCT_NAME = LDWELiveActivity;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		5010E238F3AF4A4E8DFD60C4 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = YES;
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = LDWELiveActivity/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
-				MARKETING_VERSION = 1.0;
-				CURRENT_PROJECT_VERSION = 1;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Observatory.CodeDump.LDWELiveActivity";
-				PRODUCT_NAME = LDWELiveActivity;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		1B91BF7D63894E86A69E805E /* Build configuration list for PBXNativeTarget "LDWELiveActivity" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A65CA41A4F174A51B7061A22 /* Debug */,
+				5010E238F3AF4A4E8DFD60C4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		D5BA33AC245CF239001DE467 /* Build configuration list for PBXProject "CodeDump" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1134,15 +1115,6 @@
 			buildConfigurations = (
 				D5D496D5254B4C3E00548BA8 /* Debug */,
 				D5D496D6254B4C3E00548BA8 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		1B91BF7D63894E86A69E805E /* Build configuration list for PBXNativeTarget "LDWELiveActivity" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A65CA41A4F174A51B7061A22 /* Debug */,
-				5010E238F3AF4A4E8DFD60C4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

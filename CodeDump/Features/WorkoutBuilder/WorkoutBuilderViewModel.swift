@@ -21,6 +21,9 @@ final class WorkoutBuilderViewModel {
         var name: String = ""
         var splitLength: Int = 30
         var reps: Int = 0
+        var targetMuscleGroups: [MuscleGroup] = []
+        var equipment: Equipment = .bodyweight
+        var templateID: String? = nil
     }
 
     init(editing workout: Workout? = nil) {
@@ -37,7 +40,14 @@ final class WorkoutBuilderViewModel {
         restBetweenSetLength = workout.restBetweenSetLength
         cooldownLength      = workout.cooldownLength
         exercises = workout.sortedExercises.map {
-            DraftExercise(name: $0.name, splitLength: $0.splitLength, reps: $0.reps)
+            DraftExercise(
+                name: $0.name,
+                splitLength: $0.splitLength,
+                reps: $0.reps,
+                targetMuscleGroups: $0.targetMuscleGroups,
+                equipment: $0.equipment,
+                templateID: $0.templateID
+            )
         }
     }
 
@@ -49,6 +59,17 @@ final class WorkoutBuilderViewModel {
 
     func addExercise() {
         exercises.append(DraftExercise())
+    }
+
+    func addExercise(from item: ExercisePickerItem) {
+        exercises.append(DraftExercise(
+            name: item.name,
+            splitLength: item.defaultDuration,
+            reps: item.defaultReps,
+            targetMuscleGroups: item.muscles,
+            equipment: item.equipment,
+            templateID: item.id
+        ))
     }
 
     func removeExercises(at offsets: IndexSet) {
@@ -70,6 +91,18 @@ final class WorkoutBuilderViewModel {
 
     // MARK: - Private
 
+    private func makeExercise(from draft: DraftExercise, order: Int) -> Exercise {
+        Exercise(
+            order: order,
+            name: draft.name.trimmingCharacters(in: .whitespaces),
+            splitLength: draft.splitLength,
+            reps: draft.reps,
+            targetMuscleGroupsRaw: draft.targetMuscleGroups.map(\.rawValue).joined(separator: ","),
+            equipmentRaw: draft.equipment.rawValue,
+            templateID: draft.templateID
+        )
+    }
+
     private func updateExisting(_ workout: Workout, in context: ModelContext) {
         workout.name                 = name.trimmingCharacters(in: .whitespaces)
         workout.type                 = type.rawValue
@@ -86,12 +119,7 @@ final class WorkoutBuilderViewModel {
         workout.exercises = []
 
         for (index, draft) in exercises.enumerated() {
-            let ex = Exercise(
-                order: index,
-                name: draft.name.trimmingCharacters(in: .whitespaces),
-                splitLength: draft.splitLength,
-                reps: draft.reps
-            )
+            let ex = makeExercise(from: draft, order: index)
             ex.workout = workout
             workout.exercises.append(ex)
             context.insert(ex)
@@ -113,12 +141,7 @@ final class WorkoutBuilderViewModel {
         context.insert(workout)
 
         for (index, draft) in exercises.enumerated() {
-            let ex = Exercise(
-                order: index,
-                name: draft.name.trimmingCharacters(in: .whitespaces),
-                splitLength: draft.splitLength,
-                reps: draft.reps
-            )
+            let ex = makeExercise(from: draft, order: index)
             ex.workout = workout
             workout.exercises.append(ex)
             context.insert(ex)

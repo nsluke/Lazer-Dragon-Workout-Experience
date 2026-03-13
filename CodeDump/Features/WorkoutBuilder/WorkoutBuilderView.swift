@@ -4,6 +4,7 @@ struct WorkoutBuilderView: View {
     @State private var viewModel: WorkoutBuilderViewModel
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
+    @State private var showingLibrary = false
 
     init(editing workout: Workout? = nil) {
         _viewModel = State(initialValue: WorkoutBuilderViewModel(editing: workout))
@@ -109,17 +110,32 @@ struct WorkoutBuilderView: View {
             .onDelete { offsets in viewModel.removeExercises(at: offsets) }
             .onMove  { src, dst in viewModel.moveExercises(from: src, to: dst) }
 
-            Button {
-                viewModel.addExercise()
-            } label: {
-                Label("Add Exercise", systemImage: "plus.circle.fill")
-                    .font(.outrunFuture(14))
-                    .foregroundColor(.outrunCyan)
+            HStack(spacing: 16) {
+                Button {
+                    showingLibrary = true
+                } label: {
+                    Label("From Library", systemImage: "books.vertical.fill")
+                        .font(.outrunFuture(13))
+                        .foregroundColor(.outrunCyan)
+                }
+
+                Button {
+                    viewModel.addExercise()
+                } label: {
+                    Label("Add Blank", systemImage: "plus.circle")
+                        .font(.outrunFuture(13))
+                        .foregroundColor(.outrunPurple)
+                }
             }
         } header: {
             builderHeader("EXERCISES")
         }
         .listRowBackground(Color.outrunSurface)
+        .sheet(isPresented: $showingLibrary) {
+            ExerciseLibraryView { item in
+                viewModel.addExercise(from: item)
+            }
+        }
     }
 
     // MARK: - Reusable Controls
@@ -171,6 +187,36 @@ struct ExerciseBuilderRow: View {
             TextField("Exercise name", text: $exercise.name)
                 .font(.outrunFuture(15))
                 .foregroundColor(.outrunYellow)
+
+            if !exercise.targetMuscleGroups.isEmpty {
+                HStack(spacing: 6) {
+                    ForEach(exercise.targetMuscleGroups, id: \.self) { muscle in
+                        HStack(spacing: 2) {
+                            Image(systemName: muscle.icon)
+                                .font(.system(size: 8))
+                            Text(muscle.displayName)
+                                .font(.outrunFuture(7))
+                        }
+                        .foregroundColor(.outrunCyan.opacity(0.7))
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 3)
+                        .background(Color.outrunCyan.opacity(0.1))
+                        .clipShape(Capsule())
+                    }
+
+                    HStack(spacing: 2) {
+                        Image(systemName: exercise.equipment.icon)
+                            .font(.system(size: 8))
+                        Text(exercise.equipment.displayName)
+                            .font(.outrunFuture(7))
+                    }
+                    .foregroundColor(.outrunPurple.opacity(0.7))
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 3)
+                    .background(Color.outrunPurple.opacity(0.1))
+                    .clipShape(Capsule())
+                }
+            }
 
             HStack(spacing: 20) {
                 HStack(spacing: 6) {
