@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 struct WorkoutSessionView: View {
     @Binding var path: NavigationPath
@@ -6,6 +7,8 @@ struct WorkoutSessionView: View {
     @State private var showEndAlert = false
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.modelContext) private var modelContext
+    @Query(sort: \SetLog.date, order: .reverse) private var allSetLogs: [SetLog]
+    @Query(sort: \WorkoutSession.date, order: .reverse) private var allSessions: [WorkoutSession]
 
     init(workout: Workout, path: Binding<NavigationPath>) {
         _path = path
@@ -22,17 +25,36 @@ struct WorkoutSessionView: View {
                     exercisesCompleted: viewModel.exercisesCompleted,
                     setsCompleted: viewModel.setsCompleted,
                     workoutName: viewModel.workout.name,
+                    setLogs: viewModel.sessionLogs,
+                    workout: viewModel.workout,
+                    allHistoricalLogs: allSetLogs,
+                    allSessions: allSessions,
                     onDone: { path.removeLast(path.count) }
                 )
             } else {
-                sessionContent
+                ZStack {
+                    sessionContent
+
+                    if viewModel.pendingLog != nil {
+                        SetLogOverlay(viewModel: viewModel)
+                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                    }
+                }
+                .animation(.easeOut(duration: 0.3), value: viewModel.pendingLog != nil)
             }
         }
         .navigationBarBackButtonHidden(true)
-        .task { await HealthKitManager.shared.requestAuthorization() }
+        .task {
+            await HealthKitManager.shared.requestAuthorization()
+            viewModel.historicalLogs = allSetLogs
+        }
         .onChange(of: viewModel.phase) { _, newPhase in
             if case .completed = newPhase {
                 saveSession()
+            }
+            // Auto-commit any pending log when the next interval starts
+            if case .interval = newPhase, viewModel.pendingLog != nil {
+                viewModel.commitSetLog()
             }
         }
         .onChange(of: scenePhase) { _, newPhase in
@@ -81,10 +103,13 @@ struct WorkoutSessionView: View {
                 Text("ELAPSED")
                     .font(.outrunFuture(9))
                     .foregroundColor(.white.opacity(0.4))
+                    .minimumScaleFactor(0.7)
                 Text(viewModel.totalElapsed.formattedTimeLong)
                     .font(.system(size: 16, design: .monospaced))
                     .foregroundColor(.outrunGreen)
             }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Elapsed time: \(viewModel.totalElapsed.formattedTimeLong)")
 
             Spacer()
 
@@ -173,6 +198,19 @@ struct WorkoutSessionView: View {
                 break
             }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(viewModel.phaseTitle), \(viewModel.splitTimeRemaining.formattedTimeLong) remaining")
+        .accessibilityValue("Progress: \(Int(viewModel.progressRing * 100)) percent")
+        .accessibilityHint(timerAccessibilityHint)
+        .accessibilityAddTraits(.isButton)
+    }
+
+    private var timerAccessibilityHint: String {
+        switch viewModel.phase {
+        case .idle: return "Tap to start workout"
+        case .rest, .restBetweenSets: return "Tap to skip rest"
+        default: return ""
+        }
     }
 
     // MARK: - Exercise Info
@@ -222,6 +260,7 @@ struct WorkoutSessionView: View {
                     .clipShape(Circle())
                     .shadow(color: viewModel.phaseColor.opacity(0.5), radius: 12)
             }
+            .accessibilityLabel(playPauseAccessibilityLabel)
 
             Spacer()
 
@@ -243,11 +282,17 @@ struct WorkoutSessionView: View {
                 .clipShape(Circle())
                 .overlay(Circle().stroke(color.opacity(0.3), lineWidth: 1))
         }
+        .accessibilityLabel(icon == "backward.fill" ? "Previous exercise" : "Next exercise")
     }
 
     private var playPauseIcon: String {
         if case .idle = viewModel.phase { return "play.fill" }
         return viewModel.isRunning ? "pause.fill" : "play.fill"
+    }
+
+    private var playPauseAccessibilityLabel: String {
+        if case .idle = viewModel.phase { return "Start workout" }
+        return viewModel.isRunning ? "Pause" : "Resume"
     }
 
     // MARK: - History Persistence
@@ -261,6 +306,17 @@ struct WorkoutSessionView: View {
         session.workout = viewModel.workout
         viewModel.workout.sessions.append(session)
         modelContext.insert(session)
+
+        // Persist set logs
+        for log in viewModel.sessionLogs {
+            log.session = session
+            session.setLogs.append(log)
+            modelContext.insert(log)
+        }
+
         try? modelContext.save()
+
+        // Refresh widget data after session is saved
+        WidgetDataProvider.shared.refreshAll(context: modelContext)
     }
 }

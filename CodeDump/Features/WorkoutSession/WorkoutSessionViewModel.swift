@@ -30,6 +30,22 @@ final class WorkoutSessionViewModel {
     var exercisesCompleted = 0
     var setsCompleted = 0
 
+    // Set logging
+    var pendingLog: PendingSetLog? = nil
+    var sessionLogs: [SetLog] = []
+    var historicalLogs: [SetLog] = []
+
+    struct PendingSetLog {
+        let exerciseName: String
+        let exerciseTemplateID: String?
+        let setIndex: Int
+        let exerciseIndex: Int
+        let targetReps: Int
+        var weight: Double? = nil
+        var reps: Int? = nil
+        var rpe: Int? = nil
+    }
+
     // Wall-clock tracking — the source of truth for all time calculations
     private var phaseStartDate: Date = .now
     private var workoutStartDate: Date = .now
@@ -206,6 +222,27 @@ final class WorkoutSessionViewModel {
         startTicking()
     }
 
+    // MARK: - Set Logging
+
+    func commitSetLog() {
+        guard let pending = pendingLog else { return }
+        let log = SetLog(
+            exerciseName: pending.exerciseName,
+            exerciseTemplateID: pending.exerciseTemplateID,
+            setIndex: pending.setIndex,
+            exerciseIndex: pending.exerciseIndex,
+            weight: pending.weight,
+            reps: pending.reps,
+            rpe: pending.rpe
+        )
+        sessionLogs.append(log)
+        pendingLog = nil
+    }
+
+    func skipSetLog() {
+        pendingLog = nil
+    }
+
     // MARK: - Timer
 
     private func startTicking() {
@@ -239,6 +276,7 @@ final class WorkoutSessionViewModel {
                 splitTimeRemaining = max(0, splitDuration - newElapsed)
             }
         }
+
     }
 
     // MARK: - State Machine
@@ -290,6 +328,17 @@ final class WorkoutSessionViewModel {
 
         case .interval(let i, let s):
             exercisesCompleted += 1
+
+            // Trigger set log prompt for the just-completed exercise
+            let exercise = sortedExercises[safe: i]
+            pendingLog = PendingSetLog(
+                exerciseName: exercise?.name ?? "Exercise",
+                exerciseTemplateID: exercise?.templateID,
+                setIndex: s,
+                exerciseIndex: i,
+                targetReps: exercise?.reps ?? 0
+            )
+
             let isLastExercise = i + 1 >= exercisesPerSet
             let isLastSet = s + 1 >= workout.numberOfSets
 
@@ -329,6 +378,8 @@ final class WorkoutSessionViewModel {
     }
 
     private func finishWorkout() {
+        // Auto-commit any pending log before finishing
+        if pendingLog != nil { commitSetLog() }
         isRunning = false
         timerTask?.cancel()
         let start = workoutStartDate
@@ -347,10 +398,13 @@ final class WorkoutSessionViewModel {
         [
             "phaseTitle": phaseTitle,
             "setLabel": setLabel,
-            "splitTimeRemaining": splitTimeRemaining,
             "splitDuration": splitDuration,
-            "totalElapsed": totalElapsed,
-            "isRunning": isRunning
+            "isRunning": isRunning,
+            "workoutActive": phase != .idle && phase != .completed,
+            // Reference timestamps so the Watch can compute its own countdown
+            "phaseStartDate": phaseStartDate.timeIntervalSince1970,
+            "workoutStartDate": workoutStartDate.timeIntervalSince1970,
+            "totalPausedTime": totalPausedTime
         ]
     }
 }

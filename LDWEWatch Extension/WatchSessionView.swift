@@ -4,6 +4,39 @@ struct WatchSessionView: View {
     @EnvironmentObject var connectivity: WatchConnectivityManager
 
     var body: some View {
+        Group {
+            if connectivity.workoutActive {
+                sessionView
+            } else {
+                idleView
+            }
+        }
+        .background(.black)
+    }
+
+    // MARK: - Idle
+
+    private var idleView: some View {
+        VStack(spacing: 12) {
+            Image(systemName: "flame.fill")
+                .font(.system(size: 36))
+                .foregroundColor(.cyan)
+
+            Text("LAZER DRAGON")
+                .font(.system(size: 14, weight: .bold, design: .monospaced))
+                .foregroundColor(.yellow)
+
+            Text("Start a workout on\nyour iPhone to see\nprogress here.")
+                .font(.system(size: 12))
+                .foregroundColor(.white.opacity(0.6))
+                .multilineTextAlignment(.center)
+        }
+        .padding()
+    }
+
+    // MARK: - Active Session
+
+    private var sessionView: some View {
         VStack(spacing: 6) {
             // Phase title
             Text(connectivity.phaseTitle)
@@ -60,17 +93,17 @@ struct WatchSessionView: View {
             .padding(.top, 4)
         }
         .padding()
-        .background(.black)
     }
 
     private var progressRing: Double {
         guard connectivity.splitDuration > 0 else { return 1 }
-        return Double(connectivity.splitTimeRemaining) / Double(connectivity.splitDuration)
+        return max(0, Double(connectivity.splitTimeRemaining) / Double(connectivity.splitDuration))
     }
 
     private var formattedTime: String {
-        let m = connectivity.splitTimeRemaining / 60
-        let s = connectivity.splitTimeRemaining % 60
+        let t = max(0, connectivity.splitTimeRemaining)
+        let m = t / 60
+        let s = t % 60
         return String(format: "%d:%02d", m, s)
     }
 }

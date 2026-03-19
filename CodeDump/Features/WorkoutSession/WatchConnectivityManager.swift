@@ -11,6 +11,9 @@ final class WatchConnectivityManager: NSObject {
     /// Called when the Watch sends a control action ("playPause", "skipForward", "skipBack").
     var actionHandler: ((String) -> Void)?
 
+    /// Last payload sent — re-pushed when the Watch becomes reachable.
+    private var lastPayload: [String: Any] = [:]
+
     private override init() {
         super.init()
         guard WCSession.isSupported() else { return }
@@ -19,9 +22,16 @@ final class WatchConnectivityManager: NSObject {
     }
 
     func sendWorkoutState(_ payload: [String: Any]) {
-        guard WCSession.default.activationState == .activated,
-              WCSession.default.isReachable else { return }
-        WCSession.default.sendMessage(payload, replyHandler: nil)
+        guard WCSession.default.activationState == .activated else { return }
+        lastPayload = payload
+
+        // Always update application context so the Watch gets it when it opens.
+        try? WCSession.default.updateApplicationContext(payload)
+
+        // Also send a live message if the Watch is open right now.
+        if WCSession.default.isReachable {
+            WCSession.default.sendMessage(payload, replyHandler: nil)
+        }
     }
 }
 
@@ -33,12 +43,25 @@ extension WatchConnectivityManager: WCSessionDelegate {
         _ session: WCSession,
         activationDidCompleteWith activationState: WCSessionActivationState,
         error: Error?
-    ) {}
+    ) {
+        if let error {
+            print("[LDWE] WatchConnectivity activation failed: \(error.localizedDescription)")
+        }
+    }
 
     nonisolated func sessionDidBecomeInactive(_ session: WCSession) {}
 
     nonisolated func sessionDidDeactivate(_ session: WCSession) {
         WCSession.default.activate()
+    }
+
+    /// Watch just became reachable (app foregrounded) — push the latest state immediately.
+    nonisolated func sessionReachabilityDidChange(_ session: WCSession) {
+        guard session.isReachable else { return }
+        Task { @MainActor in
+            guard !self.lastPayload.isEmpty else { return }
+            session.sendMessage(self.lastPayload, replyHandler: nil)
+        }
     }
 
     nonisolated func session(_ session: WCSession, didReceiveMessage message: [String: Any]) {

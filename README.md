@@ -1,77 +1,127 @@
 # The Lazer Dragon Workout Experience
-Make and share workouts with your friends. Written in Swift.
 
-[![Swift Version][swift-image]][swift-url] [![License][license-image]][license-url] [![Platform](https://img.shields.io/cocoapods/p/LFAlertController.svg?style=flat)](http://cocoapods.org/pods/LFAlertController) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+A fully-featured iOS workout timer and training companion with an outrun/synthwave aesthetic. Built entirely in Swift with SwiftUI, SwiftData, and zero external dependencies.
 
+[![Swift Version][swift-image]][swift-url] [![License][license-image]][license-url] [![Platform](https://img.shields.io/badge/platform-iOS%2018%2B-purple.svg)](https://developer.apple.com/ios/)
 
+## Screenshots
 
-LDWE is now in beta! Send an email to solomora@gmail.com to be added to the testflight.
+| Home | Workout Builder | Workout Complete | Body Status |
+|------|----------------|------------------|-------------|
+| ![Home](screenshots/WorkoutMain.png) | ![Builder](screenshots/EditWorkout.png) | ![Complete](screenshots/WorkoutComplete.png) | ![Body](screenshots/Body.png) |
 
+## Features
 
-## Roadmap:
+### Workout Engine
+- Interval timer with configurable warmup, exercise, rest, and cooldown phases
+- Per-set logging — track weight, reps, and RPE for every set
+- Progressive overload suggestions based on RPE-driven linear periodization
+- Personal record detection (weight PRs and rep PRs) with animated badges
+- Live Activity support on the lock screen
+- Apple Watch companion app
 
-### Alpha release: 
-Simple Interval timer with customizable timings. ✅
+### Exercise Intelligence
+- 96 built-in exercise templates with muscle group and equipment tagging
+- Custom exercise creation with user-defined muscle targets
+- Searchable and filterable exercise library
+- Smart Quick Start — generates workouts based on muscle freshness and available equipment
+- Equipment profiles (Home Gym, Commercial Gym, or custom)
 
-#### 0.1:
-Saving to core data functional. ✅
+### Training Programs
+- 5 built-in programs (Push/Pull/Legs, Upper/Lower, Full Body, HIIT Shred, Beginner)
+- Adaptive scheduling — adjusts when you miss days
+- Fatigue-aware deload suggestions
+- Completion tracking with calendar grid
 
-#### 0.2: 
-~~Saving to Cloudkit functional. ~~
-Idea ditched & punted, checking out firebase instead
+### Body Status
+- Muscle freshness scoring — see which muscles are recovered and ready to train
+- Weekly volume and set tracking
+- Recovery score powered by HealthKit (sleep + HRV + RPE composite)
+- Recommended muscle groups to train next
 
-### Beta Version 1.0: 
-Workouts implemented - intervals have a named exercise to complete ✅
+### Goals
+- Set targets for weight, reps, volume, workout frequency, or body weight
+- Auto-tracking from workout history for weight/rep/volume/frequency goals
+- Deadline tracking with progress bars
+- Auto-completion when targets are met
 
-#### 1.1: 
-Workout Planner - review your workout before you get into it ✅
+### History & Analytics
+- Monthly calendar view with workout activity
+- Per-day drill-down showing session details, volume, and muscle groups hit
+- Session-over-session volume trends
+- Streak tracking
 
-#### 1.2:
-Routine designer - design and build your own routine with custom exercises
+### Sharing & Export
+- Outrun-styled share cards (1080×1920) via ImageRenderer
+- Weekly stats cards (1080×1080)
+- Workout template export/import (.ldwe file format with Transferable)
 
-#### 1.3
-Workout finished - save workout results to core data
+## Tech Stack
 
+| | |
+|---|---|
+| **Language** | Swift 5 |
+| **UI** | SwiftUI |
+| **Data** | SwiftData + CloudKit (automatic sync) |
+| **Architecture** | MVVM with `@Observable` ViewModels |
+| **Min Deployment** | iOS 18 |
+| **Dependencies** | None |
 
-### Beta Version 2.0:
-Apple & Google SSO functioning, login to save workouts.
+## Project Structure
 
-#### 2.1: 
-Workout tracking & calendar progress
+```
+CodeDump/
+├── AppDelegate.swift            # @main app entry, TabView, navigation routing
+├── Models/
+│   ├── WorkoutModel.swift       # @Model Workout + WorkoutType enum
+│   ├── Exercise.swift           # @Model Exercise (muscle groups, equipment, templateID)
+│   ├── WorkoutSession.swift     # @Model WorkoutSession (date, duration, completion data)
+│   ├── SetLog.swift             # @Model SetLog (weight/reps/RPE per set)
+│   ├── FitnessGoal.swift        # @Model FitnessGoal (auto-tracked targets)
+│   ├── TrainingProgram.swift    # @Model program enrollment + schedule
+│   ├── CustomExerciseTemplate.swift
+│   ├── ExerciseLibrary.swift    # 96 built-in exercise templates
+│   ├── MuscleAnalyzer.swift     # Muscle freshness + volume scoring
+│   ├── OverloadSuggestion.swift # Progressive overload algorithm
+│   ├── RecoveryAnalyzer.swift   # HealthKit sleep/HRV recovery score
+│   ├── SessionAnalytics.swift   # PR detection + volume analytics
+│   ├── ProgramTemplate.swift    # Built-in program definitions
+│   ├── EquipmentProfile.swift   # Equipment preset management
+│   ├── WorkoutTransferable.swift
+│   └── Theme.swift              # Outrun color palette + fonts + extensions
+└── Features/
+    ├── WorkoutList/             # Home screen with Quick Start + Programs
+    ├── WorkoutDetail/           # Workout preview with muscle/equipment tags
+    ├── WorkoutBuilder/          # Create/edit workouts with library picker
+    ├── WorkoutSession/          # Timer, set logging, Live Activity, haptics
+    ├── WorkoutCompleted/        # Post-workout summary with PRs + share
+    ├── WorkoutHistory/          # Calendar view + day drill-down
+    ├── ExerciseLibrary/         # Searchable exercise browser + custom builder
+    ├── QuickStart/              # Smart workout generation
+    ├── Programs/                # Training program browse/enroll/calendar
+    ├── Body/                    # Muscle freshness + recovery dashboard
+    ├── Goals/                   # Goal tracking + creation
+    ├── Sharing/                 # Share cards + template export
+    └── Settings/                # Equipment profile setup
+```
 
-#### 2.2:
-Spotify/Apple Music/AVKit integration
+## Getting Started
 
-#### 2.2
-Equipment Selection - List what workouts you can do based on what equipment you have
+1. Clone the repo
+2. Open `CodeDump.xcodeproj` (not .xcworkspace)
+3. Set deployment target to iOS 18
+4. Build and run
 
+**iCloud sync** requires adding the iCloud capability in Signing & Capabilities with container `iCloud.com.lazerdragon.ldwe`.
 
-#### Beta version 3.0 
-Share workouts with friends!
+## Custom Fonts
 
-#### 3.1
-Workouts and playlists work together
+- **OutrunFuture** — primary display font used throughout the app
+- **MorningStar** and **Mozart** — available for future use
 
-### Version 4.0: 
-Pixel art assets purchased and integrated.
-Official release candidate.
+Fonts are registered in `Info.plist` and accessed via `Font.outrunFuture(_ size:)`.
 
-
-#### 5.0:
-Apple Watch extension, heart rate based workouts
-Rep counting
-Run tracking?
-
-
-#### 6.0: 
-Apple TV port
-Apple TV can act as a local server that phones connect to, allowing you to track & check in to workouts
-
-
-
-[swift-image]:https://img.shields.io/badge/swift-5.0-orange.svg
+[swift-image]: https://img.shields.io/badge/swift-5-orange.svg
 [swift-url]: https://swift.org/
 [license-image]: https://img.shields.io/badge/License-MIT-blue.svg
 [license-url]: LICENSE
-[codebeat-image]: https://codebeat.co/badges/c19b47ea-2f9d-45df-8458-b2d952fe9dad
-[codebeat-url]: https://codebeat.co/projects/github-com-vsouza-awesomeios-com

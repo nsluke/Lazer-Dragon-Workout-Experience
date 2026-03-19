@@ -15,16 +15,16 @@ enum WorkoutType: String, CaseIterable, Codable {
 
 @Model
 final class Workout {
-    var name: String
-    var type: String
-    var warmupLength: Int
-    var intervalLength: Int
-    var restLength: Int
-    var numberOfIntervals: Int
-    var numberOfSets: Int
-    var restBetweenSetLength: Int
-    var cooldownLength: Int
-    var createdAt: Date
+    var name: String = ""
+    var type: String = WorkoutType.custom.rawValue
+    var warmupLength: Int = 0
+    var intervalLength: Int = 30
+    var restLength: Int = 15
+    var numberOfIntervals: Int = 5
+    var numberOfSets: Int = 1
+    var restBetweenSetLength: Int = 60
+    var cooldownLength: Int = 0
+    var createdAt: Date = Date()
 
     @Relationship(deleteRule: .cascade, inverse: \Exercise.workout)
     var exercises: [Exercise] = []

@@ -31,18 +31,28 @@ struct WorkoutDetailView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 HStack(spacing: 16) {
+                    ShareLink(
+                        item: WorkoutExport(from: workout),
+                        preview: SharePreview(workout.name, image: Image(systemName: "figure.strengthtraining.traditional"))
+                    ) {
+                        Image(systemName: "square.and.arrow.up")
+                            .foregroundColor(.outrunCyan)
+                    }
+                    .accessibilityLabel("Share workout")
                     Button {
                         showingHistory = true
                     } label: {
                         Image(systemName: "clock.arrow.circlepath")
                             .foregroundColor(.outrunCyan)
                     }
+                    .accessibilityLabel("Workout history")
                     Button {
                         showingEditor = true
                     } label: {
                         Image(systemName: "pencil")
                             .foregroundColor(.outrunCyan)
                     }
+                    .accessibilityLabel("Edit workout")
                 }
             }
         }
@@ -93,19 +103,42 @@ struct WorkoutDetailView: View {
     private var exercisesSection: some View {
         Section {
             ForEach(workout.sortedExercises) { exercise in
-                HStack {
-                    Text(exercise.name)
-                        .font(.outrunFuture(15))
-                        .foregroundColor(.outrunYellow)
-                    Spacer()
-                    if exercise.reps > 0 {
-                        Text("\(exercise.reps) reps")
-                            .font(.outrunFuture(13))
-                            .foregroundColor(.outrunCyan)
-                    } else {
-                        Text(exercise.splitLength.formattedTime)
-                            .font(.outrunFuture(13))
-                            .foregroundColor(.outrunCyan)
+                VStack(alignment: .leading, spacing: 4) {
+                    HStack {
+                        Text(exercise.name)
+                            .font(.outrunFuture(15))
+                            .foregroundColor(.outrunYellow)
+                            .minimumScaleFactor(0.7)
+                        Spacer()
+                        if exercise.reps > 0 {
+                            Text("\(exercise.reps) reps")
+                                .font(.outrunFuture(13))
+                                .foregroundColor(.outrunCyan)
+                        } else {
+                            Text(exercise.splitLength.formattedTime)
+                                .font(.outrunFuture(13))
+                                .foregroundColor(.outrunCyan)
+                        }
+                    }
+
+                    if !exercise.targetMuscleGroups.isEmpty {
+                        HStack(spacing: 6) {
+                            ForEach(exercise.targetMuscleGroups, id: \.self) { muscle in
+                                HStack(spacing: 2) {
+                                    Image(systemName: muscle.icon)
+                                        .font(.system(size: 8))
+                                    Text(muscle.displayName)
+                                        .font(.outrunFuture(8))
+                                }
+                                .foregroundColor(.outrunCyan.opacity(0.6))
+                            }
+
+                            Label(exercise.equipment.displayName, systemImage: exercise.equipment.icon)
+                                .font(.outrunFuture(8))
+                                .foregroundColor(.outrunPurple.opacity(0.6))
+                        }
+                        .accessibilityElement(children: .ignore)
+                        .accessibilityLabel("Muscles: \(exercise.targetMuscleGroups.map(\.displayName).joined(separator: ", ")). Equipment: \(exercise.equipment.displayName)")
                     }
                 }
                 .padding(.vertical, 2)
@@ -129,7 +162,9 @@ struct WorkoutDetailView: View {
                 .padding(.vertical, 16)
                 .background(Color.outrunCyan)
                 .cornerRadius(10)
+                .minimumScaleFactor(0.7)
         }
+        .accessibilityHint("Start \(workout.name) workout")
     }
 
     // MARK: - Helpers
