@@ -25,7 +25,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Select Xcode
-        run: sudo xcode-select -s /Applications/Xcode_16.app
+        run: ls /Applications/Xcode*.app && sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)"
 
       - name: "Unit + Integration Tests (${{ matrix.device }})"
         run: |
@@ -33,7 +33,7 @@ jobs:
           xcodebuild test \
             -project "$PROJECT" \
             -scheme "$SCHEME" \
-            -destination "platform=iOS Simulator,name=${{ matrix.device }},OS=18.0" \
+            -destination "platform=iOS Simulator,name=${{ matrix.device }},OS=latest" \
             -enableCodeCoverage YES \
             -resultBundlePath "Results-${{ strategy.job-index }}.xcresult" \
             -skip-testing:CodeDumpUITests \
@@ -46,7 +46,7 @@ jobs:
           xcodebuild test \
             -project "$PROJECT" \
             -scheme "$SCHEME" \
-            -destination "platform=iOS Simulator,name=${{ matrix.device }},OS=18.0" \
+            -destination "platform=iOS Simulator,name=${{ matrix.device }},OS=latest" \
             -only-testing:CodeDumpUITests \
             | tee xcodebuild.log
 
@@ -65,7 +65,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Select Xcode
-        run: sudo xcode-select -s /Applications/Xcode_16.app
+        run: ls /Applications/Xcode*.app && sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)"
 
       - name: Run E2E Tests
         env:
@@ -81,7 +81,7 @@ jobs:
           xcodebuild test \
             -project "$PROJECT" \
             -scheme "$SCHEME" \
-            -destination "platform=iOS Simulator,name=iPhone 16 Pro,OS=18.0" \
+            -destination "platform=iOS Simulator,name=iPhone 16 Pro,OS=latest" \
             -only-testing:CodeDumpTests/StravaE2ETests \
             | tee xcodebuild.log
 

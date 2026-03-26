@@ -21,7 +21,7 @@ on:
 env:
   SCHEME: CodeDump
   PROJECT: CodeDump.xcodeproj
-  DESTINATION: "platform=iOS Simulator,name=iPhone 16 Pro,OS=18.0"
+  DESTINATION: "platform=iOS Simulator,name=iPhone 16 Pro,OS=latest"
   COVERAGE_THRESHOLD: 70
 
 jobs:
@@ -33,7 +33,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Select Xcode
-        run: sudo xcode-select -s /Applications/Xcode_16.app
+        run: ls /Applications/Xcode*.app && sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)"
 
       - name: Unit + Integration + Contract + Concurrency + Accessibility + Error Injection
         run: |
@@ -124,7 +124,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Select Xcode
-        run: sudo xcode-select -s /Applications/Xcode_16.app
+        run: ls /Applications/Xcode*.app && sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)"
 
       - name: UI Tests
         run: |
@@ -132,7 +132,7 @@ jobs:
           xcodebuild test \
             -project "$PROJECT" \
             -scheme "$SCHEME" \
-            -destination "platform=iOS Simulator,name=${{ matrix.device }},OS=18.0" \
+            -destination "platform=iOS Simulator,name=${{ matrix.device }},OS=latest" \
             -only-testing:CodeDumpUITests \
             | tee xcodebuild.log
 
@@ -145,7 +145,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Select Xcode
-        run: sudo xcode-select -s /Applications/Xcode_16.app
+        run: ls /Applications/Xcode*.app && sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)"
 
       - name: Install Fastlane
         run: |
