@@ -1,3 +1,4 @@
+#if os(iOS)
 import Foundation
 import AuthenticationServices
 
@@ -419,3 +420,4 @@ extension StravaManager: ASWebAuthenticationPresentationContextProviding {
         }
     }
 }
+#endif

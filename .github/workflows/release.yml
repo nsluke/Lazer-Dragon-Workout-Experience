@@ -33,7 +33,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Select Xcode
-        run: ls /Applications/Xcode*.app && sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)"
+        run: sudo xcode-select -s "$(ls -d /Applications/Xcode_16*.app 2>/dev/null | sort -V | tail -1 || echo /Applications/Xcode.app)" && xcodebuild -version
 
       - name: Unit + Integration + Contract + Concurrency + Accessibility + Error Injection
         run: |
@@ -124,7 +124,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Select Xcode
-        run: ls /Applications/Xcode*.app && sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)"
+        run: sudo xcode-select -s "$(ls -d /Applications/Xcode_16*.app 2>/dev/null | sort -V | tail -1 || echo /Applications/Xcode.app)" && xcodebuild -version
 
       - name: UI Tests
         run: |
@@ -145,7 +145,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Select Xcode
-        run: ls /Applications/Xcode*.app && sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)"
+        run: sudo xcode-select -s "$(ls -d /Applications/Xcode_16*.app 2>/dev/null | sort -V | tail -1 || echo /Applications/Xcode.app)" && xcodebuild -version
 
       - name: Install Fastlane
         run: |
