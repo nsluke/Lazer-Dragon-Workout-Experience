@@ -28,6 +28,7 @@ final class StravaSnapshotTests: XCTestCase {
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
         container = try ModelContainer(
             for: Workout.self, Exercise.self, WorkoutSession.self, SetLog.self,
+            CustomExerciseTemplate.self, TrainingProgram.self, FitnessGoal.self,
             configurations: config
         )
         context = container.mainContext
