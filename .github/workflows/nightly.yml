@@ -38,7 +38,7 @@ jobs:
             -resultBundlePath "Results-${{ strategy.job-index }}.xcresult" \
             -skip-testing:CodeDumpUITests \
             -skip-testing:CodeDumpTests/StravaE2ETests \
-            2>&1 | xcbeautify
+            | tee xcodebuild.log
 
       - name: "UI Tests (${{ matrix.device }})"
         run: |
@@ -48,7 +48,7 @@ jobs:
             -scheme "$SCHEME" \
             -destination "platform=iOS Simulator,name=${{ matrix.device }},OS=18.0" \
             -only-testing:CodeDumpUITests \
-            2>&1 | xcbeautify
+            | tee xcodebuild.log
 
       - name: Upload Results
         if: always()
@@ -83,7 +83,7 @@ jobs:
             -scheme "$SCHEME" \
             -destination "platform=iOS Simulator,name=iPhone 16 Pro,OS=18.0" \
             -only-testing:CodeDumpTests/StravaE2ETests \
-            2>&1 | xcbeautify
+            | tee xcodebuild.log
 
   nightly-summary:
     name: "Nightly Summary"

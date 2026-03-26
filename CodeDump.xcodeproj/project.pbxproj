@@ -42,13 +42,13 @@
 		D52114D924663D7B00D1F0ED /* MorningStar.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D52114D524663CBA00D1F0ED /* MorningStar.ttf */; };
 		D52114DA24663D7E00D1F0ED /* Mozart.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D52114D424663CAD00D1F0ED /* Mozart.ttf */; };
 		D52114DB24663D7F00D1F0ED /* Mozart.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D52114D424663CAD00D1F0ED /* Mozart.ttf */; };
-		D525E26D25002FE9006DAD84 /* UnitTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D525E26C25002FE9006DAD84 /* UnitTestHelpers.swift */; };
+/* UnitTestHelpers.swift — now auto-synced */
 		D5BA33B5245CF239001DE467 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BA33B4245CF239001DE467 /* AppDelegate.swift */; };
 		D5BA33B7245CF239001DE467 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BA33B6245CF239001DE467 /* SceneDelegate.swift */; };
 		D5BA33C1245CF23D001DE467 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5BA33C0245CF23D001DE467 /* Assets.xcassets */; };
 		D5BA33C4245CF23D001DE467 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D5BA33C2245CF23D001DE467 /* LaunchScreen.storyboard */; };
-		D5BA33CF245CF23D001DE467 /* CodeDumpTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BA33CE245CF23D001DE467 /* CodeDumpTests.swift */; };
-		D5BA33DA245CF23D001DE467 /* CodeDumpUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BA33D9245CF23D001DE467 /* CodeDumpUITests.swift */; };
+/* CodeDumpTests.swift — now auto-synced */
+/* CodeDumpUITests.swift — now auto-synced */
 		D5D496BA254B4C3D00548BA8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5D496B9254B4C3D00548BA8 /* Assets.xcassets */; };
 		D5D496CE254B4C3E00548BA8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5D496CD254B4C3E00548BA8 /* Assets.xcassets */; };
 		D5D496D3254B4C3E00548BA8 /* LDWEWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = D5D496B4254B4C3A00548BA8 /* LDWEWatch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -134,7 +134,7 @@
 		D52114C62466377E00D1F0ED /* OutrunFuture.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = OutrunFuture.otf; sourceTree = "<group>"; };
 		D52114D424663CAD00D1F0ED /* Mozart.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Mozart.ttf; sourceTree = "<group>"; };
 		D52114D524663CBA00D1F0ED /* MorningStar.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MorningStar.ttf; sourceTree = "<group>"; };
-		D525E26C25002FE9006DAD84 /* UnitTestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitTestHelpers.swift; sourceTree = "<group>"; };
+/* UnitTestHelpers.swift — now auto-synced via PBXFileSystemSynchronizedRootGroup */
 		D5340F9D250AE8EC00500793 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D548391D246E2C480003B3E5 /* CodeDump.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CodeDump.entitlements; sourceTree = "<group>"; };
 		D55D076E24BB7583001B61F5 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -144,9 +144,9 @@
 		D5BA33C0245CF23D001DE467 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D5BA33C3245CF23D001DE467 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D5BA33CA245CF23D001DE467 /* CodeDumpTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CodeDumpTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D5BA33CE245CF23D001DE467 /* CodeDumpTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeDumpTests.swift; sourceTree = "<group>"; };
+/* CodeDumpTests.swift — now auto-synced via PBXFileSystemSynchronizedRootGroup */
 		D5BA33D5245CF23D001DE467 /* CodeDumpUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CodeDumpUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D5BA33D9245CF23D001DE467 /* CodeDumpUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeDumpUITests.swift; sourceTree = "<group>"; };
+/* CodeDumpUITests.swift — now auto-synced via PBXFileSystemSynchronizedRootGroup */
 		D5D496B4254B4C3A00548BA8 /* LDWEWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LDWEWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5D496B9254B4C3D00548BA8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D5D496BB254B4C3D00548BA8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -200,6 +200,8 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		A3E06FE92F6089E6003EF4CD /* Features */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (A3E070362F609176003EF4CD /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Features; sourceTree = "<group>"; };
 		A3E06FED2F6089E6003EF4CD /* Models */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Models; sourceTree = "<group>"; };
+		D5BA33CD245CF23D001DE467 /* CodeDumpTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = CodeDumpTests; sourceTree = "<group>"; };
+		D5BA33D8245CF23D001DE467 /* CodeDumpUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = CodeDumpUITests; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -361,23 +363,6 @@
 			path = CodeDump;
 			sourceTree = "<group>";
 		};
-		D5BA33CD245CF23D001DE467 /* CodeDumpTests */ = {
-			isa = PBXGroup;
-			children = (
-				D5BA33CE245CF23D001DE467 /* CodeDumpTests.swift */,
-				D525E26C25002FE9006DAD84 /* UnitTestHelpers.swift */,
-			);
-			path = CodeDumpTests;
-			sourceTree = "<group>";
-		};
-		D5BA33D8245CF23D001DE467 /* CodeDumpUITests */ = {
-			isa = PBXGroup;
-			children = (
-				D5BA33D9245CF23D001DE467 /* CodeDumpUITests.swift */,
-			);
-			path = CodeDumpUITests;
-			sourceTree = "<group>";
-		};
 		D5BA33EB245CF265001DE467 /* Reference */ = {
 			isa = PBXGroup;
 			children = (
@@ -478,6 +463,7 @@
 			fileSystemSynchronizedGroups = (
 				A3E06FE92F6089E6003EF4CD /* Features */,
 				A3E06FED2F6089E6003EF4CD /* Models */,
+				D5BA33CD245CF23D001DE467 /* CodeDumpTests */,
 			);
 			name = CodeDumpTests;
 			productName = CodeDumpTests;
@@ -500,6 +486,7 @@
 			fileSystemSynchronizedGroups = (
 				A3E06FE92F6089E6003EF4CD /* Features */,
 				A3E06FED2F6089E6003EF4CD /* Models */,
+				D5BA33D8245CF23D001DE467 /* CodeDumpUITests */,
 			);
 			name = CodeDumpUITests;
 			productName = CodeDumpUITests;
@@ -666,8 +653,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D5BA33CF245CF23D001DE467 /* CodeDumpTests.swift in Sources */,
-				D525E26D25002FE9006DAD84 /* UnitTestHelpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -675,7 +660,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D5BA33DA245CF23D001DE467 /* CodeDumpUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

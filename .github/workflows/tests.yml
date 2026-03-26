@@ -37,7 +37,7 @@ jobs:
             -skip-testing:CodeDumpUITests \
             -skip-testing:CodeDumpTests/StravaE2ETests \
             -skip-testing:CodeDumpTests/StravaKeychainTests \
-            2>&1 | xcbeautify
+            | tee xcodebuild.log
 
       - name: Enforce Coverage Threshold
         run: |
@@ -113,7 +113,7 @@ jobs:
             -destination "$DESTINATION" \
             -only-testing:CodeDumpUITests \
             -resultBundlePath UITestResults.xcresult \
-            2>&1 | xcbeautify
+            | tee xcodebuild.log
 
       - name: Upload Results
         if: always()
@@ -143,7 +143,7 @@ jobs:
             -scheme "$SCHEME" \
             -destination "$DESTINATION" \
             -only-testing:CodeDumpTests/StravaSnapshotTests \
-            2>&1 | xcbeautify
+            | tee xcodebuild.log
 
       - name: Upload Failures
         if: failure()
@@ -178,7 +178,7 @@ jobs:
             -resultBundlePath MergeResults.xcresult \
             -skip-testing:CodeDumpUITests \
             -skip-testing:CodeDumpTests/StravaE2ETests \
-            2>&1 | xcbeautify
+            | tee xcodebuild.log
 
       - name: Verify Coverage
         run: |
