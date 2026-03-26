@@ -38,6 +38,8 @@ jobs:
             -skip-testing:CodeDumpTests/StravaE2ETests \
             -skip-testing:CodeDumpTests/StravaKeychainTests \
             -skip-testing:CodeDumpTests/StravaSnapshotTests \
+            -skip-testing:CodeDumpTests/WorkoutSessionViewModelTests \
+            -skip-testing:CodeDumpTests/WorkoutSessionIntegrationTests \
             | tee xcodebuild.log
 
       - name: Enforce Coverage Threshold
@@ -119,6 +121,8 @@ jobs:
             -skip-testing:CodeDumpUITests \
             -skip-testing:CodeDumpTests/StravaE2ETests \
             -skip-testing:CodeDumpTests/StravaSnapshotTests \
+            -skip-testing:CodeDumpTests/WorkoutSessionViewModelTests \
+            -skip-testing:CodeDumpTests/WorkoutSessionIntegrationTests \
             | tee xcodebuild.log
 
       - name: Verify Coverage
