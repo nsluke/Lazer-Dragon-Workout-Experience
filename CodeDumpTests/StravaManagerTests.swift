@@ -150,7 +150,7 @@ final class StravaManagerTests: XCTestCase {
         XCTAssertNil(sut.tokenExpiry)
         let date = Date(timeIntervalSince1970: 1700000000)
         sut.tokenExpiry = date
-        XCTAssertEqual(sut.tokenExpiry?.timeIntervalSince1970, 1700000000, accuracy: 1)
+        XCTAssertEqual(sut.tokenExpiry!.timeIntervalSince1970, 1700000000.0, accuracy: 1.0)
     }
 
     func testTokenExpiryNilForInvalidString() {
@@ -178,7 +178,7 @@ final class StravaManagerTests: XCTestCase {
 
         XCTAssertEqual(sut.accessToken, "acc")
         XCTAssertEqual(sut.refreshToken, "ref")
-        XCTAssertEqual(sut.tokenExpiry?.timeIntervalSince1970, 1700000000, accuracy: 1)
+        XCTAssertEqual(sut.tokenExpiry!.timeIntervalSince1970, 1700000000.0, accuracy: 1.0)
         XCTAssertEqual(sut.athleteName, "Jane Doe")
     }
 
