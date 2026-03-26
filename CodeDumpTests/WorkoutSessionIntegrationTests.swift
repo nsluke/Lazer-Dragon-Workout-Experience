@@ -1,6 +1,6 @@
 import XCTest
 import SwiftData
-@testable import CodeDump
+@testable import Lazer_Dragon
 
 /// Integration tests — exercise multiple components together:
 /// the full state machine, completion stats, and SwiftData persistence.

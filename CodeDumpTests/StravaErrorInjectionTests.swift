@@ -1,5 +1,5 @@
 import XCTest
-@testable import CodeDump
+@testable import Lazer_Dragon
 
 /// Error injection tests — verify graceful handling of hostile network
 /// conditions: timeouts, partial responses, malformed JSON, SSL errors,

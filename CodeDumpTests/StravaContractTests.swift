@@ -1,5 +1,5 @@
 import XCTest
-@testable import CodeDump
+@testable import Lazer_Dragon
 
 /// Contract tests — validate that our request/response shapes conform to
 /// the Strava API v3 specification. These catch breaking changes in our

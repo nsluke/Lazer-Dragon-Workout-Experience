@@ -1,5 +1,5 @@
 import XCTest
-@testable import CodeDump
+@testable import Lazer_Dragon
 
 /// Concurrency and stress tests — verify thread safety, race conditions,
 /// and behavior under rapid repeated operations.

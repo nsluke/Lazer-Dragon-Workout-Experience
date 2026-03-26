@@ -1,7 +1,7 @@
 import XCTest
 import SwiftUI
 import SwiftData
-@testable import CodeDump
+@testable import Lazer_Dragon
 
 /// Accessibility audit tests — verify VoiceOver labels, identifiers,
 /// and traits are correctly set on all Strava button states.

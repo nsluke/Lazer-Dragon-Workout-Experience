@@ -1,5 +1,5 @@
 import XCTest
-@testable import CodeDump
+@testable import Lazer_Dragon
 
 /// End-to-end tests that hit the REAL Strava API.
 ///

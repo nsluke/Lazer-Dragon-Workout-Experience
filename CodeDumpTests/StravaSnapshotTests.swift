@@ -1,7 +1,7 @@
 import XCTest
 import SwiftUI
 import SwiftData
-@testable import CodeDump
+@testable import Lazer_Dragon
 
 /// Snapshot / screenshot tests for the Strava button in all visual states.
 ///

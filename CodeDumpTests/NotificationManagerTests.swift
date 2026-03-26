@@ -1,5 +1,5 @@
 import XCTest
-@testable import CodeDump
+@testable import Lazer_Dragon
 
 // MARK: - Mock
 

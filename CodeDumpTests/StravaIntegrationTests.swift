@@ -1,6 +1,6 @@
 import XCTest
 import SwiftData
-@testable import CodeDump
+@testable import Lazer_Dragon
 
 /// Integration tests for the Strava feature — exercise multiple components
 /// together: token lifecycle, upload flows, description building with real

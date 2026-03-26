@@ -1,6 +1,6 @@
 import XCTest
 import SwiftData
-@testable import CodeDump
+@testable import Lazer_Dragon
 
 @MainActor
 final class WorkoutModelTests: XCTestCase {
