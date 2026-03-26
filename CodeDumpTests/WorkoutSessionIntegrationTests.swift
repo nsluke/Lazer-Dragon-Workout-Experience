@@ -11,7 +11,7 @@ final class WorkoutSessionIntegrationTests: XCTestCase {
     private var context: ModelContext!
 
     override func setUp() async throws {
-        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let config = ModelConfiguration(isStoredInMemoryOnly: true, cloudKitDatabase: .none)
         container = try ModelContainer(for: Workout.self, Exercise.self, WorkoutSession.self, SetLog.self, CustomExerciseTemplate.self, TrainingProgram.self, FitnessGoal.self, configurations: config)
         context = container.mainContext
     }
