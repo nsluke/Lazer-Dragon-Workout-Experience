@@ -1,0 +1,67 @@
+#!/bin/bash
+# Git pre-push hook — Gate 0: Local validation before pushing.
+#
+# Install: cp scripts/pre-push .git/hooks/pre-push && chmod +x .git/hooks/pre-push
+#
+# Runs unit tests with coverage enforcement. Blocks push if tests fail
+# or coverage drops below threshold.
+set -euo pipefail
+
+SCHEME="CodeDump"
+DESTINATION="platform=iOS Simulator,name=iPhone 16 Pro,OS=18.0"
+THRESHOLD=70
+
+echo ""
+echo "╔══════════════════════════════════════════════╗"
+echo "║  LAZER DRAGON PRE-PUSH GATE                 ║"
+echo "╚══════════════════════════════════════════════╝"
+echo ""
+
+# Quick compile check first (fast fail)
+echo "→ Building..."
+xcodebuild build-for-testing \
+  -project CodeDump.xcodeproj \
+  -scheme "$SCHEME" \
+  -destination "$DESTINATION" \
+  -quiet 2>&1 | tail -5
+
+# Run unit + integration tests (skip slow UI and E2E)
+echo "→ Running tests..."
+RESULT_BUNDLE="/tmp/ldwe-pre-push-$$.xcresult"
+rm -rf "$RESULT_BUNDLE"
+
+xcodebuild test-without-building \
+  -project CodeDump.xcodeproj \
+  -scheme "$SCHEME" \
+  -destination "$DESTINATION" \
+  -enableCodeCoverage YES \
+  -resultBundlePath "$RESULT_BUNDLE" \
+  -skip-testing:CodeDumpUITests \
+  -skip-testing:CodeDumpTests/StravaE2ETests \
+  -skip-testing:CodeDumpTests/StravaSnapshotTests \
+  -skip-testing:CodeDumpTests/StravaKeychainTests \
+  -quiet 2>&1 | tail -20
+
+# Check coverage
+echo "→ Checking coverage..."
+xcrun xccov view --report --json "$RESULT_BUNDLE" > /tmp/ldwe-coverage.json
+
+COVERAGE=$(python3 -c "
+import json
+data = json.load(open('/tmp/ldwe-coverage.json'))
+print(f'{data.get(\"lineCoverage\", 0) * 100:.1f}')
+")
+
+rm -rf "$RESULT_BUNDLE" /tmp/ldwe-coverage.json
+
+if (( $(echo "$COVERAGE < $THRESHOLD" | bc -l) )); then
+  echo ""
+  echo "❌ Coverage ${COVERAGE}% is below ${THRESHOLD}% threshold"
+  echo "   Run ./scripts/check-coverage.sh for details"
+  echo ""
+  exit 1
+fi
+
+echo ""
+echo "✅ All checks passed (coverage: ${COVERAGE}%)"
+echo ""
