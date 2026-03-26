@@ -461,8 +461,6 @@
 				D5BA33CC245CF23D001DE467 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				A3E06FE92F6089E6003EF4CD /* Features */,
-				A3E06FED2F6089E6003EF4CD /* Models */,
 				D5BA33CD245CF23D001DE467 /* CodeDumpTests */,
 			);
 			name = CodeDumpTests;
@@ -484,8 +482,6 @@
 				D5BA33D7245CF23D001DE467 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				A3E06FE92F6089E6003EF4CD /* Features */,
-				A3E06FED2F6089E6003EF4CD /* Models */,
 				D5BA33D8245CF23D001DE467 /* CodeDumpUITests */,
 			);
 			name = CodeDumpUITests;
