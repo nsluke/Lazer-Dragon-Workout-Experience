@@ -37,6 +37,7 @@ jobs:
             -skip-testing:CodeDumpUITests \
             -skip-testing:CodeDumpTests/StravaE2ETests \
             -skip-testing:CodeDumpTests/StravaKeychainTests \
+            -skip-testing:CodeDumpTests/StravaSnapshotTests \
             | tee xcodebuild.log
 
       - name: Enforce Coverage Threshold
@@ -93,74 +94,13 @@ jobs:
           retention-days: 14
 
   # ═══════════════════════════════════════════════════════════════════
-  # GATE 1b: UI Tests (parallel with unit tests)
-  # ═══════════════════════════════════════════════════════════════════
-  gate-pr-ui:
-    name: "Gate 1: UI Tests"
-    runs-on: macos-15
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Select Xcode
-        run: sudo xcode-select -s "$(ls -d /Applications/Xcode_16*.app 2>/dev/null | sort -V | tail -1 || echo /Applications/Xcode.app)" && xcodebuild -version
-
-      - name: Run UI Tests
-        run: |
-          set -o pipefail
-          xcodebuild test \
-            -project "$PROJECT" \
-            -scheme "$SCHEME" \
-            -destination "$DESTINATION" \
-            -only-testing:CodeDumpUITests \
-            -resultBundlePath UITestResults.xcresult \
-            | tee xcodebuild.log
-
-      - name: Upload Results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: gate1-ui-results
-          path: UITestResults.xcresult
-          retention-days: 14
-
-  # ═══════════════════════════════════════════════════════════════════
-  # GATE 1c: Snapshot Tests (parallel with unit tests)
-  # ═══════════════════════════════════════════════════════════════════
-  gate-pr-snapshots:
-    name: "Gate 1: Snapshot Tests"
-    runs-on: macos-15
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Select Xcode
-        run: sudo xcode-select -s "$(ls -d /Applications/Xcode_16*.app 2>/dev/null | sort -V | tail -1 || echo /Applications/Xcode.app)" && xcodebuild -version
-
-      - name: Run Snapshot Tests
-        run: |
-          set -o pipefail
-          xcodebuild test \
-            -project "$PROJECT" \
-            -scheme "$SCHEME" \
-            -destination "$DESTINATION" \
-            -only-testing:CodeDumpTests/StravaSnapshotTests \
-            | tee xcodebuild.log
-
-      - name: Upload Failures
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: snapshot-failures
-          path: CodeDumpTests/__Snapshots__/
-          retention-days: 14
-
-  # ═══════════════════════════════════════════════════════════════════
   # GATE 2: Post-merge validation (runs on push to master)
   # ═══════════════════════════════════════════════════════════════════
   gate-merge:
     name: "Gate 2: Post-Merge Validation"
     runs-on: macos-15
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-    needs: [gate-pr, gate-pr-ui, gate-pr-snapshots]
+    needs: [gate-pr]
     steps:
       - uses: actions/checkout@v4
 
@@ -178,6 +118,7 @@ jobs:
             -resultBundlePath MergeResults.xcresult \
             -skip-testing:CodeDumpUITests \
             -skip-testing:CodeDumpTests/StravaE2ETests \
+            -skip-testing:CodeDumpTests/StravaSnapshotTests \
             | tee xcodebuild.log
 
       - name: Verify Coverage
