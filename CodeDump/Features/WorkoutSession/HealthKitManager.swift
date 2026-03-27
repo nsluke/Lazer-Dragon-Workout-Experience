@@ -26,6 +26,7 @@ final class HealthKitManager {
         let read: Set<HKObjectType> = [
             HKCategoryType(.sleepAnalysis),
             HKQuantityType(.heartRateVariabilitySDNN),
+            HKQuantityType(.bodyMass),
         ]
         do {
             try await store.requestAuthorization(toShare: share, read: read)
@@ -63,12 +64,108 @@ final class HealthKitManager {
         }
     }
 
+    // MARK: - Enriched Save
+
+    /// Saves a workout with exercise segment markers and volume metadata.
+    /// Uses body mass from HealthKit when available for more accurate calorie estimation.
+    func saveEnrichedWorkout(type: WorkoutType, start: Date, end: Date, setLogs: [SetLog]) async {
+        guard isAvailable else { return }
+
+        let config = HKWorkoutConfiguration()
+        config.activityType = type.hkActivityType
+
+        let builder = HKWorkoutBuilder(healthStore: store, configuration: config, device: .local())
+
+        do {
+            try await builder.beginCollection(at: start)
+
+            // Read body mass from HealthKit for accurate calorie calc
+            let weightKg = await fetchBodyMass() ?? 70.0
+            let calories = type.met * weightKg * (end.timeIntervalSince(start) / 3600.0)
+
+            let energySample = HKQuantitySample(
+                type: HKQuantityType(.activeEnergyBurned),
+                quantity: HKQuantity(unit: .kilocalorie(), doubleValue: calories),
+                start: start,
+                end: end
+            )
+            try await builder.addSamples([energySample])
+
+            // Build segment events from set logs grouped by exerciseIndex
+            let segments = buildSegmentEvents(from: setLogs, workoutStart: start, workoutEnd: end)
+            if !segments.isEmpty {
+                try await builder.addWorkoutEvents(segments)
+            }
+
+            // Calculate total volume for metadata
+            let totalVolume = setLogs.reduce(0.0) { sum, log in
+                let w = log.weight ?? 0
+                let r = Double(log.reps ?? 0)
+                return sum + (w * r)
+            }
+
+            try await builder.addMetadata([
+                "LDWETotalVolumeKg": totalVolume
+            ])
+
+            try await builder.endCollection(at: end)
+            _ = try await builder.finishWorkout()
+        } catch {
+            print("[LDWE] HealthKit enriched save failed: \(error.localizedDescription)")
+        }
+    }
+
     // MARK: - Helpers
 
     /// Rough MET-based estimate using an 70 kg reference body weight.
     private func estimatedCalories(type: WorkoutType, duration: TimeInterval) -> Double {
         let weightKg = 70.0
         return type.met * weightKg * (duration / 3600.0)
+    }
+
+    /// Reads the most recent body mass sample from HealthKit.
+    private func fetchBodyMass() async -> Double? {
+        let massType = HKQuantityType(.bodyMass)
+        let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)
+        return await withCheckedContinuation { continuation in
+            let query = HKSampleQuery(
+                sampleType: massType,
+                predicate: nil,
+                limit: 1,
+                sortDescriptors: [sortDescriptor]
+            ) { _, samples, _ in
+                guard let sample = samples?.first as? HKQuantitySample else {
+                    continuation.resume(returning: nil)
+                    return
+                }
+                let kg = sample.quantity.doubleValue(for: .gramUnit(with: .kilo))
+                continuation.resume(returning: kg)
+            }
+            store.execute(query)
+        }
+    }
+
+    /// Groups set logs by exerciseIndex and builds HKWorkoutEvent segment markers.
+    private func buildSegmentEvents(from setLogs: [SetLog], workoutStart: Date, workoutEnd: Date) -> [HKWorkoutEvent] {
+        let grouped = Dictionary(grouping: setLogs, by: \.exerciseIndex)
+        var events: [HKWorkoutEvent] = []
+
+        for (_, logs) in grouped.sorted(by: { $0.key < $1.key }) {
+            let sortedLogs = logs.sorted { $0.date < $1.date }
+            guard let firstDate = sortedLogs.first?.date,
+                  let lastDate = sortedLogs.last?.date else { continue }
+
+            // Use log dates as segment boundaries, ensuring they fall within workout bounds
+            let segStart = max(firstDate, workoutStart)
+            let segEnd = min(lastDate, workoutEnd)
+            guard segEnd > segStart else { continue }
+
+            let dateInterval = DateInterval(start: segStart, end: segEnd)
+            let event = HKWorkoutEvent(type: .segment, dateInterval: dateInterval, metadata: nil)
+            events.append(event)
+        }
+
+        return events
     }
 }
 
