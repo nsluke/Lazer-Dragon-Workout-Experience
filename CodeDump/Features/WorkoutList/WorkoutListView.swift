@@ -74,7 +74,7 @@ struct WorkoutListView: View {
         .sheet(isPresented: $showingPrograms) {
             ProgramListView(path: $path)
         }
-        .onAppear(perform: seedForDebugIfNeeded)
+        .onAppear(perform: seedIfNeeded)
     }
 
     // MARK: - List
@@ -307,52 +307,106 @@ struct WorkoutListView: View {
         }
     }
 
-    // MARK: - Seed Data (debug/simulator only)
+    // MARK: - Seed Data
 
-    private func seedForDebugIfNeeded() {
-        #if !DEBUG
-        return
-        #endif
+    private func seedIfNeeded() {
         guard workouts.isEmpty else { return }
 
-        let exerciseData: [(String, Int, Int)] = [
-            ("Burpee", 30, 10),
-            ("Situp", 30, 30),
-            ("Pushup", 30, 10),
-            ("Bicep Curl", 30, 10),
-            ("Tricep Extension", 30, 10),
-            ("Lunge", 30, 10),
-            ("Squat", 30, 10),
-            ("Plank", 60, 0),
-            ("Pull-up", 30, 8),
-            ("Seated Back Row", 30, 10),
-        ]
+        let lookup = Dictionary(uniqueKeysWithValues: ExerciseTemplate.library.map { ($0.id, $0) })
 
-        let seeds: [(String, WorkoutType, Int, Int, Int, Int, Int, Int, Int)] = [
-            //  name       type       warm ivl  rest #ivl sets setBtw cool
-            ("Neko",    .strength, 120, 30, 30, 10, 2, 0,   60),
-            ("Doge",    .strength, 120, 40, 30, 10, 2, 0,   60),
-            ("Cyborg",  .strength, 120, 45, 20, 10, 2, 0,   60),
-            ("Shinobi", .strength, 120, 60, 20, 10, 2, 0,   60),
-            ("光線竜",   .hiit,     120, 75, 10, 10, 3, 120, 120),
-            ("Test",    .strength, 5,   5,  5,  10, 2, 5,   5),
-        ]
-
-        for (name, type, warmup, interval, rest, numIntervals, numSets, restBetweenSets, cooldown) in seeds {
-            let workout = Workout(
-                name: name,
-                type: type,
-                warmupLength: warmup,
-                intervalLength: interval,
-                restLength: rest,
-                numberOfIntervals: numIntervals,
-                numberOfSets: numSets,
-                restBetweenSetLength: restBetweenSets,
-                cooldownLength: cooldown
+        func makeExercise(_ templateID: String, order: Int) -> Exercise {
+            let t = lookup[templateID]
+            return Exercise(
+                order: order,
+                name: t?.name ?? templateID,
+                splitLength: t?.defaultDuration ?? 45,
+                reps: t?.defaultReps ?? 10,
+                targetMuscleGroupsRaw: t?.muscles.map(\.rawValue).joined(separator: ",") ?? "",
+                equipmentRaw: t?.equipment.rawValue ?? "bodyweight",
+                templateID: templateID
             )
+        }
+
+        // Easy Day — bodyweight basics, short intervals, long rest
+        let easy = Workout(
+            name: "Easy Day",
+            type: .strength,
+            warmupLength: 120,
+            intervalLength: 30,
+            restLength: 45,
+            numberOfIntervals: 5,
+            numberOfSets: 2,
+            restBetweenSetLength: 90,
+            cooldownLength: 60
+        )
+        let easyExercises = [
+            "push-ups", "bodyweight-squats", "plank", "lunges", "crunches"
+        ]
+
+        // Intermediate Day — dumbbells, moderate pace
+        let intermediate = Workout(
+            name: "Intermediate Day",
+            type: .strength,
+            warmupLength: 120,
+            intervalLength: 45,
+            restLength: 30,
+            numberOfIntervals: 7,
+            numberOfSets: 3,
+            restBetweenSetLength: 90,
+            cooldownLength: 60
+        )
+        let intermediateExercises = [
+            "dumbbell-bench-press", "dumbbell-rows", "dumbbell-shoulder-press",
+            "dumbbell-bicep-curls", "tricep-dips", "goblet-squats", "dumbbell-lunges"
+        ]
+
+        // Hard Day — barbell compounds, high volume
+        let hard = Workout(
+            name: "Hard Day",
+            type: .strength,
+            warmupLength: 180,
+            intervalLength: 60,
+            restLength: 20,
+            numberOfIntervals: 8,
+            numberOfSets: 4,
+            restBetweenSetLength: 120,
+            cooldownLength: 90
+        )
+        let hardExercises = [
+            "barbell-bench-press", "barbell-rows", "overhead-press",
+            "barbell-squats", "romanian-deadlift", "pull-ups",
+            "barbell-bicep-curls", "skull-crushers"
+        ]
+
+        // CHALLENGE THE LAZER DRAGON — brutal HIIT gauntlet
+        let dragon = Workout(
+            name: "CHALLENGE THE LAZER DRAGON",
+            type: .hiit,
+            warmupLength: 120,
+            intervalLength: 45,
+            restLength: 10,
+            numberOfIntervals: 10,
+            numberOfSets: 3,
+            restBetweenSetLength: 60,
+            cooldownLength: 120
+        )
+        let dragonExercises = [
+            "burpees", "thrusters", "kettlebell-swings", "battle-ropes",
+            "box-jumps", "pull-ups", "push-ups", "mountain-climbers",
+            "barbell-squats", "plank"
+        ]
+
+        let all: [(Workout, [String])] = [
+            (easy, easyExercises),
+            (intermediate, intermediateExercises),
+            (hard, hardExercises),
+            (dragon, dragonExercises),
+        ]
+
+        for (workout, templateIDs) in all {
             modelContext.insert(workout)
-            for (i, (exName, split, reps)) in exerciseData.enumerated() {
-                let ex = Exercise(order: i, name: exName, splitLength: split, reps: reps)
+            for (i, tid) in templateIDs.enumerated() {
+                let ex = makeExercise(tid, order: i)
                 ex.workout = workout
                 workout.exercises.append(ex)
                 modelContext.insert(ex)
