@@ -366,6 +366,7 @@ final class StravaManager: NSObject {
         case .strength: return "WeightTraining"
         case .hiit:     return "Workout"
         case .run:      return "Run"
+        case .cycling:  return "Ride"
         case .yoga:     return "Yoga"
         case .custom:   return "Workout"
         }
@@ -376,6 +377,7 @@ final class StravaManager: NSObject {
         case .strength: return "WeightTraining"
         case .hiit:     return "HIIT"
         case .run:      return "Run"
+        case .cycling:  return "Ride"
         case .yoga:     return "Yoga"
         case .custom:   return "Workout"
         }

@@ -1,4 +1,5 @@
 import SwiftUI
+import CoreLocation
 
 struct WorkoutCompletedView: View {
     let totalTime: Int
@@ -9,6 +10,8 @@ struct WorkoutCompletedView: View {
     var workout: Workout? = nil
     var allHistoricalLogs: [SetLog] = []
     var allSessions: [WorkoutSession] = []
+    var routeCoordinates: [CLLocationCoordinate2D] = []
+    var routeDistance: Double? = nil
     let onDone: () -> Void
 
     @State private var showingShare = false
@@ -28,6 +31,16 @@ struct WorkoutCompletedView: View {
                     // Improvement banner (PRs + volume delta)
                     if let summary, summary.prCount > 0 || summary.volumeDeltaPercent != nil {
                         improvementBanner(summary)
+                    }
+
+                    // Route map for GPS workouts
+                    if routeCoordinates.count >= 2 {
+                        RouteMapView(
+                            coordinates: routeCoordinates,
+                            distanceMeters: routeDistance,
+                            totalSeconds: totalTime,
+                            isCycling: workout?.workoutType == .cycling
+                        )
                     }
 
                     // Stats grid

@@ -55,8 +55,15 @@ final class WorkoutSessionViewModel {
     private var timerTask: Task<Void, Never>?
     private let liveActivity = LiveActivityManager()
 
+    /// GPS tracker — active only for run/cycling workouts
+    let locationTracker = LocationTracker()
+    var isGPSWorkout: Bool { workout.workoutType.usesGPS }
+
     init(workout: Workout) {
         self.workout = workout
+        if workout.workoutType.usesGPS {
+            locationTracker.requestPermission()
+        }
     }
 
     // MARK: - Computed
@@ -139,6 +146,7 @@ final class WorkoutSessionViewModel {
     func startWorkout() {
         workoutStartDate = .now
         totalPausedTime = 0
+        if isGPSWorkout { locationTracker.start() }
         if workout.warmupLength > 0 {
             transition(to: .warmup)
         } else {
@@ -382,6 +390,7 @@ final class WorkoutSessionViewModel {
         if pendingLog != nil { commitSetLog() }
         isRunning = false
         timerTask?.cancel()
+        if isGPSWorkout { locationTracker.stop() }
         let start = workoutStartDate
         let end = start.addingTimeInterval(TimeInterval(totalElapsed))
         let type = workout.workoutType
