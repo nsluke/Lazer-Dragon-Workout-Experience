@@ -9,7 +9,7 @@ on:
 env:
   SCHEME: CodeDump
   PROJECT: CodeDump.xcodeproj
-  DESTINATION: "platform=iOS Simulator,name=iPhone 16 Pro,OS=latest"
+  DESTINATION: "platform=iOS Simulator,name=iPhone 17 Pro,OS=latest"
   COVERAGE_THRESHOLD: 70
 
 jobs:

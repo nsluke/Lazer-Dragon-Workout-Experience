@@ -1,97 +1,138 @@
 import SwiftUI
 
+// MARK: - Onboarding Step
+
+enum OnboardingStep: Int, CaseIterable {
+    case welcome
+    case equipment
+    case program
+    case permissions
+}
+
+// MARK: - Onboarding View
+
 struct OnboardingView: View {
     var onComplete: () -> Void
 
-    @State private var visibleFeature = 0
+    @State private var step: OnboardingStep = .welcome
+    @State private var selectedProgram: ProgramTemplate?
 
-    private let features: [(icon: String, title: String, body: String, color: Color)] = [
-        ("timer",            "INTERVAL TIMER",   "HIIT, strength, yoga, runs — fully customizable sets, rests, and exercises.", .outrunYellow),
-        ("lock.iphone",      "LIVE ACTIVITY",    "Your countdown lives on the lock screen and Dynamic Island so your phone stays in your pocket.", .outrunCyan),
-        ("applewatch",       "APPLE WATCH",      "Play, pause, and skip from your wrist while your phone tracks the session.", .outrunGreen),
-    ]
+    @AppStorage("equipmentProfile") private var equipmentRaw: String = EquipmentProfile.encode(EquipmentProfile.commercialGymEquipment)
+    @AppStorage("equipmentProfileConfigured") private var equipmentConfigured = false
+    @Environment(\.modelContext) private var modelContext
 
     var body: some View {
         ZStack {
             Color.outrunBlack.ignoresSafeArea()
-
-            // Grid lines — outrun road effect
             gridLines
 
             VStack(spacing: 0) {
-                Spacer()
-
-                // App name
-                VStack(spacing: 6) {
-                    Text("LAZER DRAGON")
-                        .font(.outrunFuture(36))
-                        .foregroundColor(.outrunYellow)
-                    Text("WORKOUT EXPERIENCE")
-                        .font(.outrunFuture(14))
-                        .foregroundColor(.outrunCyan)
-                        .kerning(4)
-                }
+                // Progress dots
+                progressIndicator
+                    .padding(.top, 16)
 
                 Spacer()
 
-                // Feature cards
-                TabView(selection: $visibleFeature) {
-                    ForEach(features.indices, id: \.self) { i in
-                        featureCard(features[i])
-                            .tag(i)
+                // Current step content
+                Group {
+                    switch step {
+                    case .welcome:
+                        OnboardingWelcomeStep()
+                    case .equipment:
+                        OnboardingEquipmentStep(
+                            equipmentRaw: $equipmentRaw
+                        )
+                    case .program:
+                        OnboardingProgramStep(
+                            selectedProgram: $selectedProgram,
+                            userEquipment: EquipmentProfile.decode(equipmentRaw)
+                        )
+                    case .permissions:
+                        OnboardingPermissionsStep()
                     }
                 }
-                .tabViewStyle(.page(indexDisplayMode: .always))
-                .frame(height: 220)
+                .transition(.asymmetric(
+                    insertion: .move(edge: .trailing).combined(with: .opacity),
+                    removal: .move(edge: .leading).combined(with: .opacity)
+                ))
 
                 Spacer()
 
-                // Get started
-                Button(action: onComplete) {
-                    Text("GET STARTED")
-                        .font(.outrunFuture(22))
-                        .foregroundColor(.outrunBlack)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 18)
-                        .background(Color.outrunCyan)
-                        .cornerRadius(12)
-                        .shadow(color: .outrunCyan.opacity(0.4), radius: 16)
-                }
-                .padding(.horizontal, 32)
-                .padding(.bottom, 52)
+                // Navigation buttons
+                bottomButtons
+                    .padding(.bottom, 52)
             }
         }
     }
 
-    // MARK: - Feature Card
+    // MARK: - Progress Indicator
 
-    private func featureCard(_ feature: (icon: String, title: String, body: String, color: Color)) -> some View {
-        VStack(spacing: 16) {
-            Image(systemName: feature.icon)
-                .font(.system(size: 36))
-                .foregroundColor(feature.color)
-
-            Text(feature.title)
-                .font(.outrunFuture(18))
-                .foregroundColor(.white)
-
-            Text(feature.body)
-                .font(.outrunFuture(13))
-                .foregroundColor(.white.opacity(0.55))
-                .multilineTextAlignment(.center)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.horizontal, 16)
+    private var progressIndicator: some View {
+        HStack(spacing: 10) {
+            ForEach(OnboardingStep.allCases, id: \.rawValue) { s in
+                Capsule()
+                    .fill(s.rawValue <= step.rawValue ? Color.outrunCyan : Color.outrunPurple.opacity(0.4))
+                    .frame(width: s == step ? 24 : 8, height: 8)
+                    .animation(.easeInOut(duration: 0.25), value: step)
+            }
         }
-        .padding(.vertical, 24)
-        .padding(.horizontal, 24)
-        .frame(maxWidth: .infinity)
-        .background(Color.outrunSurface)
-        .cornerRadius(16)
-        .overlay(
-            RoundedRectangle(cornerRadius: 16)
-                .stroke(feature.color.opacity(0.3), lineWidth: 1)
-        )
+    }
+
+    // MARK: - Bottom Buttons
+
+    private var bottomButtons: some View {
+        VStack(spacing: 12) {
+            // Primary action
+            Button(action: advanceStep) {
+                Text(step == .permissions ? "LET'S GO" : "CONTINUE")
+                    .font(.outrunFuture(20))
+                    .foregroundColor(.outrunBlack)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 16)
+                    .background(Color.outrunCyan)
+                    .cornerRadius(12)
+                    .shadow(color: .outrunCyan.opacity(0.4), radius: 16)
+            }
+
+            // Skip (not on welcome or last step)
+            if step == .program {
+                Button(action: advanceStep) {
+                    Text("SKIP")
+                        .font(.outrunFuture(13))
+                        .foregroundColor(.white.opacity(0.4))
+                }
+            }
+        }
         .padding(.horizontal, 32)
+    }
+
+    // MARK: - Navigation
+
+    private func advanceStep() {
+        if step == .equipment {
+            equipmentConfigured = true
+        }
+
+        guard let next = OnboardingStep(rawValue: step.rawValue + 1) else {
+            // Final step — enroll in program if selected, then complete
+            if let program = selectedProgram {
+                enrollInProgram(program)
+            }
+            onComplete()
+            return
+        }
+
+        withAnimation(.easeInOut(duration: 0.3)) {
+            step = next
+        }
+    }
+
+    private func enrollInProgram(_ template: ProgramTemplate) {
+        let program = TrainingProgram(
+            programTemplateID: template.id,
+            durationWeeks: template.durationWeeks
+        )
+        modelContext.insert(program)
     }
 
     // MARK: - Grid Lines
