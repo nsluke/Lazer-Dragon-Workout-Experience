@@ -20,6 +20,7 @@
 		A1B2C30100000009000001A1 /* WeeklyStreakWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3010000000A000001A1 /* WeeklyStreakWidget.swift */; };
 		A1B2C3010000000B000001A1 /* MuscleHeatmapWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3010000000C000001A1 /* MuscleHeatmapWidget.swift */; };
 		A1B2C3010000000D000001A1 /* PRCelebrationWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3010000000E000001A1 /* PRCelebrationWidget.swift */; };
+		A1B2C30100000020000001A1 /* ProgramProgressWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C30100000021000001A1 /* ProgramProgressWidget.swift */; };
 		A1B2C3010000000F000001A1 /* OutrunFuture.otf in Resources */ = {isa = PBXBuildFile; fileRef = D52114C62466377E00D1F0ED /* OutrunFuture.otf */; };
 		A1B2C30100000010000001A1 /* OutrunFutureBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D52114C42466377D00D1F0ED /* OutrunFutureBold.otf */; };
 		A1B2C30100000011000001A1 /* OutrunFutureBoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = D52114C52466377E00D1F0ED /* OutrunFutureBoldItalic.otf */; };
@@ -125,6 +126,7 @@
 		A1B2C3010000000A000001A1 /* WeeklyStreakWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyStreakWidget.swift; sourceTree = "<group>"; };
 		A1B2C3010000000C000001A1 /* MuscleHeatmapWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuscleHeatmapWidget.swift; sourceTree = "<group>"; };
 		A1B2C3010000000E000001A1 /* PRCelebrationWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PRCelebrationWidget.swift; sourceTree = "<group>"; };
+		A1B2C30100000021000001A1 /* ProgramProgressWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramProgressWidget.swift; sourceTree = "<group>"; };
 		A1B2C30100000012000001A1 /* LDWELiveActivity.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LDWELiveActivity.entitlements; sourceTree = "<group>"; };
 		A3E070372F60A6AF003EF4CD /* ActivityKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ActivityKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk/System/iOSSupport/System/Library/Frameworks/ActivityKit.framework; sourceTree = DEVELOPER_DIR; };
 		A42D196B4C0F424CA36542CB /* WorkoutLiveActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutLiveActivityView.swift; sourceTree = "<group>"; };
@@ -259,6 +261,7 @@
 				A1B2C3010000000A000001A1 /* WeeklyStreakWidget.swift */,
 				A1B2C3010000000C000001A1 /* MuscleHeatmapWidget.swift */,
 				A1B2C3010000000E000001A1 /* PRCelebrationWidget.swift */,
+				A1B2C30100000021000001A1 /* ProgramProgressWidget.swift */,
 				42E3AD6526014BF48CB225A8 /* Info.plist */,
 			);
 			path = LDWELiveActivity;
@@ -650,6 +653,7 @@
 				A1B2C30100000009000001A1 /* WeeklyStreakWidget.swift in Sources */,
 				A1B2C3010000000B000001A1 /* MuscleHeatmapWidget.swift in Sources */,
 				A1B2C3010000000D000001A1 /* PRCelebrationWidget.swift in Sources */,
+				A1B2C30100000020000001A1 /* ProgramProgressWidget.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

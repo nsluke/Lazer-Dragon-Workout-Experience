@@ -316,7 +316,7 @@ struct WorkoutSessionView: View {
 
         try? modelContext.save()
 
-        // Refresh widget data after session is saved
-        WidgetDataProvider.shared.refreshAll(context: modelContext)
+        // Refresh workout-relevant widgets (streak, heatmap, PR, program)
+        WidgetDataProvider.shared.refreshAfterWorkout(context: modelContext)
     }
 }
