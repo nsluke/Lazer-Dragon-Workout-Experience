@@ -51,20 +51,26 @@ jobs:
           overall = data.get("lineCoverage", 0) * 100
           threshold = int("${{ env.COVERAGE_THRESHOLD }}")
 
-          # Overall
+          # Overall (informational only)
           print(f"Overall coverage: {overall:.1f}%")
 
-          # Strava detail
+          # Strava detail — this is the enforced gate
           strava = [f for t in data.get("targets", []) for f in t.get("files", []) if "Strava" in f.get("path", "")]
           if strava:
               total = sum(f.get("executableLines", 0) for f in strava)
               covered = sum(f.get("coveredLines", 0) for f in strava)
-              print(f"Strava coverage: {covered/total*100:.1f}%" if total else "Strava: N/A")
-
-          if overall < threshold:
-              print(f"FAIL: {overall:.1f}% < {threshold}%")
-              sys.exit(1)
-          print(f"PASS: {overall:.1f}% >= {threshold}%")
+              strava_pct = covered / total * 100 if total else 0
+              print(f"Strava coverage: {strava_pct:.1f}%")
+              if strava_pct < threshold:
+                  print(f"FAIL: Strava coverage {strava_pct:.1f}% < {threshold}%")
+                  sys.exit(1)
+              print(f"PASS: Strava coverage {strava_pct:.1f}% >= {threshold}%")
+          else:
+              print("No Strava files found — skipping coverage gate")
+              if overall < threshold:
+                  print(f"FAIL: {overall:.1f}% < {threshold}%")
+                  sys.exit(1)
+              print(f"PASS: {overall:.1f}% >= {threshold}%")
           EOF
 
       - name: Coverage Summary
@@ -131,8 +137,15 @@ jobs:
           python3 -c "
           import json, sys
           data = json.load(open('coverage.json'))
-          pct = data.get('lineCoverage', 0) * 100
+          overall = data.get('lineCoverage', 0) * 100
           threshold = int('${{ env.COVERAGE_THRESHOLD }}')
-          print(f'Coverage: {pct:.1f}%')
-          sys.exit(0 if pct >= threshold else 1)
+          print(f'Overall coverage: {overall:.1f}%')
+          strava = [f for t in data.get('targets', []) for f in t.get('files', []) if 'Strava' in f.get('path', '')]
+          if strava:
+              total = sum(f.get('executableLines', 0) for f in strava)
+              covered = sum(f.get('coveredLines', 0) for f in strava)
+              pct = covered / total * 100 if total else 0
+              print(f'Strava coverage: {pct:.1f}%')
+              sys.exit(0 if pct >= threshold else 1)
+          sys.exit(0 if overall >= threshold else 1)
           "
