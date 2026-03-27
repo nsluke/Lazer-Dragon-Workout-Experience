@@ -398,6 +398,7 @@ final class WorkoutSessionViewModel {
         [
             "phaseTitle": phaseTitle,
             "setLabel": setLabel,
+            "exerciseName": currentExercise?.name ?? "",
             "splitDuration": splitDuration,
             "isRunning": isRunning,
             "workoutActive": phase != .idle && phase != .completed,

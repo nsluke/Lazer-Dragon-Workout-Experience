@@ -64,6 +64,7 @@ struct RootView: View {
     @State private var workoutsPath = NavigationPath()
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
     @Environment(\.modelContext) private var modelContext
+    @Query(sort: \WorkoutSession.date, order: .reverse) private var recentSessions: [WorkoutSession]
     @State private var importedWorkout: WorkoutExport?
     @State private var showingImportAlert = false
     @State private var importError: String?
@@ -104,6 +105,7 @@ struct RootView: View {
         .onAppear {
             styleTabBar()
             WidgetDataProvider.shared.refreshAll(context: modelContext)
+            WatchConnectivityManager.shared.sendIdleContext(lastWorkoutDate: recentSessions.first?.date)
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
             WidgetDataProvider.shared.refreshAll(context: modelContext)
