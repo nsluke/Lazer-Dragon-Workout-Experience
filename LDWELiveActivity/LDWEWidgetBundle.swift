@@ -12,5 +12,6 @@ struct LDWEWidgetBundle: WidgetBundle {
         WeeklyStreakWidget()
         MuscleHeatmapWidget()
         PRCelebrationWidget()
+        ProgramProgressWidget()
     }
 }

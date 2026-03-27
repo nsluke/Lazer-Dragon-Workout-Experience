@@ -39,6 +39,16 @@ struct PRCelebrationData: Codable {
     }
 }
 
+struct ProgramProgressData: Codable {
+    let programName: String
+    let currentWeek: Int
+    let totalWeeks: Int
+    let completedDays: Int
+    let totalDays: Int
+    let percentage: Double
+    let updatedAt: Date
+}
+
 // MARK: - Widget Data Provider
 
 /// Bridges SwiftData models to the shared App Group UserDefaults
@@ -64,15 +74,45 @@ final class WidgetDataProvider {
 
     // MARK: - Refresh All
 
+    // MARK: - Widget Kind Constants
+
+    static let nextWorkoutKind     = "NextWorkoutWidget"
+    static let weeklyStreakKind    = "WeeklyStreakWidget"
+    static let muscleHeatmapKind  = "MuscleHeatmapWidget"
+    static let prCelebrationKind  = "PRCelebrationWidget"
+    static let programProgressKind = "ProgramProgressWidget"
+
     /// Refreshes all widget data from the current SwiftData context.
     func refreshAll(context: ModelContext) {
         refreshNextWorkout(context: context)
         refreshWeeklyStreak(context: context)
         refreshMuscleHeatmap(context: context)
         refreshPRCelebration(context: context)
+        refreshProgramProgress(context: context)
 
-        // Tell WidgetKit to refresh all timelines
         WidgetCenter.shared.reloadAllTimelines()
+    }
+
+    /// Refreshes only workout-completion-relevant widgets (streak, heatmap, PR, program).
+    func refreshAfterWorkout(context: ModelContext) {
+        refreshWeeklyStreak(context: context)
+        refreshMuscleHeatmap(context: context)
+        refreshPRCelebration(context: context)
+        refreshProgramProgress(context: context)
+
+        WidgetCenter.shared.reloadTimelines(ofKind: Self.weeklyStreakKind)
+        WidgetCenter.shared.reloadTimelines(ofKind: Self.muscleHeatmapKind)
+        WidgetCenter.shared.reloadTimelines(ofKind: Self.prCelebrationKind)
+        WidgetCenter.shared.reloadTimelines(ofKind: Self.programProgressKind)
+    }
+
+    /// Refreshes only program-related widgets (next workout, program progress).
+    func refreshAfterProgramChange(context: ModelContext) {
+        refreshNextWorkout(context: context)
+        refreshProgramProgress(context: context)
+
+        WidgetCenter.shared.reloadTimelines(ofKind: Self.nextWorkoutKind)
+        WidgetCenter.shared.reloadTimelines(ofKind: Self.programProgressKind)
     }
 
     // MARK: - Next Workout
@@ -262,6 +302,36 @@ final class WidgetDataProvider {
             achievedAt: latestPR.date
         )
         write(data, forKey: "widget.prCelebration")
+    }
+
+    // MARK: - Program Progress
+
+    func refreshProgramProgress(context: ModelContext) {
+        let descriptor = FetchDescriptor<TrainingProgram>(
+            predicate: #Predicate { $0.isActive }
+        )
+        let programs = (try? context.fetch(descriptor)) ?? []
+
+        guard let program = programs.first,
+              let template = ProgramTemplate.find(program.programTemplateID) else {
+            defaults?.removeObject(forKey: "widget.programProgress")
+            return
+        }
+
+        let grid = program.completionGrid
+        let totalDays = template.daysPerWeek * template.durationWeeks
+        let completedDays = grid.flatMap { $0 }.filter { $0 }.count
+
+        let data = ProgramProgressData(
+            programName: template.name,
+            currentWeek: program.currentWeek,
+            totalWeeks: template.durationWeeks,
+            completedDays: completedDays,
+            totalDays: totalDays,
+            percentage: totalDays > 0 ? Double(completedDays) / Double(totalDays) * 100 : 0,
+            updatedAt: .now
+        )
+        write(data, forKey: "widget.programProgress")
     }
 
     // MARK: - Private Helpers

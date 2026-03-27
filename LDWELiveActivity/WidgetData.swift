@@ -13,10 +13,11 @@ enum WidgetStore {
 
     // MARK: - Keys
 
-    static let nextWorkoutKey   = "widget.nextWorkout"
-    static let weeklyStreakKey  = "widget.weeklyStreak"
-    static let muscleHeatmapKey = "widget.muscleHeatmap"
-    static let prCelebrationKey = "widget.prCelebration"
+    static let nextWorkoutKey      = "widget.nextWorkout"
+    static let weeklyStreakKey     = "widget.weeklyStreak"
+    static let muscleHeatmapKey   = "widget.muscleHeatmap"
+    static let prCelebrationKey   = "widget.prCelebration"
+    static let programProgressKey = "widget.programProgress"
 
     // MARK: - Read Helpers
 
@@ -118,5 +119,32 @@ struct PRCelebrationData: Codable {
         prType: .weight,
         displayValue: "185 lbs",
         achievedAt: .now
+    )
+}
+
+// MARK: - Program Progress Data
+
+struct ProgramProgressData: Codable {
+    let programName: String
+    let currentWeek: Int
+    let totalWeeks: Int
+    let completedDays: Int
+    let totalDays: Int
+    let percentage: Double
+    let updatedAt: Date
+
+    var progress: Double {
+        guard totalDays > 0 else { return 0 }
+        return min(1.0, Double(completedDays) / Double(totalDays))
+    }
+
+    static let placeholder = ProgramProgressData(
+        programName: "Push / Pull / Legs",
+        currentWeek: 3,
+        totalWeeks: 8,
+        completedDays: 12,
+        totalDays: 48,
+        percentage: 25,
+        updatedAt: .now
     )
 }
