@@ -6,7 +6,7 @@
 	<true/>
 	<key>com.apple.developer.icloud-container-identifiers</key>
 	<array>
-		<string>iCloud.com.lazerdragon.ldwe</string>
+		<string>iCloud.com.Solomon.Lazer-Dragon</string>
 	</array>
 	<key>com.apple.developer.icloud-services</key>
 	<array>
@@ -14,7 +14,7 @@
 	</array>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.com.Observatory.CodeDump</string>
+		<string>group.com.Solomon.Lazer-Dragon</string>
 	</array>
 </dict>
 </plist>

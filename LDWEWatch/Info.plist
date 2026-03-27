@@ -30,7 +30,7 @@
 	<key>WKApplication</key>
 	<true/>
 	<key>WKCompanionAppBundleIdentifier</key>
-	<string>com.Observatory.CodeDump</string>
+	<string>com.Solomon.Lazer-Dragon</string>
 	<key>WKRunsIndependentlyOfCompanionApp</key>
 	<true/>
 </dict>

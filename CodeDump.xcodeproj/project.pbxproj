@@ -20,10 +20,10 @@
 		A1B2C30100000009000001A1 /* WeeklyStreakWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3010000000A000001A1 /* WeeklyStreakWidget.swift */; };
 		A1B2C3010000000B000001A1 /* MuscleHeatmapWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3010000000C000001A1 /* MuscleHeatmapWidget.swift */; };
 		A1B2C3010000000D000001A1 /* PRCelebrationWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3010000000E000001A1 /* PRCelebrationWidget.swift */; };
-		A1B2C30100000020000001A1 /* ProgramProgressWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C30100000021000001A1 /* ProgramProgressWidget.swift */; };
 		A1B2C3010000000F000001A1 /* OutrunFuture.otf in Resources */ = {isa = PBXBuildFile; fileRef = D52114C62466377E00D1F0ED /* OutrunFuture.otf */; };
 		A1B2C30100000010000001A1 /* OutrunFutureBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D52114C42466377D00D1F0ED /* OutrunFutureBold.otf */; };
 		A1B2C30100000011000001A1 /* OutrunFutureBoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = D52114C52466377E00D1F0ED /* OutrunFutureBoldItalic.otf */; };
+		A1B2C30100000020000001A1 /* ProgramProgressWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C30100000021000001A1 /* ProgramProgressWidget.swift */; };
 		A3E070382F60A6AF003EF4CD /* ActivityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3E070372F60A6AF003EF4CD /* ActivityKit.framework */; };
 		A4B4DB5DF6DD48949442505A /* LDWEWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2150DB55BE43C5ADA4D80B /* LDWEWatchApp.swift */; };
 		B9FA493509D042FEA10EAFAC /* WatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E2283EE4F44C17BD3CE984 /* WatchConnectivityManager.swift */; };
@@ -43,13 +43,10 @@
 		D52114D924663D7B00D1F0ED /* MorningStar.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D52114D524663CBA00D1F0ED /* MorningStar.ttf */; };
 		D52114DA24663D7E00D1F0ED /* Mozart.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D52114D424663CAD00D1F0ED /* Mozart.ttf */; };
 		D52114DB24663D7F00D1F0ED /* Mozart.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D52114D424663CAD00D1F0ED /* Mozart.ttf */; };
-/* UnitTestHelpers.swift — now auto-synced */
 		D5BA33B5245CF239001DE467 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BA33B4245CF239001DE467 /* AppDelegate.swift */; };
 		D5BA33B7245CF239001DE467 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BA33B6245CF239001DE467 /* SceneDelegate.swift */; };
 		D5BA33C1245CF23D001DE467 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5BA33C0245CF23D001DE467 /* Assets.xcassets */; };
 		D5BA33C4245CF23D001DE467 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D5BA33C2245CF23D001DE467 /* LaunchScreen.storyboard */; };
-/* CodeDumpTests.swift — now auto-synced */
-/* CodeDumpUITests.swift — now auto-synced */
 		D5D496BA254B4C3D00548BA8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5D496B9254B4C3D00548BA8 /* Assets.xcassets */; };
 		D5D496CE254B4C3E00548BA8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5D496CD254B4C3E00548BA8 /* Assets.xcassets */; };
 		D5D496D3254B4C3E00548BA8 /* LDWEWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = D5D496B4254B4C3A00548BA8 /* LDWEWatch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -126,8 +123,8 @@
 		A1B2C3010000000A000001A1 /* WeeklyStreakWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyStreakWidget.swift; sourceTree = "<group>"; };
 		A1B2C3010000000C000001A1 /* MuscleHeatmapWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuscleHeatmapWidget.swift; sourceTree = "<group>"; };
 		A1B2C3010000000E000001A1 /* PRCelebrationWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PRCelebrationWidget.swift; sourceTree = "<group>"; };
-		A1B2C30100000021000001A1 /* ProgramProgressWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramProgressWidget.swift; sourceTree = "<group>"; };
 		A1B2C30100000012000001A1 /* LDWELiveActivity.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LDWELiveActivity.entitlements; sourceTree = "<group>"; };
+		A1B2C30100000021000001A1 /* ProgramProgressWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramProgressWidget.swift; sourceTree = "<group>"; };
 		A3E070372F60A6AF003EF4CD /* ActivityKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ActivityKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk/System/iOSSupport/System/Library/Frameworks/ActivityKit.framework; sourceTree = DEVELOPER_DIR; };
 		A42D196B4C0F424CA36542CB /* WorkoutLiveActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutLiveActivityView.swift; sourceTree = "<group>"; };
 		D518D58F2592EA32000EC45B /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
@@ -136,7 +133,6 @@
 		D52114C62466377E00D1F0ED /* OutrunFuture.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = OutrunFuture.otf; sourceTree = "<group>"; };
 		D52114D424663CAD00D1F0ED /* Mozart.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Mozart.ttf; sourceTree = "<group>"; };
 		D52114D524663CBA00D1F0ED /* MorningStar.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MorningStar.ttf; sourceTree = "<group>"; };
-/* UnitTestHelpers.swift — now auto-synced via PBXFileSystemSynchronizedRootGroup */
 		D5340F9D250AE8EC00500793 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D548391D246E2C480003B3E5 /* CodeDump.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CodeDump.entitlements; sourceTree = "<group>"; };
 		D55D076E24BB7583001B61F5 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -146,9 +142,7 @@
 		D5BA33C0245CF23D001DE467 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D5BA33C3245CF23D001DE467 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D5BA33CA245CF23D001DE467 /* CodeDumpTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CodeDumpTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-/* CodeDumpTests.swift — now auto-synced via PBXFileSystemSynchronizedRootGroup */
 		D5BA33D5245CF23D001DE467 /* CodeDumpUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CodeDumpUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-/* CodeDumpUITests.swift — now auto-synced via PBXFileSystemSynchronizedRootGroup */
 		D5D496B4254B4C3A00548BA8 /* LDWEWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LDWEWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5D496B9254B4C3D00548BA8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D5D496BB254B4C3D00548BA8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -717,11 +711,11 @@
 				CODE_SIGN_ENTITLEMENTS = LDWELiveActivity/LDWELiveActivity.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6TK8Q4KD6G;
+				DEVELOPMENT_TEAM = YMZ6ZTYGL8;
 				INFOPLIST_FILE = LDWELiveActivity/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Observatory.CodeDump.LDWELiveActivity;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Solomon.Lazer-Dragon.LDWELiveActivity;
 				PRODUCT_NAME = LDWELiveActivity;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -737,11 +731,11 @@
 				CODE_SIGN_ENTITLEMENTS = LDWELiveActivity/LDWELiveActivity.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6TK8Q4KD6G;
+				DEVELOPMENT_TEAM = YMZ6ZTYGL8;
 				INFOPLIST_FILE = LDWELiveActivity/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Observatory.CodeDump.LDWELiveActivity;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Solomon.Lazer-Dragon.LDWELiveActivity;
 				PRODUCT_NAME = LDWELiveActivity;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -786,7 +780,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 6TK8Q4KD6G;
+				DEVELOPMENT_TEAM = YMZ6ZTYGL8;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -851,7 +845,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 6TK8Q4KD6G;
+				DEVELOPMENT_TEAM = YMZ6ZTYGL8;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -881,7 +875,7 @@
 				CODE_SIGN_ENTITLEMENTS = CodeDump/CodeDump.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6TK8Q4KD6G;
+				DEVELOPMENT_TEAM = YMZ6ZTYGL8;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_INCOMING_NETWORK_CONNECTIONS = YES;
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
@@ -892,7 +886,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Observatory.CodeDump;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Solomon.Lazer-Dragon";
 				PRODUCT_NAME = "Lazer Dragon";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
@@ -907,7 +901,7 @@
 				CODE_SIGN_ENTITLEMENTS = CodeDump/CodeDump.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6TK8Q4KD6G;
+				DEVELOPMENT_TEAM = YMZ6ZTYGL8;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_INCOMING_NETWORK_CONNECTIONS = YES;
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
@@ -918,7 +912,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Observatory.CodeDump;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Solomon.Lazer-Dragon";
 				PRODUCT_NAME = "Lazer Dragon";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
@@ -938,7 +932,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Observatory.CodeDumpTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Solomon.Lazer-Dragon.Tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -958,7 +952,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Observatory.CodeDumpTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Solomon.Lazer-Dragon.Tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -976,7 +970,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Observatory.CodeDumpUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Solomon.Lazer-Dragon.UITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -994,7 +988,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Observatory.CodeDumpUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Solomon.Lazer-Dragon.UITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1014,7 +1008,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.Observatory.CodeDump.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Solomon.Lazer-Dragon.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -1036,7 +1030,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.Observatory.CodeDump.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Solomon.Lazer-Dragon.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;

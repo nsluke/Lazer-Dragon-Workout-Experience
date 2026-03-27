@@ -66,7 +66,7 @@ final class WidgetDataProvider {
 
     // MARK: - App Group
 
-    private let suiteName = "group.com.Observatory.CodeDump"
+    private let suiteName = "group.com.Solomon.Lazer-Dragon"
 
     private var defaults: UserDefaults? {
         UserDefaults(suiteName: suiteName)

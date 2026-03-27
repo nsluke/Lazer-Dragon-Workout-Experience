@@ -3,7 +3,7 @@ import Foundation
 // MARK: - App Group
 
 /// Shared App Group identifier used by the main app and widget extension.
-let ldweAppGroup = "group.com.Observatory.CodeDump"
+let ldweAppGroup = "group.com.Solomon.Lazer-Dragon"
 
 /// Convenience accessor for the shared App Group UserDefaults.
 enum WidgetStore {

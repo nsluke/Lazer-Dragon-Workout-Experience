@@ -27,7 +27,7 @@
 		<key>NSExtensionAttributes</key>
 		<dict>
 			<key>WKAppBundleIdentifier</key>
-			<string>com.Observatory.CodeDump.watchkitapp</string>
+			<string>com.Solomon.Lazer-Dragon.watchkitapp</string>
 		</dict>
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.watchkit</string>
