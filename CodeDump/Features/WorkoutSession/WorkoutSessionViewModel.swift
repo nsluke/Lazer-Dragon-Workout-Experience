@@ -389,7 +389,8 @@ final class WorkoutSessionViewModel {
         liveActivity.end(finalState: currentActivityState)
         WatchConnectivityManager.shared.actionHandler = nil
         WatchConnectivityManager.shared.sendWorkoutState(watchPayload)
-        Task { await HealthKitManager.shared.saveWorkout(type: type, start: start, end: end) }
+        let logs = sessionLogs
+        Task { await HealthKitManager.shared.saveEnrichedWorkout(type: type, start: start, end: end, setLogs: logs) }
     }
 
     // MARK: - Watch
