@@ -29,6 +29,8 @@ struct WorkoutSessionView: View {
                     workout: viewModel.workout,
                     allHistoricalLogs: allSetLogs,
                     allSessions: allSessions,
+                    routeCoordinates: viewModel.isGPSWorkout ? viewModel.locationTracker.locations.map(\.coordinate) : [],
+                    routeDistance: viewModel.isGPSWorkout ? viewModel.locationTracker.distanceMeters : nil,
                     onDone: { path.removeLast(path.count) }
                 )
             } else {
@@ -83,6 +85,12 @@ struct WorkoutSessionView: View {
             timerRing
 
             Spacer()
+
+            if viewModel.isGPSWorkout {
+                gpsStatsBar
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 8)
+            }
 
             exerciseInfo
                 .padding(.horizontal, 20)
@@ -213,6 +221,50 @@ struct WorkoutSessionView: View {
         }
     }
 
+    // MARK: - GPS Stats
+
+    private var gpsStatsBar: some View {
+        let tracker = viewModel.locationTracker
+        let isCycling = viewModel.workout.workoutType == .cycling
+        return HStack(spacing: 0) {
+            gpsStat(
+                label: "DISTANCE",
+                value: tracker.formattedDistance,
+                color: .outrunCyan
+            )
+            Spacer()
+            gpsStat(
+                label: isCycling ? "SPEED" : "PACE",
+                value: isCycling ? tracker.formattedSpeed : tracker.formattedPace,
+                color: .outrunYellow
+            )
+            Spacer()
+            gpsStat(
+                label: "AVG",
+                value: isCycling
+                    ? tracker.averageSpeed(totalSeconds: viewModel.totalElapsed)
+                    : tracker.averagePace(totalSeconds: viewModel.totalElapsed),
+                color: .outrunGreen
+            )
+        }
+        .padding(.vertical, 10)
+        .padding(.horizontal, 16)
+        .background(Color.outrunSurface)
+        .cornerRadius(12)
+    }
+
+    private func gpsStat(label: String, value: String, color: Color) -> some View {
+        VStack(spacing: 2) {
+            Text(label)
+                .font(.outrunFuture(9))
+                .foregroundColor(.white.opacity(0.4))
+            Text(value)
+                .font(.system(size: 16, weight: .semibold, design: .monospaced))
+                .foregroundColor(color)
+                .minimumScaleFactor(0.7)
+        }
+    }
+
     // MARK: - Exercise Info
 
     private var exerciseInfo: some View {
@@ -305,6 +357,12 @@ struct WorkoutSessionView: View {
         )
         session.workout = viewModel.workout
         viewModel.workout.sessions.append(session)
+
+        // Save GPS route data if applicable
+        if viewModel.isGPSWorkout, !viewModel.locationTracker.locations.isEmpty {
+            session.setRoute(from: viewModel.locationTracker.locations)
+        }
+
         modelContext.insert(session)
 
         // Persist set logs

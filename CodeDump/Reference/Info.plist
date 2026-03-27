@@ -6,6 +6,19 @@
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
 	<string>Lazer Dragon</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>LDWE Workout</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.lazerdragon.workout</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -24,6 +37,20 @@
 	<string>public.app-category.healthcare-fitness</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>The Lazer Dragon tracks your route during runs and rides to map your path and calculate distance.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+	</array>
+	<key>NSHealthShareUsageDescription</key>
+	<string>"The Lazer Dragon sees all, but is politely asking for you to share your health data so that IT MAY RULE YOUR WORKOUTS."</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>"The Lazer Dragon politely requests that you let it write your workouts into Apple Health."</string>
+	<key>NSSupportsLiveActivities</key>
+	<true/>
+	<key>NSUserNotificationsUsageDescription</key>
+	<string>The Lazer Dragon will remind you when it's time to train.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>OutrunFuture.otf</string>
@@ -38,14 +65,13 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
-	<key>NSUserNotificationsUsageDescription</key>
-	<string>The Lazer Dragon will remind you when it's time to train.</string>
-	<key>NSHealthShareUsageDescription</key>
-	<string>&quot;The Lazer Dragon sees all, but is politely asking for you to share your health data so that IT MAY RULE YOUR WORKOUTS.&quot;</string>
-	<key>NSHealthUpdateUsageDescription</key>
-	<string>&quot;The Lazer Dragon politely requests that you let it write your workouts into Apple Health.&quot;</string>
-	<key>NSSupportsLiveActivities</key>
-	<true/>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>
@@ -65,26 +91,6 @@
 				</array>
 			</dict>
 		</dict>
-	</array>
-	<key>CFBundleDocumentTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeName</key>
-			<string>LDWE Workout</string>
-			<key>LSHandlerRank</key>
-			<string>Owner</string>
-			<key>LSItemContentTypes</key>
-			<array>
-				<string>com.lazerdragon.workout</string>
-			</array>
-		</dict>
-	</array>
-	<key>UISupportedInterfaceOrientations~ipad</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 </dict>
 </plist>

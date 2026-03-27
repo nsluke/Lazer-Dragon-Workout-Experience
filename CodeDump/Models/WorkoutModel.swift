@@ -6,9 +6,14 @@ import Foundation
 enum WorkoutType: String, CaseIterable, Codable {
     case hiit     = "HIIT"
     case run      = "Run"
+    case cycling  = "Cycling"
     case yoga     = "Yoga"
     case strength = "Strength"
     case custom   = "Custom"
+
+    var usesGPS: Bool {
+        self == .run || self == .cycling
+    }
 }
 
 // MARK: - Workout

@@ -176,6 +176,7 @@ extension WorkoutType {
         switch self {
         case .hiit:     return .highIntensityIntervalTraining
         case .run:      return .running
+        case .cycling:  return .cycling
         case .yoga:     return .yoga
         case .strength: return .traditionalStrengthTraining
         case .custom:   return .functionalStrengthTraining
@@ -187,6 +188,7 @@ extension WorkoutType {
         switch self {
         case .hiit:     return 8.0
         case .run:      return 9.0
+        case .cycling:  return 7.5
         case .yoga:     return 3.0
         case .strength: return 5.0
         case .custom:   return 6.0
