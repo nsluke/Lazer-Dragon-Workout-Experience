@@ -1,0 +1,216 @@
+default_platform(:ios)
+
+#───────────────────────────────────────────────────────────────────────
+# Configuration
+#───────────────────────────────────────────────────────────────────────
+SCHEME        = "CodeDump"
+PROJECT       = "CodeDump.xcodeproj"
+DEVICE        = "iPhone 16 Pro"
+IOS_VERSION   = "18.0"
+DESTINATION   = "platform=iOS Simulator,name=#{DEVICE},OS=#{IOS_VERSION}"
+COV_THRESHOLD = 70
+
+platform :ios do
+
+  #─────────────────────────────────────────────────────────────────────
+  # GATE 1: PR — Fast tests that block every pull request
+  #─────────────────────────────────────────────────────────────────────
+  desc "Gate 1: Unit, integration, contract, concurrency, accessibility, error injection tests + coverage"
+  lane :gate_pr do
+    scan(
+      project: PROJECT,
+      scheme: SCHEME,
+      devices: [DEVICE],
+      code_coverage: true,
+      skip_testing: [
+        "CodeDumpUITests",
+        "CodeDumpTests/StravaE2ETests",
+        "CodeDumpTests/StravaKeychainTests",
+      ],
+      result_bundle: true,
+      output_directory: "./fastlane/test_output",
+      buildlog_path: "./fastlane/build_logs",
+    )
+    check_coverage
+  end
+
+  #─────────────────────────────────────────────────────────────────────
+  # GATE 2: Merge — Full test suite on main branch
+  #─────────────────────────────────────────────────────────────────────
+  desc "Gate 2: All tests including UI, snapshots, and keychain"
+  lane :gate_merge do
+    # Unit + Integration + Contract + Concurrency + Accessibility + Error Injection
+    scan(
+      project: PROJECT,
+      scheme: SCHEME,
+      devices: [DEVICE],
+      code_coverage: true,
+      skip_testing: [
+        "CodeDumpUITests",
+        "CodeDumpTests/StravaE2ETests",
+      ],
+      result_bundle: true,
+      output_directory: "./fastlane/test_output/unit",
+    )
+
+    # UI tests separately (they need a running simulator)
+    scan(
+      project: PROJECT,
+      scheme: SCHEME,
+      devices: [DEVICE],
+      only_testing: ["CodeDumpUITests"],
+      result_bundle: true,
+      output_directory: "./fastlane/test_output/ui",
+    )
+
+    check_coverage
+  end
+
+  #─────────────────────────────────────────────────────────────────────
+  # GATE 3: Nightly — Extended tests including E2E
+  #─────────────────────────────────────────────────────────────────────
+  desc "Gate 3: Nightly — all tests + E2E against Strava sandbox + multi-device"
+  lane :gate_nightly do
+    devices = ["iPhone SE (3rd generation)", "iPhone 16 Pro", "iPhone 16 Pro Max"]
+
+    # Fast tests on all device sizes
+    scan(
+      project: PROJECT,
+      scheme: SCHEME,
+      devices: devices,
+      code_coverage: true,
+      skip_testing: [
+        "CodeDumpUITests",
+        "CodeDumpTests/StravaE2ETests",
+      ],
+      result_bundle: true,
+      output_directory: "./fastlane/test_output/multi-device",
+    )
+
+    # UI tests on all device sizes
+    scan(
+      project: PROJECT,
+      scheme: SCHEME,
+      devices: devices,
+      only_testing: ["CodeDumpUITests"],
+      result_bundle: true,
+      output_directory: "./fastlane/test_output/ui-multi",
+    )
+
+    # E2E tests (only if secrets are configured)
+    if ENV["STRAVA_TEST_REFRESH_TOKEN"]
+      scan(
+        project: PROJECT,
+        scheme: SCHEME,
+        devices: [DEVICE],
+        only_testing: ["CodeDumpTests/StravaE2ETests"],
+        result_bundle: true,
+        output_directory: "./fastlane/test_output/e2e",
+      )
+    else
+      UI.important("Skipping E2E tests — STRAVA_TEST_REFRESH_TOKEN not set")
+    end
+
+    check_coverage
+  end
+
+  #─────────────────────────────────────────────────────────────────────
+  # GATE 4: Release — Full validation + build + TestFlight upload
+  #─────────────────────────────────────────────────────────────────────
+  desc "Gate 4: Release — full test suite, build archive, upload to TestFlight"
+  lane :gate_release do
+    # Run the full nightly suite first
+    gate_nightly
+
+    # Bump build number
+    increment_build_number(
+      build_number: latest_testflight_build_number + 1,
+      xcodeproj: PROJECT,
+    )
+
+    # Build release archive
+    build_app(
+      project: PROJECT,
+      scheme: SCHEME,
+      export_method: "app-store",
+      output_directory: "./fastlane/builds",
+      output_name: "LazerDragon.ipa",
+      include_bitcode: false,
+    )
+
+    # Upload to TestFlight
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true,
+      changelog: changelog_from_git_commits(
+        commits_count: 10,
+        pretty: "- %s",
+      ),
+    )
+
+    # Tag the release
+    version = get_version_number(xcodeproj: PROJECT)
+    build = get_build_number(xcodeproj: PROJECT)
+    add_git_tag(tag: "v#{version}-#{build}")
+    push_git_tags
+  end
+
+  #─────────────────────────────────────────────────────────────────────
+  # Helpers
+  #─────────────────────────────────────────────────────────────────────
+
+  desc "Check code coverage meets threshold"
+  private_lane :check_coverage do
+    # Find the most recent xcresult
+    result_bundles = Dir.glob("./fastlane/test_output/**/*.xcresult")
+    if result_bundles.empty?
+      UI.user_error!("No test result bundles found")
+    end
+
+    result_bundle = result_bundles.max_by { |f| File.mtime(f) }
+
+    # Extract coverage
+    json = `xcrun xccov view --report --json "#{result_bundle}"`
+    data = JSON.parse(json)
+    coverage = (data["lineCoverage"] || 0) * 100
+
+    UI.message("📊 Coverage: #{coverage.round(1)}% (threshold: #{COV_THRESHOLD}%)")
+
+    # Strava-specific coverage
+    strava_files = data["targets"]
+      &.flat_map { |t| t["files"] || [] }
+      &.select { |f| f["path"]&.include?("Strava") } || []
+
+    unless strava_files.empty?
+      total = strava_files.sum { |f| f["executableLines"] || 0 }
+      covered = strava_files.sum { |f| f["coveredLines"] || 0 }
+      strava_pct = total > 0 ? (covered.to_f / total * 100) : 0
+      UI.message("🏔️  Strava coverage: #{strava_pct.round(1)}%")
+    end
+
+    if coverage < COV_THRESHOLD
+      UI.user_error!("❌ Coverage #{coverage.round(1)}% is below #{COV_THRESHOLD}% threshold")
+    else
+      UI.success("✅ Coverage #{coverage.round(1)}% meets #{COV_THRESHOLD}% threshold")
+    end
+  end
+
+  desc "Install the pre-push git hook"
+  lane :install_hooks do
+    sh("cp ../scripts/pre-push ../.git/hooks/pre-push")
+    sh("chmod +x ../.git/hooks/pre-push")
+    UI.success("✅ Pre-push hook installed")
+  end
+
+  desc "Record snapshot baselines"
+  lane :record_snapshots do
+    ENV["RECORD_SNAPSHOTS"] = "1"
+    scan(
+      project: PROJECT,
+      scheme: SCHEME,
+      devices: [DEVICE],
+      only_testing: ["CodeDumpTests/StravaSnapshotTests"],
+      fail_build: false,
+    )
+    UI.success("📸 Snapshot baselines recorded. Review and commit the __Snapshots__ directory.")
+  end
+end

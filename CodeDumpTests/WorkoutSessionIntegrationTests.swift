@@ -1,6 +1,6 @@
 import XCTest
 import SwiftData
-@testable import CodeDump
+@testable import Lazer_Dragon
 
 /// Integration tests — exercise multiple components together:
 /// the full state machine, completion stats, and SwiftData persistence.
@@ -11,8 +11,8 @@ final class WorkoutSessionIntegrationTests: XCTestCase {
     private var context: ModelContext!
 
     override func setUp() async throws {
-        let config = ModelConfiguration(isStoredInMemoryOnly: true)
-        container = try ModelContainer(for: Workout.self, Exercise.self, WorkoutSession.self, configurations: config)
+        let config = ModelConfiguration(isStoredInMemoryOnly: true, cloudKitDatabase: .none)
+        container = try ModelContainer(for: Workout.self, Exercise.self, WorkoutSession.self, SetLog.self, CustomExerciseTemplate.self, TrainingProgram.self, FitnessGoal.self, configurations: config)
         context = container.mainContext
     }
 

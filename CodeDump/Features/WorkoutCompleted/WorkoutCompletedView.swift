@@ -14,6 +14,7 @@ struct WorkoutCompletedView: View {
     @State private var showingShare = false
     @State private var summary: SessionAnalytics.SessionSummary?
     @State private var showPRBadges = false
+    @State private var strava = StravaManager.shared
 
     var body: some View {
         ZStack {
@@ -388,6 +389,8 @@ struct WorkoutCompletedView: View {
                 .shadow(color: .outrunPink.opacity(0.25), radius: 12)
             }
 
+            stravaButton
+
             Button(action: onDone) {
                 Text("DONE")
                     .font(.outrunFuture(28))
@@ -398,6 +401,89 @@ struct WorkoutCompletedView: View {
                     .cornerRadius(12)
             }
         }
+    }
+
+    // MARK: - Strava
+
+    private var stravaButton: some View {
+        Group {
+            if strava.isConnected {
+                Button {
+                    Task {
+                        let description = StravaManager.buildDescription(
+                            exercisesCompleted: exercisesCompleted,
+                            setsCompleted: setsCompleted,
+                            setLogs: setLogs
+                        )
+                        let startDate = Date().addingTimeInterval(TimeInterval(-totalTime))
+                        await strava.uploadWorkout(
+                            name: workoutName,
+                            workoutType: workout?.workoutType ?? .custom,
+                            startDate: startDate,
+                            elapsedSeconds: totalTime,
+                            description: description
+                        )
+                    }
+                } label: {
+                    HStack(spacing: 10) {
+                        if strava.isUploading {
+                            ProgressView()
+                                .tint(.white)
+                                .accessibilityIdentifier("strava_uploading_spinner")
+                        } else if strava.uploadResult == .success {
+                            Image(systemName: "checkmark.circle.fill")
+                            Text("UPLOADED TO STRAVA")
+                                .font(.outrunFuture(16))
+                        } else {
+                            Image(systemName: "arrow.up.circle.fill")
+                            Text("UPLOAD TO STRAVA")
+                                .font(.outrunFuture(16))
+                        }
+                    }
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .background(stravaButtonBackground)
+                    .cornerRadius(12)
+                }
+                .disabled(strava.isUploading || strava.uploadResult == .success)
+                .accessibilityIdentifier(strava.uploadResult == .success ? "strava_uploaded_button" : "strava_upload_button")
+                .accessibilityLabel(strava.isUploading ? "Uploading to Strava" : strava.uploadResult == .success ? "Uploaded to Strava" : "Upload to Strava")
+
+                if case .error(let msg) = strava.uploadResult {
+                    Text(msg)
+                        .font(.system(size: 12))
+                        .foregroundColor(.outrunRed)
+                        .multilineTextAlignment(.center)
+                        .accessibilityIdentifier("strava_error_message")
+                        .accessibilityLabel("Strava error: \(msg)")
+                }
+            } else {
+                Button {
+                    strava.authorize()
+                } label: {
+                    HStack(spacing: 10) {
+                        Image(systemName: "link.circle.fill")
+                        Text("CONNECT STRAVA")
+                            .font(.outrunFuture(16))
+                    }
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .background(Color(red: 0.99, green: 0.30, blue: 0.0)) // Strava orange
+                    .cornerRadius(12)
+                }
+                .accessibilityIdentifier("strava_connect_button")
+                .accessibilityLabel("Connect to Strava")
+            }
+        }
+    }
+
+    private var stravaButtonBackground: Color {
+        if strava.uploadResult == .success {
+            return .outrunGreen.opacity(0.8)
+        }
+        return Color(red: 0.99, green: 0.30, blue: 0.0) // Strava orange
     }
 
     // MARK: - Accessibility Helpers

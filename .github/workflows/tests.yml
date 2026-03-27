@@ -1,0 +1,151 @@
+name: Tests & Coverage
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+env:
+  SCHEME: CodeDump
+  PROJECT: CodeDump.xcodeproj
+  DESTINATION: "platform=iOS Simulator,name=iPhone 16 Pro,OS=latest"
+  COVERAGE_THRESHOLD: 70
+
+jobs:
+  # ═══════════════════════════════════════════════════════════════════
+  # GATE 1: PR — Fast tests that block every pull request
+  # ═══════════════════════════════════════════════════════════════════
+  gate-pr:
+    name: "Gate 1: Unit + Integration + Coverage"
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s "$(ls -d /Applications/Xcode_16*.app 2>/dev/null | sort -V | tail -1 || echo /Applications/Xcode.app)" && xcodebuild -version
+
+      - name: Build & Test
+        run: |
+          set -o pipefail
+          xcodebuild test \
+            -project "$PROJECT" \
+            -scheme "$SCHEME" \
+            -destination "$DESTINATION" \
+            -enableCodeCoverage YES \
+            -resultBundlePath TestResults.xcresult \
+            -skip-testing:CodeDumpUITests \
+            -skip-testing:CodeDumpTests/StravaE2ETests \
+            -skip-testing:CodeDumpTests/StravaKeychainTests \
+            -skip-testing:CodeDumpTests/StravaSnapshotTests \
+            -skip-testing:CodeDumpTests/WorkoutSessionViewModelTests \
+            -skip-testing:CodeDumpTests/WorkoutSessionIntegrationTests \
+            | tee xcodebuild.log
+
+      - name: Enforce Coverage Threshold
+        run: |
+          xcrun xccov view --report --json TestResults.xcresult > coverage.json
+          python3 << 'EOF'
+          import json, sys
+          data = json.load(open("coverage.json"))
+          overall = data.get("lineCoverage", 0) * 100
+          threshold = int("${{ env.COVERAGE_THRESHOLD }}")
+
+          # Overall (informational only)
+          print(f"Overall coverage: {overall:.1f}%")
+
+          # Strava detail — this is the enforced gate
+          strava = [f for t in data.get("targets", []) for f in t.get("files", []) if "Strava" in f.get("path", "")]
+          if strava:
+              total = sum(f.get("executableLines", 0) for f in strava)
+              covered = sum(f.get("coveredLines", 0) for f in strava)
+              strava_pct = covered / total * 100 if total else 0
+              print(f"Strava coverage: {strava_pct:.1f}%")
+              if strava_pct < threshold:
+                  print(f"FAIL: Strava coverage {strava_pct:.1f}% < {threshold}%")
+                  sys.exit(1)
+              print(f"PASS: Strava coverage {strava_pct:.1f}% >= {threshold}%")
+          else:
+              print("No Strava files found — skipping coverage gate")
+              if overall < threshold:
+                  print(f"FAIL: {overall:.1f}% < {threshold}%")
+                  sys.exit(1)
+              print(f"PASS: {overall:.1f}% >= {threshold}%")
+          EOF
+
+      - name: Coverage Summary
+        if: always()
+        run: |
+          python3 << 'EOF' >> $GITHUB_STEP_SUMMARY
+          import json
+          data = json.load(open("coverage.json"))
+          pct = data.get("lineCoverage", 0) * 100
+          t = int("${{ env.COVERAGE_THRESHOLD }}")
+          print(f"## Coverage: {pct:.1f}%\n")
+          print("| File | Coverage |")
+          print("|------|----------|")
+          for tgt in data.get("targets", []):
+              for f in tgt.get("files", []):
+                  p = f.get("path", "")
+                  if "Strava" in p or "Workout" in p:
+                      c = f.get("lineCoverage", 0) * 100
+                      icon = "pass" if c >= t else "warn"
+                      print(f"| {p.split('/')[-1]} | {c:.1f}% |")
+          EOF
+
+      - name: Upload Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gate1-results
+          path: TestResults.xcresult
+          retention-days: 14
+
+  # ═══════════════════════════════════════════════════════════════════
+  # GATE 2: Post-merge validation (runs on push to master)
+  # ═══════════════════════════════════════════════════════════════════
+  gate-merge:
+    name: "Gate 2: Post-Merge Validation"
+    runs-on: macos-15
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    needs: [gate-pr]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s "$(ls -d /Applications/Xcode_16*.app 2>/dev/null | sort -V | tail -1 || echo /Applications/Xcode.app)" && xcodebuild -version
+
+      - name: Full Test Suite (including Keychain)
+        run: |
+          set -o pipefail
+          xcodebuild test \
+            -project "$PROJECT" \
+            -scheme "$SCHEME" \
+            -destination "$DESTINATION" \
+            -enableCodeCoverage YES \
+            -resultBundlePath MergeResults.xcresult \
+            -skip-testing:CodeDumpUITests \
+            -skip-testing:CodeDumpTests/StravaE2ETests \
+            -skip-testing:CodeDumpTests/StravaSnapshotTests \
+            -skip-testing:CodeDumpTests/WorkoutSessionViewModelTests \
+            -skip-testing:CodeDumpTests/WorkoutSessionIntegrationTests \
+            | tee xcodebuild.log
+
+      - name: Verify Coverage
+        run: |
+          xcrun xccov view --report --json MergeResults.xcresult > coverage.json
+          python3 -c "
+          import json, sys
+          data = json.load(open('coverage.json'))
+          overall = data.get('lineCoverage', 0) * 100
+          threshold = int('${{ env.COVERAGE_THRESHOLD }}')
+          print(f'Overall coverage: {overall:.1f}%')
+          strava = [f for t in data.get('targets', []) for f in t.get('files', []) if 'Strava' in f.get('path', '')]
+          if strava:
+              total = sum(f.get('executableLines', 0) for f in strava)
+              covered = sum(f.get('coveredLines', 0) for f in strava)
+              pct = covered / total * 100 if total else 0
+              print(f'Strava coverage: {pct:.1f}%')
+              sys.exit(0 if pct >= threshold else 1)
+          sys.exit(0 if overall >= threshold else 1)
+          "
