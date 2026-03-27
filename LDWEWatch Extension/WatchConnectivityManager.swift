@@ -9,10 +9,12 @@ final class WatchConnectivityManager: NSObject, ObservableObject {
     @Published var workoutActive: Bool = false
     @Published var phaseTitle: String = "WAITING"
     @Published var setLabel: String = ""
+    @Published var exerciseName: String = ""
     @Published var splitTimeRemaining: Int = 0
     @Published var splitDuration: Int = 1
     @Published var totalElapsed: Int = 0
     @Published var isRunning: Bool = false
+    @Published var lastWorkoutDate: Date?
 
     // Reference timestamps from the iPhone
     private var phaseStartDate: Date = .distantPast
@@ -61,6 +63,7 @@ final class WatchConnectivityManager: NSObject, ObservableObject {
         if let v = context["workoutActive"] as? Bool   { workoutActive = v }
         if let v = context["phaseTitle"]    as? String { phaseTitle = v }
         if let v = context["setLabel"]      as? String { setLabel = v }
+        if let v = context["exerciseName"]  as? String { exerciseName = v }
         if let v = context["splitDuration"] as? Int    { splitDuration = v }
 
         if let v = context["phaseStartDate"] as? TimeInterval {
@@ -71,6 +74,9 @@ final class WatchConnectivityManager: NSObject, ObservableObject {
         }
         if let v = context["totalPausedTime"] as? TimeInterval {
             totalPausedTime = v
+        }
+        if let v = context["lastWorkoutDate"] as? TimeInterval {
+            lastWorkoutDate = Date(timeIntervalSince1970: v)
         }
 
         if let v = context["isRunning"] as? Bool {

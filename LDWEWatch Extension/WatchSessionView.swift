@@ -1,4 +1,5 @@
 import SwiftUI
+import WatchKit
 
 struct WatchSessionView: View {
     @EnvironmentObject var connectivity: WatchConnectivityManager
@@ -12,12 +13,22 @@ struct WatchSessionView: View {
             }
         }
         .background(.black)
+        .onChange(of: connectivity.phaseTitle) {
+            WKInterfaceDevice.current().play(.notification)
+        }
+        .onChange(of: connectivity.workoutActive) {
+            if connectivity.workoutActive {
+                WKInterfaceDevice.current().play(.start)
+            } else {
+                WKInterfaceDevice.current().play(.success)
+            }
+        }
     }
 
     // MARK: - Idle
 
     private var idleView: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 10) {
             Image(systemName: "flame.fill")
                 .font(.system(size: 36))
                 .foregroundColor(.cyan)
@@ -26,10 +37,23 @@ struct WatchSessionView: View {
                 .font(.system(size: 14, weight: .bold, design: .monospaced))
                 .foregroundColor(.yellow)
 
-            Text("Start a workout on\nyour iPhone to see\nprogress here.")
-                .font(.system(size: 12))
-                .foregroundColor(.white.opacity(0.6))
-                .multilineTextAlignment(.center)
+            if let lastDate = connectivity.lastWorkoutDate {
+                Text("Last workout")
+                    .font(.system(size: 11))
+                    .foregroundColor(.white.opacity(0.4))
+                Text(lastDate, style: .relative)
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundColor(.cyan.opacity(0.8))
+                    + Text(" ago")
+                    .font(.system(size: 12))
+                    .foregroundColor(.cyan.opacity(0.8))
+            }
+
+            Spacer().frame(height: 4)
+
+            Label("START ON iPHONE", systemImage: "iphone")
+                .font(.system(size: 11, weight: .medium))
+                .foregroundColor(.white.opacity(0.5))
         }
         .padding()
     }
@@ -38,12 +62,22 @@ struct WatchSessionView: View {
 
     private var sessionView: some View {
         VStack(spacing: 6) {
-            // Phase title
-            Text(connectivity.phaseTitle)
-                .font(.system(size: 18, weight: .bold, design: .monospaced))
-                .foregroundColor(.yellow)
-                .lineLimit(1)
-                .minimumScaleFactor(0.5)
+            // Phase title + exercise name
+            VStack(spacing: 2) {
+                Text(connectivity.phaseTitle)
+                    .font(.system(size: 18, weight: .bold, design: .monospaced))
+                    .foregroundColor(.yellow)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.5)
+
+                if !connectivity.exerciseName.isEmpty {
+                    Text(connectivity.exerciseName)
+                        .font(.system(size: 11))
+                        .foregroundColor(.white.opacity(0.6))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.6)
+                }
+            }
 
             // Progress ring with countdown
             ZStack {
@@ -60,30 +94,45 @@ struct WatchSessionView: View {
             }
             .frame(width: 70, height: 70)
 
-            // Set label
-            if !connectivity.setLabel.isEmpty {
-                Text(connectivity.setLabel)
-                    .font(.system(size: 11))
-                    .foregroundColor(.secondary)
+            // Set label + total elapsed
+            HStack {
+                if !connectivity.setLabel.isEmpty {
+                    Text(connectivity.setLabel)
+                        .font(.system(size: 11))
+                        .foregroundColor(.secondary)
+                }
+                Spacer()
+                Text(formattedTotalElapsed)
+                    .font(.system(size: 11, design: .monospaced))
+                    .foregroundColor(.white.opacity(0.4))
             }
 
             // Controls
             HStack(spacing: 20) {
-                Button { connectivity.sendAction("skipBack") } label: {
+                Button {
+                    connectivity.sendAction("skipBack")
+                    WKInterfaceDevice.current().play(.click)
+                } label: {
                     Image(systemName: "backward.fill")
                         .font(.system(size: 14))
                 }
                 .buttonStyle(.plain)
                 .foregroundColor(.white)
 
-                Button { connectivity.sendAction("playPause") } label: {
+                Button {
+                    connectivity.sendAction("playPause")
+                    WKInterfaceDevice.current().play(.click)
+                } label: {
                     Image(systemName: connectivity.isRunning ? "pause.fill" : "play.fill")
                         .font(.system(size: 18))
                 }
                 .buttonStyle(.plain)
                 .foregroundColor(.cyan)
 
-                Button { connectivity.sendAction("skipForward") } label: {
+                Button {
+                    connectivity.sendAction("skipForward")
+                    WKInterfaceDevice.current().play(.click)
+                } label: {
                     Image(systemName: "forward.fill")
                         .font(.system(size: 14))
                 }
@@ -102,6 +151,13 @@ struct WatchSessionView: View {
 
     private var formattedTime: String {
         let t = max(0, connectivity.splitTimeRemaining)
+        let m = t / 60
+        let s = t % 60
+        return String(format: "%d:%02d", m, s)
+    }
+
+    private var formattedTotalElapsed: String {
+        let t = max(0, connectivity.totalElapsed)
         let m = t / 60
         let s = t % 60
         return String(format: "%d:%02d", m, s)

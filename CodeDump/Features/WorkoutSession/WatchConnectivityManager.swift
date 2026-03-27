@@ -33,6 +33,17 @@ final class WatchConnectivityManager: NSObject {
             WCSession.default.sendMessage(payload, replyHandler: nil)
         }
     }
+
+    /// Sends idle context (no active workout) with the last workout date
+    /// so the Watch idle screen can show when the user last trained.
+    func sendIdleContext(lastWorkoutDate: Date?) {
+        guard WCSession.default.activationState == .activated else { return }
+        var context: [String: Any] = ["workoutActive": false]
+        if let date = lastWorkoutDate {
+            context["lastWorkoutDate"] = date.timeIntervalSince1970
+        }
+        try? WCSession.default.updateApplicationContext(context)
+    }
 }
 
 // MARK: - WCSessionDelegate
