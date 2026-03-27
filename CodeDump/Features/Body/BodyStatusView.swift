@@ -39,6 +39,14 @@ struct BodyStatusView: View {
         .navigationTitle("BODY")
         .navigationBarTitleDisplayMode(.large)
         .outrunNavBar()
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                NavigationLink(destination: AnalyticsDashboardView()) {
+                    Image(systemName: "chart.xyaxis.line")
+                        .foregroundColor(.outrunCyan)
+                }
+            }
+        }
         .onAppear { refresh() }
         .onChange(of: sessions.count) { refresh() }
         #if os(iOS)
