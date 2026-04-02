@@ -55,10 +55,7 @@
 	<string>The Lazer Dragon will remind you when it's time to train.</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>OutrunFuture.otf</string>
-		<string>OutrunFutureBold.otf</string>
-		<string>OutrunFutureBoldItalic.otf</string>
-		<string>Mozart.ttf</string>
+		<string>Audiowide-Regular.ttf</string>
 		<string>MorningStar.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>

@@ -28,10 +28,10 @@ struct WorkoutShareCardView: View {
                 // Header
                 VStack(spacing: 16) {
                     Text("WORKOUT")
-                        .font(.custom("OutrunFuture", size: 48))
+                        .font(.custom("Audiowide-Regular", size: 48))
                         .foregroundColor(.outrunCyan)
                     Text("COMPLETE")
-                        .font(.custom("OutrunFuture", size: 96))
+                        .font(.custom("Audiowide-Regular", size: 96))
                         .foregroundColor(.outrunYellow)
                         .shadow(color: .outrunYellow.opacity(0.4), radius: 20)
                 }
@@ -40,7 +40,7 @@ struct WorkoutShareCardView: View {
 
                 // Workout name
                 Text(workoutName.uppercased())
-                    .font(.custom("OutrunFuture", size: 36))
+                    .font(.custom("Audiowide-Regular", size: 36))
                     .foregroundColor(.white.opacity(0.6))
                     .lineLimit(2)
                     .multilineTextAlignment(.center)
@@ -73,11 +73,11 @@ struct WorkoutShareCardView: View {
                 // Branding
                 VStack(spacing: 8) {
                     Text("LAZER DRAGON")
-                        .font(.custom("OutrunFuture", size: 28))
+                        .font(.custom("Audiowide-Regular", size: 28))
                         .foregroundColor(.outrunPink)
                         .shadow(color: .outrunPink.opacity(0.5), radius: 12)
                     Text(date.formatted(.dateTime.month(.wide).day().year()))
-                        .font(.custom("OutrunFuture", size: 20))
+                        .font(.custom("Audiowide-Regular", size: 20))
                         .foregroundColor(.white.opacity(0.3))
                 }
                 .padding(.bottom, 80)
@@ -91,7 +91,7 @@ struct WorkoutShareCardView: View {
     private func shareStatRow(label: String, value: String, color: Color) -> some View {
         HStack {
             Text(label)
-                .font(.custom("OutrunFuture", size: 28))
+                .font(.custom("Audiowide-Regular", size: 28))
                 .foregroundColor(.white.opacity(0.5))
             Spacer()
             Text(value)
@@ -109,13 +109,13 @@ struct WorkoutShareCardView: View {
     private var topSetsSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("TOP SETS")
-                .font(.custom("OutrunFuture", size: 22))
+                .font(.custom("Audiowide-Regular", size: 22))
                 .foregroundColor(.outrunCyan.opacity(0.7))
 
             ForEach(Array(bestSets.prefix(5).enumerated()), id: \.offset) { _, log in
                 HStack {
                     Text(log.exerciseName)
-                        .font(.custom("OutrunFuture", size: 20))
+                        .font(.custom("Audiowide-Regular", size: 20))
                         .foregroundColor(.outrunYellow)
                         .lineLimit(1)
                     Spacer()

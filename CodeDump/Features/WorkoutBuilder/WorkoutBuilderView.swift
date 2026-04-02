@@ -22,8 +22,7 @@ struct WorkoutBuilderView: View {
                 }
                 .scrollContentBackground(.hidden)
             }
-            .navigationTitle(viewModel.isEditing ? "EDIT WORKOUT" : "NEW WORKOUT")
-            .navigationBarTitleDisplayMode(.inline)
+            .outrunTitle(viewModel.isEditing ? "EDIT WORKOUT" : "NEW WORKOUT")
             .outrunNavBar()
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {

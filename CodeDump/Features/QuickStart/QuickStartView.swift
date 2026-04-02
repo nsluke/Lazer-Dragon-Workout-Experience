@@ -32,8 +32,7 @@ struct QuickStartView: View {
                     configScreen
                 }
             }
-            .navigationTitle("QUICK START")
-            .navigationBarTitleDisplayMode(.inline)
+            .outrunTitle("QUICK START")
             .outrunNavBar()
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {

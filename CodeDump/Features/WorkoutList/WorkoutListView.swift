@@ -25,8 +25,7 @@ struct WorkoutListView: View {
                 workoutList
             }
         }
-        .navigationTitle("WORKOUTS")
-        .navigationBarTitleDisplayMode(.large)
+        .outrunTitle("WORKOUTS")
         .outrunNavBar()
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {

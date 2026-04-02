@@ -29,8 +29,7 @@ struct WorkoutCalendarView: View {
                 .padding(.bottom, 48)
             }
         }
-        .navigationTitle("HISTORY")
-        .navigationBarTitleDisplayMode(.inline)
+        .outrunTitle("HISTORY")
         .outrunNavBar()
     }
 

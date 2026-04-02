@@ -44,8 +44,7 @@ struct WorkoutHistoryView: View {
                 .scrollContentBackground(.hidden)
             }
         }
-        .navigationTitle("HISTORY")
-        .navigationBarTitleDisplayMode(.large)
+        .outrunTitle("HISTORY")
         .outrunNavBar()
     }
 

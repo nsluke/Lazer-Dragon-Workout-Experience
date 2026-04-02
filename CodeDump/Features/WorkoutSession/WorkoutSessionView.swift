@@ -335,6 +335,7 @@ struct WorkoutSessionView: View {
                 .overlay(Circle().stroke(color.opacity(0.3), lineWidth: 1))
         }
         .accessibilityLabel(icon == "backward.fill" ? "Previous exercise" : "Next exercise")
+        .accessibilityIdentifier(icon == "forward.fill" ? "skip_forward_button" : "skip_backward_button")
     }
 
     private var playPauseIcon: String {

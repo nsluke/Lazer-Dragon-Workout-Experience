@@ -45,8 +45,7 @@ struct ProgramCalendarView: View {
                 noProgramState
             }
         }
-        .navigationTitle("PROGRAM")
-        .navigationBarTitleDisplayMode(.inline)
+        .outrunTitle("PROGRAM")
         .outrunNavBar()
         .onAppear { refresh() }
         .onChange(of: equipmentRaw) { refresh() }
