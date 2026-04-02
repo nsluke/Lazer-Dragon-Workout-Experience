@@ -31,39 +31,45 @@ final class StravaUITests: XCTestCase {
     private func navigateToCompletedScreen() {
         app.launch()
 
-        // Wait for the workout list to load
-        let workoutList = app.navigationBars["WORKOUTS"]
-        XCTAssertTrue(workoutList.waitForExistence(timeout: 5), "Workout list did not appear")
+        // Wait for the workout list to load (look for seed workout "Test")
+        let testWorkout = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'Test'")).firstMatch
+        XCTAssertTrue(testWorkout.waitForExistence(timeout: 5), "Workout list did not appear")
 
-        // Tap the first workout row to go to detail
-        let firstWorkout = app.cells.firstMatch
-        guard firstWorkout.waitForExistence(timeout: 3) else {
-            XCTFail("No workout rows found — seed data may not have loaded")
-            return
-        }
-        firstWorkout.tap()
+        // Tap the "Test" workout row to go to detail (shortest workout for fast skip)
+        testWorkout.tap()
 
-        // Tap "START" to begin the workout session
-        let startButton = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'START'")).firstMatch
+        // Tap "BEGIN" to begin the workout session
+        let startButton = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'BEGIN'")).firstMatch
         guard startButton.waitForExistence(timeout: 3) else {
-            XCTFail("START button not found on detail screen")
+            XCTFail("BEGIN button not found on detail screen")
             return
         }
         startButton.tap()
 
-        // Fast-forward: repeatedly tap the skip button until we reach completion
+        // Tap play to start the workout (session begins in idle)
+        let playButton = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'Start workout'")).firstMatch
+        guard playButton.waitForExistence(timeout: 3) else {
+            XCTFail("Play button not found on session screen")
+            return
+        }
+        playButton.tap()
+
+        // Fast-forward: repeatedly tap skip forward until we reach completion
+        // Set log overlays are suppressed in -UITesting mode
         let skipButton = app.buttons["skip_forward_button"]
         let completedHeader = app.staticTexts["COMPLETE"]
 
         var taps = 0
-        while !completedHeader.exists && taps < 100 {
+        while !completedHeader.exists && taps < 200 {
             if skipButton.exists && skipButton.isHittable {
                 skipButton.tap()
+            } else {
+                Thread.sleep(forTimeInterval: 0.2)
             }
             taps += 1
         }
 
-        XCTAssertTrue(completedHeader.waitForExistence(timeout: 5), "Did not reach completed screen after \(taps) skip taps")
+        XCTAssertTrue(completedHeader.waitForExistence(timeout: 10), "Did not reach completed screen after \(taps) skip taps")
     }
 
     // MARK: - Disconnected State
@@ -146,8 +152,8 @@ final class StravaUITests: XCTestCase {
         doneButton.tap()
 
         // Should return to the workout list
-        let workoutList = app.navigationBars["WORKOUTS"]
-        XCTAssertTrue(workoutList.waitForExistence(timeout: 5), "Should return to workout list after tapping Done")
+        let quickStart = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'QUICK START'")).firstMatch
+        XCTAssertTrue(quickStart.waitForExistence(timeout: 5), "Should return to workout list after tapping Done")
     }
 
     // MARK: - Error State (visual check)

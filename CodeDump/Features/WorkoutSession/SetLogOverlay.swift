@@ -158,6 +158,7 @@ struct SetLogOverlay: View {
                         .background(Color.outrunSurface)
                         .cornerRadius(8)
                 }
+                .accessibilityIdentifier("skip_set_log_button")
 
                 Button {
                     saveAndCommit()

@@ -62,8 +62,7 @@ struct NotificationSettingsView: View {
             }
             .scrollContentBackground(.hidden)
         }
-        .navigationTitle("Notifications")
-        .navigationBarTitleDisplayMode(.inline)
+        .outrunTitle("NOTIFICATIONS")
         .outrunNavBar()
         .onAppear { reminderDate = .from(hour: reminderHour, minute: reminderMinute) }
     }

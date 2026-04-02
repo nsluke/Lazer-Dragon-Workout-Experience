@@ -41,12 +41,12 @@ struct WatchSessionView: View {
                 Text("Last workout")
                     .font(.system(size: 11))
                     .foregroundColor(.white.opacity(0.4))
-                Text(lastDate, style: .relative)
-                    .font(.system(size: 12, weight: .medium))
-                    .foregroundColor(.cyan.opacity(0.8))
-                    + Text(" ago")
-                    .font(.system(size: 12))
-                    .foregroundColor(.cyan.opacity(0.8))
+                HStack(spacing: 0) {
+                    Text(lastDate, style: .relative)
+                    Text(" ago")
+                }
+                .font(.system(size: 12, weight: .medium))
+                .foregroundColor(.cyan.opacity(0.8))
             }
 
             Spacer().frame(height: 4)

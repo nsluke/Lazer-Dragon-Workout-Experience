@@ -30,8 +30,7 @@ struct CustomExerciseBuilderView: View {
                 }
                 .scrollContentBackground(.hidden)
             }
-            .navigationTitle("CUSTOM EXERCISE")
-            .navigationBarTitleDisplayMode(.inline)
+            .outrunTitle("CUSTOM EXERCISE")
             .outrunNavBar()
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {

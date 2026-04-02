@@ -95,8 +95,7 @@ struct ShareSheetView: View {
                 .padding(.horizontal, 24)
                 .padding(.top, 20)
             }
-            .navigationTitle("SHARE")
-            .navigationBarTitleDisplayMode(.inline)
+            .outrunTitle("SHARE")
             .outrunNavBar()
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {

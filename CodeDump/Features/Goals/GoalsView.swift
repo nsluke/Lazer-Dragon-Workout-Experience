@@ -28,8 +28,7 @@ struct GoalsView: View {
                 goalsList
             }
         }
-        .navigationTitle("GOALS")
-        .navigationBarTitleDisplayMode(.large)
+        .outrunTitle("GOALS")
         .outrunNavBar()
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {

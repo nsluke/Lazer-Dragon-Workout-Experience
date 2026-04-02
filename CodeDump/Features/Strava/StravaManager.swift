@@ -114,7 +114,9 @@ final class StravaManager: NSObject {
 
     // MARK: - State
 
-    var isConnected: Bool { accessToken != nil }
+    private let uiTestingConnected: Bool?
+
+    var isConnected: Bool { uiTestingConnected ?? (accessToken != nil) }
     var isUploading = false
     var uploadResult: UploadResult?
 
@@ -129,6 +131,14 @@ final class StravaManager: NSObject {
          networkClient: StravaNetworkClient = URLSession.shared) {
         self.tokenStore = tokenStore
         self.networkClient = networkClient
+        let args = ProcessInfo.processInfo.arguments
+        if args.contains("-UITesting"),
+           let idx = args.firstIndex(of: "-StravaConnected"),
+           idx + 1 < args.count {
+            self.uiTestingConnected = args[idx + 1] == "YES"
+        } else {
+            self.uiTestingConnected = nil
+        }
     }
 
     // MARK: - Tokens (Store-backed)

@@ -1,0 +1,8 @@
+# git_url("https://github.com/your-org/certificates")
+
+type("appstore")
+app_identifier("com.Solomon.Lazer-Dragon")
+# username("your-apple-id@example.com")
+
+# Use App Store Connect API key instead of username/password
+# api_key_path("fastlane/api_key.json")

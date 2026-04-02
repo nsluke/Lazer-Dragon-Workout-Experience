@@ -35,8 +35,7 @@ struct ProgramListView: View {
                     .padding(.bottom, 32)
                 }
             }
-            .navigationTitle("PROGRAMS")
-            .navigationBarTitleDisplayMode(.inline)
+            .outrunTitle("PROGRAMS")
             .outrunNavBar()
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
