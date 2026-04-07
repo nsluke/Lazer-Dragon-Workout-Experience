@@ -9,8 +9,9 @@ struct CustomExerciseBuilderView: View {
     @State private var selectedMuscles: Set<MuscleGroup> = []
     @State private var equipment: Equipment = .bodyweight
     @State private var instructions = ""
+    @State private var exerciseMode: ExerciseMode = .repBased
     @State private var defaultDuration: Int = 30
-    @State private var defaultReps: Int = 0
+    @State private var defaultReps: Int = 10
 
     private var canSave: Bool {
         !name.trimmingCharacters(in: .whitespaces).isEmpty
@@ -23,6 +24,7 @@ struct CustomExerciseBuilderView: View {
 
                 Form {
                     nameSection
+                    modeSection
                     muscleSection
                     equipmentSection
                     instructionsSection
@@ -101,6 +103,22 @@ struct CustomExerciseBuilderView: View {
         .buttonStyle(.plain)
     }
 
+    private var modeSection: some View {
+        Section {
+            Picker("Exercise Mode", selection: $exerciseMode) {
+                ForEach(ExerciseMode.allCases) { mode in
+                    Label(mode.displayName, systemImage: mode.icon)
+                        .tag(mode)
+                }
+            }
+            .pickerStyle(.segmented)
+            .font(.outrunFuture(13))
+        } header: {
+            sectionHeader("EXERCISE TYPE")
+        }
+        .listRowBackground(Color.outrunSurface)
+    }
+
     private var equipmentSection: some View {
         Section {
             Picker("Equipment", selection: $equipment) {
@@ -133,7 +151,9 @@ struct CustomExerciseBuilderView: View {
     private var defaultsSection: some View {
         Section {
             durationStepper("Duration", value: $defaultDuration, step: 5, min: 5)
-            repsStepper("Reps", value: $defaultReps)
+            if exerciseMode != .timeBased {
+                repsStepper("Reps", value: $defaultReps)
+            }
         } header: {
             sectionHeader("DEFAULTS")
         }
@@ -185,9 +205,10 @@ struct CustomExerciseBuilderView: View {
             name: name.trimmingCharacters(in: .whitespaces),
             muscleGroups: Array(selectedMuscles),
             equipment: equipment,
+            exerciseMode: exerciseMode,
             instructions: instructions.trimmingCharacters(in: .whitespaces),
             defaultDuration: defaultDuration,
-            defaultReps: defaultReps
+            defaultReps: exerciseMode == .timeBased ? 0 : defaultReps
         )
         modelContext.insert(template)
         dismiss()

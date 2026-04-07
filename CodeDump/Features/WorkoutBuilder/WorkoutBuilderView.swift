@@ -187,34 +187,45 @@ struct ExerciseBuilderRow: View {
                 .font(.outrunFuture(15))
                 .foregroundColor(.outrunYellow)
 
-            if !exercise.targetMuscleGroups.isEmpty {
-                HStack(spacing: 6) {
-                    ForEach(exercise.targetMuscleGroups, id: \.self) { muscle in
-                        HStack(spacing: 2) {
-                            Image(systemName: muscle.icon)
-                                .font(.system(size: 8))
-                            Text(muscle.displayName)
-                                .font(.outrunFuture(7))
-                        }
-                        .foregroundColor(.outrunCyan.opacity(0.7))
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 3)
-                        .background(Color.outrunCyan.opacity(0.1))
-                        .clipShape(Capsule())
-                    }
+            HStack(spacing: 6) {
+                // Exercise mode badge
+                HStack(spacing: 2) {
+                    Image(systemName: exercise.exerciseMode.icon)
+                        .font(.system(size: 8))
+                    Text(exercise.exerciseMode.displayName)
+                        .font(.outrunFuture(7))
+                }
+                .foregroundColor(.outrunYellow.opacity(0.7))
+                .padding(.horizontal, 6)
+                .padding(.vertical, 3)
+                .background(Color.outrunYellow.opacity(0.1))
+                .clipShape(Capsule())
 
+                ForEach(exercise.targetMuscleGroups, id: \.self) { muscle in
                     HStack(spacing: 2) {
-                        Image(systemName: exercise.equipment.icon)
+                        Image(systemName: muscle.icon)
                             .font(.system(size: 8))
-                        Text(exercise.equipment.displayName)
+                        Text(muscle.displayName)
                             .font(.outrunFuture(7))
                     }
-                    .foregroundColor(.outrunPurple.opacity(0.7))
+                    .foregroundColor(.outrunCyan.opacity(0.7))
                     .padding(.horizontal, 6)
                     .padding(.vertical, 3)
-                    .background(Color.outrunPurple.opacity(0.1))
+                    .background(Color.outrunCyan.opacity(0.1))
                     .clipShape(Capsule())
                 }
+
+                HStack(spacing: 2) {
+                    Image(systemName: exercise.equipment.icon)
+                        .font(.system(size: 8))
+                    Text(exercise.equipment.displayName)
+                        .font(.outrunFuture(7))
+                }
+                .foregroundColor(.outrunPurple.opacity(0.7))
+                .padding(.horizontal, 6)
+                .padding(.vertical, 3)
+                .background(Color.outrunPurple.opacity(0.1))
+                .clipShape(Capsule())
             }
 
             HStack(spacing: 20) {
@@ -229,14 +240,16 @@ struct ExerciseBuilderRow: View {
                     }
                 }
 
-                HStack(spacing: 6) {
-                    Image(systemName: "repeat")
-                        .font(.caption)
-                        .foregroundColor(.outrunGreen.opacity(0.7))
-                    Stepper(value: $exercise.reps, in: 0...200) {
-                        Text(exercise.reps == 0 ? "timed" : "\(exercise.reps) reps")
-                            .font(.system(size: 13, design: .monospaced))
-                            .foregroundColor(.outrunGreen)
+                if exercise.exerciseMode != .timeBased {
+                    HStack(spacing: 6) {
+                        Image(systemName: "repeat")
+                            .font(.caption)
+                            .foregroundColor(.outrunGreen.opacity(0.7))
+                        Stepper(value: $exercise.reps, in: 0...200) {
+                            Text(exercise.reps == 0 ? "timed" : "\(exercise.reps) reps")
+                                .font(.system(size: 13, design: .monospaced))
+                                .foregroundColor(.outrunGreen)
+                        }
                     }
                 }
             }

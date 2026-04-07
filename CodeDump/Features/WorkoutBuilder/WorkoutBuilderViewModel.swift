@@ -23,6 +23,7 @@ final class WorkoutBuilderViewModel {
         var reps: Int = 0
         var targetMuscleGroups: [MuscleGroup] = []
         var equipment: Equipment = .bodyweight
+        var exerciseMode: ExerciseMode = .repBased
         var templateID: String? = nil
     }
 
@@ -46,6 +47,7 @@ final class WorkoutBuilderViewModel {
                 reps: $0.reps,
                 targetMuscleGroups: $0.targetMuscleGroups,
                 equipment: $0.equipment,
+                exerciseMode: $0.exerciseMode,
                 templateID: $0.templateID
             )
         }
@@ -68,6 +70,7 @@ final class WorkoutBuilderViewModel {
             reps: item.defaultReps,
             targetMuscleGroups: item.muscles,
             equipment: item.equipment,
+            exerciseMode: item.exerciseMode,
             templateID: item.id
         ))
     }
@@ -99,6 +102,7 @@ final class WorkoutBuilderViewModel {
             reps: draft.reps,
             targetMuscleGroupsRaw: draft.targetMuscleGroups.map(\.rawValue).joined(separator: ","),
             equipmentRaw: draft.equipment.rawValue,
+            exerciseModeRaw: draft.exerciseMode.rawValue,
             templateID: draft.templateID
         )
     }

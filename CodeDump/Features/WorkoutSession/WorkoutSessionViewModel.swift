@@ -41,9 +41,12 @@ final class WorkoutSessionViewModel {
         let setIndex: Int
         let exerciseIndex: Int
         let targetReps: Int
+        let exerciseMode: ExerciseMode
+        let exerciseDuration: Int  // splitLength of the exercise (for timed logging)
         var weight: Double? = nil
         var reps: Int? = nil
         var rpe: Int? = nil
+        var duration: Int? = nil
     }
 
     // Wall-clock tracking — the source of truth for all time calculations
@@ -241,7 +244,8 @@ final class WorkoutSessionViewModel {
             exerciseIndex: pending.exerciseIndex,
             weight: pending.weight,
             reps: pending.reps,
-            rpe: pending.rpe
+            rpe: pending.rpe,
+            duration: pending.duration
         )
         sessionLogs.append(log)
         pendingLog = nil
@@ -340,12 +344,17 @@ final class WorkoutSessionViewModel {
             // Trigger set log prompt for the just-completed exercise
             if !ProcessInfo.processInfo.arguments.contains("-UITesting") {
                 let exercise = sortedExercises[safe: i]
+                let mode = exercise?.exerciseMode ?? .repBased
+                let dur = exercise?.splitLength ?? 30
                 pendingLog = PendingSetLog(
                     exerciseName: exercise?.name ?? "Exercise",
                     exerciseTemplateID: exercise?.templateID,
                     setIndex: s,
                     exerciseIndex: i,
-                    targetReps: exercise?.reps ?? 0
+                    targetReps: exercise?.reps ?? 0,
+                    exerciseMode: mode,
+                    exerciseDuration: dur,
+                    duration: mode == .timeBased ? dur : nil
                 )
             }
 

@@ -5,8 +5,13 @@ struct SetLogOverlay: View {
     @State private var weightText: String = ""
     @State private var repsValue: Int = 0
     @State private var rpeValue: Int = 0
+    @State private var durationValue: Int = 0
     @State private var cachedSuggestion: OverloadSuggestion? = nil
     @FocusState private var weightFocused: Bool
+
+    private var exerciseMode: ExerciseMode {
+        viewModel.pendingLog?.exerciseMode ?? .repBased
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -16,6 +21,7 @@ struct SetLogOverlay: View {
         .onAppear {
             if let pending = viewModel.pendingLog {
                 repsValue = pending.targetReps
+                durationValue = pending.exerciseDuration
             }
             computeSuggestion()
         }
@@ -25,6 +31,7 @@ struct SetLogOverlay: View {
             rpeValue = 0
             if let pending = viewModel.pendingLog {
                 repsValue = pending.targetReps
+                durationValue = pending.exerciseDuration
             }
             computeSuggestion()
         }
@@ -57,92 +64,25 @@ struct SetLogOverlay: View {
                     .lineLimit(1)
             }
 
-            // Progressive overload suggestion
-            if let suggestion = cachedSuggestion {
+            // Progressive overload suggestion (rep-based exercises only)
+            if exerciseMode != .timeBased, let suggestion = cachedSuggestion {
                 suggestionBanner(suggestion)
             }
 
-            // Inputs
+            // Inputs — adapt based on exercise mode
             HStack(spacing: 16) {
-                // Weight
-                VStack(spacing: 4) {
-                    Text("WEIGHT")
-                        .font(.outrunFuture(8))
-                        .foregroundColor(.outrunCyan.opacity(0.6))
-                        .minimumScaleFactor(0.7)
-                    TextField("--", text: $weightText)
-                        .keyboardType(.decimalPad)
-                        .font(.system(size: 20, weight: .bold, design: .monospaced))
-                        .foregroundColor(.outrunCyan)
-                        .multilineTextAlignment(.center)
-                        .frame(width: 80)
-                        .focused($weightFocused)
-                        .accessibilityLabel("Weight in pounds")
-                    Text("lbs")
-                        .font(.outrunFuture(8))
-                        .foregroundColor(.outrunCyan.opacity(0.4))
-                        .accessibilityHidden(true)
+                if exerciseMode == .timeBased {
+                    // Duration (auto-filled, adjustable)
+                    durationInput
+                } else {
+                    // Weight (rep-based and hybrid)
+                    weightInput
+                    // Reps
+                    repsInput
                 }
 
-                // Reps
-                VStack(spacing: 4) {
-                    Text("REPS")
-                        .font(.outrunFuture(8))
-                        .foregroundColor(.outrunGreen.opacity(0.6))
-                        .minimumScaleFactor(0.7)
-                    HStack(spacing: 8) {
-                        Button {
-                            if repsValue > 0 { repsValue -= 1 }
-                        } label: {
-                            Image(systemName: "minus.circle.fill")
-                                .foregroundColor(.outrunGreen.opacity(0.6))
-                        }
-                        .accessibilityLabel("Decrease reps")
-                        Text("\(repsValue)")
-                            .font(.system(size: 20, weight: .bold, design: .monospaced))
-                            .foregroundColor(.outrunGreen)
-                            .frame(minWidth: 32)
-                        Button {
-                            repsValue += 1
-                        } label: {
-                            Image(systemName: "plus.circle.fill")
-                                .foregroundColor(.outrunGreen.opacity(0.6))
-                        }
-                        .accessibilityLabel("Increase reps")
-                    }
-                }
-                .accessibilityElement(children: .contain)
-                .accessibilityLabel("Reps: \(repsValue)")
-
-                // RPE
-                VStack(spacing: 4) {
-                    Text("RPE")
-                        .font(.outrunFuture(8))
-                        .foregroundColor(.outrunOrange.opacity(0.6))
-                        .minimumScaleFactor(0.7)
-                    HStack(spacing: 8) {
-                        Button {
-                            if rpeValue > 0 { rpeValue -= 1 }
-                        } label: {
-                            Image(systemName: "minus.circle.fill")
-                                .foregroundColor(.outrunOrange.opacity(0.6))
-                        }
-                        .accessibilityLabel("Decrease RPE")
-                        Text(rpeValue == 0 ? "--" : "\(rpeValue)")
-                            .font(.system(size: 20, weight: .bold, design: .monospaced))
-                            .foregroundColor(.outrunOrange)
-                            .frame(minWidth: 32)
-                        Button {
-                            if rpeValue < 10 { rpeValue += 1 }
-                        } label: {
-                            Image(systemName: "plus.circle.fill")
-                                .foregroundColor(.outrunOrange.opacity(0.6))
-                        }
-                        .accessibilityLabel("Increase RPE")
-                    }
-                }
-                .accessibilityElement(children: .contain)
-                .accessibilityLabel("RPE: \(rpeValue == 0 ? "not set" : "\(rpeValue) out of 10")")
+                // RPE (always shown)
+                rpeInput
             }
 
             // Buttons
@@ -185,6 +125,122 @@ struct SetLogOverlay: View {
         .padding(.horizontal, 16)
         .padding(.bottom, 16)
         .contentShape(Rectangle())
+    }
+
+    // MARK: - Input Fields
+
+    private var weightInput: some View {
+        VStack(spacing: 4) {
+            Text("WEIGHT")
+                .font(.outrunFuture(8))
+                .foregroundColor(.outrunCyan.opacity(0.6))
+                .minimumScaleFactor(0.7)
+            TextField("--", text: $weightText)
+                .keyboardType(.decimalPad)
+                .font(.system(size: 20, weight: .bold, design: .monospaced))
+                .foregroundColor(.outrunCyan)
+                .multilineTextAlignment(.center)
+                .frame(width: 80)
+                .focused($weightFocused)
+                .accessibilityLabel("Weight in pounds")
+            Text("lbs")
+                .font(.outrunFuture(8))
+                .foregroundColor(.outrunCyan.opacity(0.4))
+                .accessibilityHidden(true)
+        }
+    }
+
+    private var repsInput: some View {
+        VStack(spacing: 4) {
+            Text("REPS")
+                .font(.outrunFuture(8))
+                .foregroundColor(.outrunGreen.opacity(0.6))
+                .minimumScaleFactor(0.7)
+            HStack(spacing: 8) {
+                Button {
+                    if repsValue > 0 { repsValue -= 1 }
+                } label: {
+                    Image(systemName: "minus.circle.fill")
+                        .foregroundColor(.outrunGreen.opacity(0.6))
+                }
+                .accessibilityLabel("Decrease reps")
+                Text("\(repsValue)")
+                    .font(.system(size: 20, weight: .bold, design: .monospaced))
+                    .foregroundColor(.outrunGreen)
+                    .frame(minWidth: 32)
+                Button {
+                    repsValue += 1
+                } label: {
+                    Image(systemName: "plus.circle.fill")
+                        .foregroundColor(.outrunGreen.opacity(0.6))
+                }
+                .accessibilityLabel("Increase reps")
+            }
+        }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Reps: \(repsValue)")
+    }
+
+    private var durationInput: some View {
+        VStack(spacing: 4) {
+            Text("DURATION")
+                .font(.outrunFuture(8))
+                .foregroundColor(.outrunCyan.opacity(0.6))
+                .minimumScaleFactor(0.7)
+            HStack(spacing: 8) {
+                Button {
+                    if durationValue > 5 { durationValue -= 5 }
+                } label: {
+                    Image(systemName: "minus.circle.fill")
+                        .foregroundColor(.outrunCyan.opacity(0.6))
+                }
+                .accessibilityLabel("Decrease duration")
+                Text(durationValue.formattedTime)
+                    .font(.system(size: 20, weight: .bold, design: .monospaced))
+                    .foregroundColor(.outrunCyan)
+                    .frame(minWidth: 48)
+                Button {
+                    durationValue += 5
+                } label: {
+                    Image(systemName: "plus.circle.fill")
+                        .foregroundColor(.outrunCyan.opacity(0.6))
+                }
+                .accessibilityLabel("Increase duration")
+            }
+        }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Duration: \(durationValue.formattedTime)")
+    }
+
+    private var rpeInput: some View {
+        VStack(spacing: 4) {
+            Text("RPE")
+                .font(.outrunFuture(8))
+                .foregroundColor(.outrunOrange.opacity(0.6))
+                .minimumScaleFactor(0.7)
+            HStack(spacing: 8) {
+                Button {
+                    if rpeValue > 0 { rpeValue -= 1 }
+                } label: {
+                    Image(systemName: "minus.circle.fill")
+                        .foregroundColor(.outrunOrange.opacity(0.6))
+                }
+                .accessibilityLabel("Decrease RPE")
+                Text(rpeValue == 0 ? "--" : "\(rpeValue)")
+                    .font(.system(size: 20, weight: .bold, design: .monospaced))
+                    .foregroundColor(.outrunOrange)
+                    .frame(minWidth: 32)
+                Button {
+                    if rpeValue < 10 { rpeValue += 1 }
+                } label: {
+                    Image(systemName: "plus.circle.fill")
+                        .foregroundColor(.outrunOrange.opacity(0.6))
+                }
+                .accessibilityLabel("Increase RPE")
+            }
+        }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("RPE: \(rpeValue == 0 ? "not set" : "\(rpeValue) out of 10")")
     }
 
     private func suggestionBanner(_ suggestion: OverloadSuggestion) -> some View {
@@ -235,8 +291,12 @@ struct SetLogOverlay: View {
     private func saveAndCommit() {
         weightFocused = false
         guard var pending = viewModel.pendingLog else { return }
-        pending.weight = Double(weightText)
-        pending.reps = repsValue > 0 ? repsValue : nil
+        if exerciseMode == .timeBased {
+            pending.duration = durationValue > 0 ? durationValue : nil
+        } else {
+            pending.weight = Double(weightText)
+            pending.reps = repsValue > 0 ? repsValue : nil
+        }
         pending.rpe = rpeValue > 0 ? rpeValue : nil
         viewModel.pendingLog = pending
         viewModel.commitSetLog()

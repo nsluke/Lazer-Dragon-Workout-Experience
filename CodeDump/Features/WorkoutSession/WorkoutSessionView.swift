@@ -269,10 +269,23 @@ struct WorkoutSessionView: View {
 
     private var exerciseInfo: some View {
         VStack(spacing: 6) {
-            if let current = viewModel.currentExercise, current.reps > 0 {
-                Text("\(current.reps) REPS")
-                    .font(.outrunFuture(14))
-                    .foregroundColor(.outrunYellow)
+            if let current = viewModel.currentExercise {
+                switch current.exerciseMode {
+                case .timeBased:
+                    HStack(spacing: 4) {
+                        Image(systemName: "timer")
+                            .font(.system(size: 12))
+                        Text("TIMED")
+                            .font(.outrunFuture(14))
+                    }
+                    .foregroundColor(.outrunCyan)
+                case .repBased, .hybrid:
+                    if current.reps > 0 {
+                        Text("\(current.reps) REPS")
+                            .font(.outrunFuture(14))
+                            .foregroundColor(.outrunYellow)
+                    }
+                }
             }
 
             if let next = viewModel.nextExercise {
