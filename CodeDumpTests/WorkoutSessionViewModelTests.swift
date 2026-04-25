@@ -41,6 +41,15 @@ final class WorkoutSessionViewModelTests: XCTestCase {
             cooldownLength: cooldown
         )
         context.insert(w)
+        // Seed exercises so `exercisesPerSet = min(numberOfIntervals, sortedExercises.count)`
+        // matches `numberOfIntervals`. Without exercises the state machine treats
+        // the workout as 0-interval and completes immediately.
+        for i in 0..<intervals {
+            let ex = Exercise(order: i, name: "Exercise \(i + 1)", splitLength: interval)
+            ex.workout = w
+            w.exercises.append(ex)
+            context.insert(ex)
+        }
         return w
     }
 
