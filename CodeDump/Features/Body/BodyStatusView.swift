@@ -36,8 +36,7 @@ struct BodyStatusView: View {
                 .padding(.bottom, 48)
             }
         }
-        .navigationTitle("BODY")
-        .navigationBarTitleDisplayMode(.large)
+        .outrunTitle("BODY")
         .outrunNavBar()
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {

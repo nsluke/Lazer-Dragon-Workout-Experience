@@ -23,8 +23,7 @@ struct AnalyticsDashboardView: View {
                 .padding(.bottom, 24)
             }
         }
-        .navigationTitle("ANALYTICS")
-        .navigationBarTitleDisplayMode(.inline)
+        .outrunTitle("ANALYTICS")
         .outrunNavBar()
         .onAppear { viewModel.refresh(sessions: sessions, allLogs: allLogs) }
         .onChange(of: viewModel.range) { viewModel.refresh(sessions: sessions, allLogs: allLogs) }

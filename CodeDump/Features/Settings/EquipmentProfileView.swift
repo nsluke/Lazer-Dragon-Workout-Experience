@@ -22,8 +22,7 @@ struct EquipmentProfileView: View {
                 }
                 .scrollContentBackground(.hidden)
             }
-            .navigationTitle("EQUIPMENT")
-            .navigationBarTitleDisplayMode(.inline)
+            .outrunTitle("EQUIPMENT")
             .outrunNavBar()
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {

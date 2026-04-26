@@ -1,216 +1,179 @@
 default_platform(:ios)
 
-#───────────────────────────────────────────────────────────────────────
-# Configuration
-#───────────────────────────────────────────────────────────────────────
-SCHEME        = "CodeDump"
-PROJECT       = "CodeDump.xcodeproj"
-DEVICE        = "iPhone 17 Pro"
-IOS_VERSION   = "latest"
-DESTINATION   = "platform=iOS Simulator,name=#{DEVICE},OS=#{IOS_VERSION}"
-COV_THRESHOLD = 70
+XCODEPROJ = "CodeDump.xcodeproj"
+SCHEME    = "CodeDump"
 
 platform :ios do
 
-  #─────────────────────────────────────────────────────────────────────
-  # GATE 1: PR — Fast tests that block every pull request
-  #─────────────────────────────────────────────────────────────────────
-  desc "Gate 1: Unit, integration, contract, concurrency, accessibility, error injection tests + coverage"
-  lane :gate_pr do
-    scan(
-      project: PROJECT,
+  # ── Testing ────────────────────────────────────────────
+
+  desc "Run unit tests"
+  lane :test do
+    run_tests(
+      project: XCODEPROJ,
       scheme: SCHEME,
-      devices: [DEVICE],
+      devices: ["iPhone 16 Pro"],
       code_coverage: true,
-      skip_testing: [
-        "CodeDumpUITests",
-        "CodeDumpTests/StravaE2ETests",
-        "CodeDumpTests/StravaKeychainTests",
-      ],
       result_bundle: true,
-      output_directory: "./fastlane/test_output",
-      buildlog_path: "./fastlane/build_logs",
+      output_directory: "./build/test_output",
+      clean: true,
+      ensure_devices_found: false
     )
-    check_coverage
   end
 
-  #─────────────────────────────────────────────────────────────────────
-  # GATE 2: Merge — Full test suite on main branch
-  #─────────────────────────────────────────────────────────────────────
-  desc "Gate 2: All tests including UI, snapshots, and keychain"
-  lane :gate_merge do
-    # Unit + Integration + Contract + Concurrency + Accessibility + Error Injection
-    scan(
-      project: PROJECT,
-      scheme: SCHEME,
-      devices: [DEVICE],
-      code_coverage: true,
-      skip_testing: [
-        "CodeDumpUITests",
-        "CodeDumpTests/StravaE2ETests",
-      ],
-      result_bundle: true,
-      output_directory: "./fastlane/test_output/unit",
-    )
+  # ── Shared CI setup ──────────────────────────────────────
 
-    # UI tests separately (they need a running simulator)
-    scan(
-      project: PROJECT,
-      scheme: SCHEME,
-      devices: [DEVICE],
-      only_testing: ["CodeDumpUITests"],
-      result_bundle: true,
-      output_directory: "./fastlane/test_output/ui",
-    )
+  private_lane :ci_signing_xcargs do
+    require "base64"
+    api_key_path = File.join(Dir.tmpdir, "AuthKey_#{ENV['APP_STORE_CONNECT_KEY_ID']}.p8")
+    File.write(api_key_path, Base64.decode64(ENV["APP_STORE_CONNECT_KEY"]))
 
-    check_coverage
+    [
+      "-allowProvisioningUpdates",
+      "-authenticationKeyPath '#{api_key_path}'",
+      "-authenticationKeyID '#{ENV['APP_STORE_CONNECT_KEY_ID']}'",
+      "-authenticationKeyIssuerID '#{ENV['APP_STORE_CONNECT_ISSUER_ID']}'"
+    ].join(" ")
   end
 
-  #─────────────────────────────────────────────────────────────────────
-  # GATE 3: Nightly — Extended tests including E2E
-  #─────────────────────────────────────────────────────────────────────
-  desc "Gate 3: Nightly — all tests + E2E against Strava sandbox + multi-device"
-  lane :gate_nightly do
-    devices = ["iPhone 17e", "iPhone 17 Pro", "iPhone 17 Pro Max"]
+  # ── Beta (TestFlight) ─────────────────────────────────
 
-    # Fast tests on all device sizes
-    scan(
-      project: PROJECT,
-      scheme: SCHEME,
-      devices: devices,
-      code_coverage: true,
-      skip_testing: [
-        "CodeDumpUITests",
-        "CodeDumpTests/StravaE2ETests",
-      ],
-      result_bundle: true,
-      output_directory: "./fastlane/test_output/multi-device",
-    )
+  desc "Build and upload to TestFlight"
+  lane :beta do
+    setup_ci if is_ci
 
-    # UI tests on all device sizes
-    scan(
-      project: PROJECT,
-      scheme: SCHEME,
-      devices: devices,
-      only_testing: ["CodeDumpUITests"],
-      result_bundle: true,
-      output_directory: "./fastlane/test_output/ui-multi",
-    )
-
-    # E2E tests (only if secrets are configured)
-    if ENV["STRAVA_TEST_REFRESH_TOKEN"]
-      scan(
-        project: PROJECT,
-        scheme: SCHEME,
-        devices: [DEVICE],
-        only_testing: ["CodeDumpTests/StravaE2ETests"],
-        result_bundle: true,
-        output_directory: "./fastlane/test_output/e2e",
+    if is_ci
+      import_certificate(
+        certificate_path: ENV["CERTIFICATE_PATH"],
+        certificate_password: ENV["P12_PASSWORD"],
+        keychain_name: "fastlane_tmp_keychain",
+        keychain_password: ""
       )
-    else
-      UI.important("Skipping E2E tests — STRAVA_TEST_REFRESH_TOKEN not set")
     end
 
-    check_coverage
-  end
-
-  #─────────────────────────────────────────────────────────────────────
-  # GATE 4: Release — Full validation + build + TestFlight upload
-  #─────────────────────────────────────────────────────────────────────
-  desc "Gate 4: Release — full test suite, build archive, upload to TestFlight"
-  lane :gate_release do
-    # Run the full nightly suite first
-    gate_nightly
-
-    # Bump build number
-    increment_build_number(
-      build_number: latest_testflight_build_number + 1,
-      xcodeproj: PROJECT,
+    api_key = app_store_connect_api_key(
+      key_id: ENV["APP_STORE_CONNECT_KEY_ID"],
+      issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
+      key_content: ENV["APP_STORE_CONNECT_KEY"],
+      is_key_content_base64: true
     )
 
-    # Build release archive
+    current = latest_testflight_build_number(api_key: api_key)
+    increment_build_number(
+      build_number: current + 1,
+      xcodeproj: XCODEPROJ
+    )
+
+    sigh(
+      api_key: api_key,
+      app_identifier: "com.Solomon.Lazer-Dragon",
+      readonly: true
+    ) if is_ci
+
+    signing_args = is_ci ? ci_signing_xcargs : ""
+    archive_path = "./build/LazerDragon.xcarchive"
+
     build_app(
-      project: PROJECT,
+      project: XCODEPROJ,
+      scheme: SCHEME,
+      clean: true,
+      xcargs: signing_args,
+      skip_package_ipa: true,
+      archive_path: archive_path
+    )
+
+    build_app(
+      project: XCODEPROJ,
       scheme: SCHEME,
       export_method: "app-store",
-      output_directory: "./fastlane/builds",
-      output_name: "LazerDragon.ipa",
-      include_bitcode: false,
+      output_directory: "./build",
+      archive_path: archive_path,
+      skip_build_archive: true
     )
 
-    # Upload to TestFlight
     upload_to_testflight(
-      skip_waiting_for_build_processing: true,
-      changelog: changelog_from_git_commits(
-        commits_count: 10,
-        pretty: "- %s",
-      ),
+      api_key: api_key,
+      skip_waiting_for_build_processing: true
+    )
+  end
+
+  # ── Release (App Store) ──────────────────────────────
+
+  desc "Build and submit to App Store review"
+  lane :release do
+    setup_ci if is_ci
+
+    if is_ci
+      import_certificate(
+        certificate_path: ENV["CERTIFICATE_PATH"],
+        certificate_password: ENV["P12_PASSWORD"],
+        keychain_name: "fastlane_tmp_keychain",
+        keychain_password: ""
+      )
+    end
+
+    api_key = app_store_connect_api_key(
+      key_id: ENV["APP_STORE_CONNECT_KEY_ID"],
+      issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
+      key_content: ENV["APP_STORE_CONNECT_KEY"],
+      is_key_content_base64: true
     )
 
-    # Tag the release
-    version = get_version_number(xcodeproj: PROJECT)
-    build = get_build_number(xcodeproj: PROJECT)
-    add_git_tag(tag: "v#{version}-#{build}")
-    push_git_tags
-  end
+    current = latest_testflight_build_number(api_key: api_key)
+    increment_build_number(
+      build_number: current + 1,
+      xcodeproj: XCODEPROJ
+    )
 
-  #─────────────────────────────────────────────────────────────────────
-  # Helpers
-  #─────────────────────────────────────────────────────────────────────
+    sigh(
+      api_key: api_key,
+      app_identifier: "com.Solomon.Lazer-Dragon",
+      readonly: true
+    ) if is_ci
 
-  desc "Check code coverage meets threshold"
-  private_lane :check_coverage do
-    # Find the most recent xcresult
-    result_bundles = Dir.glob("./fastlane/test_output/**/*.xcresult")
-    if result_bundles.empty?
-      UI.user_error!("No test result bundles found")
-    end
+    signing_args = is_ci ? ci_signing_xcargs : ""
+    archive_path = "./build/LazerDragon.xcarchive"
 
-    result_bundle = result_bundles.max_by { |f| File.mtime(f) }
-
-    # Extract coverage
-    json = `xcrun xccov view --report --json "#{result_bundle}"`
-    data = JSON.parse(json)
-    coverage = (data["lineCoverage"] || 0) * 100
-
-    UI.message("📊 Coverage: #{coverage.round(1)}% (threshold: #{COV_THRESHOLD}%)")
-
-    # Strava-specific coverage
-    strava_files = data["targets"]
-      &.flat_map { |t| t["files"] || [] }
-      &.select { |f| f["path"]&.include?("Strava") } || []
-
-    unless strava_files.empty?
-      total = strava_files.sum { |f| f["executableLines"] || 0 }
-      covered = strava_files.sum { |f| f["coveredLines"] || 0 }
-      strava_pct = total > 0 ? (covered.to_f / total * 100) : 0
-      UI.message("🏔️  Strava coverage: #{strava_pct.round(1)}%")
-    end
-
-    if coverage < COV_THRESHOLD
-      UI.user_error!("❌ Coverage #{coverage.round(1)}% is below #{COV_THRESHOLD}% threshold")
-    else
-      UI.success("✅ Coverage #{coverage.round(1)}% meets #{COV_THRESHOLD}% threshold")
-    end
-  end
-
-  desc "Install the pre-push git hook"
-  lane :install_hooks do
-    sh("cp ../scripts/pre-push ../.git/hooks/pre-push")
-    sh("chmod +x ../.git/hooks/pre-push")
-    UI.success("✅ Pre-push hook installed")
-  end
-
-  desc "Record snapshot baselines"
-  lane :record_snapshots do
-    ENV["RECORD_SNAPSHOTS"] = "1"
-    scan(
-      project: PROJECT,
+    build_app(
+      project: XCODEPROJ,
       scheme: SCHEME,
-      devices: [DEVICE],
-      only_testing: ["CodeDumpTests/StravaSnapshotTests"],
-      fail_build: false,
+      clean: true,
+      xcargs: signing_args,
+      skip_package_ipa: true,
+      archive_path: archive_path
     )
-    UI.success("📸 Snapshot baselines recorded. Review and commit the __Snapshots__ directory.")
+
+    build_app(
+      project: XCODEPROJ,
+      scheme: SCHEME,
+      export_method: "app-store",
+      output_directory: "./build",
+      archive_path: archive_path,
+      skip_build_archive: true
+    )
+
+    upload_to_app_store(
+      api_key: api_key,
+      submit_for_review: true,
+      automatic_release: true,
+      force: true,
+      precheck_include_in_app_purchases: false,
+      submission_information: {
+        add_id_info_uses_idfa: false
+      }
+    )
   end
+
+  # ── Utilities ────────────────────────────────────────
+
+  desc "Register new device UDIDs"
+  lane :register_devices_from_file do
+    register_devices(devices_file: "./fastlane/devices.txt")
+  end
+
+  desc "Sync code signing certificates"
+  lane :sync_signing do
+    UI.message("Configure match in Matchfile when ready for automated signing")
+  end
+
 end

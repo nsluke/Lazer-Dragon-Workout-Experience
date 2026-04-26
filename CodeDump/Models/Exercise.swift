@@ -11,6 +11,7 @@ final class Exercise {
     // Phase 1: Exercise Intelligence
     var targetMuscleGroupsRaw: String = ""
     var equipmentRaw: String = "bodyweight"
+    var exerciseModeRaw: String = "repBased"
     var mediaURL: String?
     var templateID: String?
 
@@ -23,6 +24,7 @@ final class Exercise {
         reps: Int = 0,
         targetMuscleGroupsRaw: String = "",
         equipmentRaw: String = "bodyweight",
+        exerciseModeRaw: String = "repBased",
         mediaURL: String? = nil,
         templateID: String? = nil
     ) {
@@ -32,6 +34,7 @@ final class Exercise {
         self.reps = reps
         self.targetMuscleGroupsRaw = targetMuscleGroupsRaw
         self.equipmentRaw = equipmentRaw
+        self.exerciseModeRaw = exerciseModeRaw
         self.mediaURL = mediaURL
         self.templateID = templateID
     }
@@ -50,5 +53,10 @@ final class Exercise {
     var equipment: Equipment {
         get { Equipment(rawValue: equipmentRaw) ?? .bodyweight }
         set { equipmentRaw = newValue.rawValue }
+    }
+
+    var exerciseMode: ExerciseMode {
+        get { ExerciseMode(rawValue: exerciseModeRaw) ?? .repBased }
+        set { exerciseModeRaw = newValue.rawValue }
     }
 }

@@ -184,6 +184,7 @@ final class ProgramViewModel {
                 reps: item.defaultReps,
                 targetMuscleGroupsRaw: item.muscles.map(\.rawValue).joined(separator: ","),
                 equipmentRaw: item.equipment.rawValue,
+                exerciseModeRaw: item.exerciseMode.rawValue,
                 templateID: item.id
             )
             exercise.workout = workout
@@ -223,6 +224,7 @@ final class ProgramViewModel {
                 reps: item.defaultReps,
                 targetMuscleGroupsRaw: item.muscles.map(\.rawValue).joined(separator: ","),
                 equipmentRaw: item.equipment.rawValue,
+                exerciseModeRaw: item.exerciseMode.rawValue,
                 templateID: item.id
             )
             exercise.workout = workout

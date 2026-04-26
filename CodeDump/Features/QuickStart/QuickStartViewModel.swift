@@ -99,6 +99,7 @@ final class QuickStartViewModel {
                 reps: item.defaultReps,
                 targetMuscleGroups: item.muscles,
                 equipment: item.equipment,
+                exerciseMode: item.exerciseMode,
                 templateID: item.id
             )
         }
@@ -120,6 +121,7 @@ final class QuickStartViewModel {
             reps: item.defaultReps,
             targetMuscleGroups: item.muscles,
             equipment: item.equipment,
+            exerciseMode: item.exerciseMode,
             templateID: item.id
         )
     }
@@ -151,6 +153,7 @@ final class QuickStartViewModel {
                 reps: draft.reps,
                 targetMuscleGroupsRaw: draft.targetMuscleGroups.map(\.rawValue).joined(separator: ","),
                 equipmentRaw: draft.equipment.rawValue,
+                exerciseModeRaw: draft.exerciseMode.rawValue,
                 templateID: draft.templateID
             )
             exercise.workout = workout

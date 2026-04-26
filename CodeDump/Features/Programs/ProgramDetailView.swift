@@ -36,8 +36,7 @@ struct ProgramDetailView: View {
                         .padding(.bottom, 32)
                 }
             }
-            .navigationTitle(template.name.uppercased())
-            .navigationBarTitleDisplayMode(.inline)
+            .outrunTitle(template.name.uppercased())
             .outrunNavBar()
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {

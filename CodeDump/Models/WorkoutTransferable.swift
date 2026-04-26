@@ -17,6 +17,7 @@ struct ExerciseExport: Codable {
     let reps: Int
     let targetMuscleGroupsRaw: String
     let equipmentRaw: String
+    let exerciseModeRaw: String?
     let templateID: String?
 
     init(from exercise: Exercise) {
@@ -26,6 +27,7 @@ struct ExerciseExport: Codable {
         self.reps = exercise.reps
         self.targetMuscleGroupsRaw = exercise.targetMuscleGroupsRaw
         self.equipmentRaw = exercise.equipmentRaw
+        self.exerciseModeRaw = exercise.exerciseModeRaw
         self.templateID = exercise.templateID
     }
 }
@@ -81,6 +83,7 @@ struct WorkoutExport: Codable {
                 reps: item.reps,
                 targetMuscleGroupsRaw: item.targetMuscleGroupsRaw,
                 equipmentRaw: item.equipmentRaw,
+                exerciseModeRaw: item.exerciseModeRaw ?? "repBased",
                 templateID: item.templateID
             )
             exercise.workout = workout

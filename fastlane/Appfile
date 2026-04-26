@@ -1,0 +1,7 @@
+app_identifier("com.Solomon.Lazer-Dragon")
+# apple_id("your-apple-id@example.com")  # Your Apple Developer email
+# team_id("YMZ6ZTYGL8")                   # Your Apple Developer Team ID
+
+# For App Store Connect API (recommended over apple_id for CI)
+# Get these from https://appstoreconnect.apple.com/access/integrations/api
+# Store as GitHub secrets: APP_STORE_CONNECT_KEY_ID, APP_STORE_CONNECT_ISSUER_ID, APP_STORE_CONNECT_KEY

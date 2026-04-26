@@ -25,8 +25,7 @@ struct WorkoutDetailView: View {
                     .padding(.vertical, 16)
             }
         }
-        .navigationTitle(workout.name)
-        .navigationBarTitleDisplayMode(.large)
+        .outrunTitle(workout.name)
         .outrunNavBar()
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {

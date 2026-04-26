@@ -24,11 +24,11 @@ struct WeeklyStatsCardView: View {
                 // Header
                 VStack(spacing: 8) {
                     Text("WEEKLY STATS")
-                        .font(.custom("OutrunFuture", size: 48))
+                        .font(.custom("Audiowide-Regular", size: 48))
                         .foregroundColor(.outrunCyan)
                         .shadow(color: .outrunCyan.opacity(0.4), radius: 12)
                     Text(weekLabel)
-                        .font(.custom("OutrunFuture", size: 24))
+                        .font(.custom("Audiowide-Regular", size: 24))
                         .foregroundColor(.white.opacity(0.4))
                 }
 
@@ -53,7 +53,7 @@ struct WeeklyStatsCardView: View {
 
                 // Branding
                 Text("LAZER DRAGON")
-                    .font(.custom("OutrunFuture", size: 28))
+                    .font(.custom("Audiowide-Regular", size: 28))
                     .foregroundColor(.outrunPink.opacity(0.5))
             }
             .padding(.vertical, 80)
@@ -64,10 +64,10 @@ struct WeeklyStatsCardView: View {
     private func statCard(label: String, value: String, color: Color) -> some View {
         VStack(spacing: 12) {
             Text(label)
-                .font(.custom("OutrunFuture", size: 18))
+                .font(.custom("Audiowide-Regular", size: 18))
                 .foregroundColor(.white.opacity(0.5))
             Text(value)
-                .font(.custom("OutrunFuture", size: 36))
+                .font(.custom("Audiowide-Regular", size: 36))
                 .foregroundColor(color)
                 .lineLimit(1)
                 .minimumScaleFactor(0.6)

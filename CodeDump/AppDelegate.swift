@@ -5,10 +5,6 @@ import UIKit
 @main
 struct LDWEApp: App {
     init() {
-        let large = UIFont(name: "OutrunFuture", size: 34) ?? .systemFont(ofSize: 34, weight: .bold)
-        let inline = UIFont(name: "OutrunFuture", size: 17) ?? .systemFont(ofSize: 17, weight: .semibold)
-        UINavigationBar.appearance().largeTitleTextAttributes = [.font: large, .foregroundColor: UIColor(Color.outrunYellow)]
-        UINavigationBar.appearance().titleTextAttributes      = [.font: inline, .foregroundColor: UIColor(Color.outrunCyan)]
 
         // Activate WatchConnectivity immediately so the session handshake
         // happens at launch, not only when a workout starts.
@@ -63,6 +59,12 @@ struct RootView: View {
     @State private var selectedTab: Tab = .workouts
     @State private var workoutsPath = NavigationPath()
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
+    private var isUITesting: Bool {
+        ProcessInfo.processInfo.arguments.contains("-UITesting")
+    }
+    private var shouldShowOnboarding: Bool {
+        !hasCompletedOnboarding && !isUITesting
+    }
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \WorkoutSession.date, order: .reverse) private var recentSessions: [WorkoutSession]
     @State private var importedWorkout: WorkoutExport?
@@ -96,7 +98,7 @@ struct RootView: View {
                 .tag(Tab.goals)
         }
         .tint(.outrunCyan)
-        .fullScreenCover(isPresented: .constant(!hasCompletedOnboarding)) {
+        .fullScreenCover(isPresented: .constant(shouldShowOnboarding)) {
             OnboardingView {
                 hasCompletedOnboarding = true
             }
@@ -142,7 +144,7 @@ struct RootView: View {
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = UIColor(Color.outrunBlack)
 
-        let outrunFont = UIFont(name: "OutrunFuture", size: 9) ?? .systemFont(ofSize: 9)
+        let outrunFont = UIFont(name: "Audiowide-Regular", size: 9) ?? .systemFont(ofSize: 9)
         let normalColor = UIColor(Color.white.opacity(0.4))
         let selectedColor = UIColor(Color.outrunCyan)
 
