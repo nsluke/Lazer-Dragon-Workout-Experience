@@ -26,7 +26,8 @@ final class WorkoutSessionIntegrationTests: XCTestCase {
     private func makeWorkout(
         warmup: Int = 0, interval: Int = 30, rest: Int = 0,
         intervals: Int = 3, sets: Int = 1,
-        restBetweenSets: Int = 0, cooldown: Int = 0
+        restBetweenSets: Int = 0, cooldown: Int = 0,
+        seedExercises: Bool = true
     ) -> Workout {
         let w = Workout(
             name: "Integration Test",
@@ -35,6 +36,12 @@ final class WorkoutSessionIntegrationTests: XCTestCase {
             restBetweenSetLength: restBetweenSets, cooldownLength: cooldown
         )
         context.insert(w)
+        // Seed `intervals` exercises so the state machine's
+        // `exercisesPerSet = min(numberOfIntervals, sortedExercises.count)` cap matches the
+        // configured interval count. Pass seedExercises: false for tests that add their own.
+        if seedExercises {
+            addExercises(w, count: intervals)
+        }
         return w
     }
 
@@ -115,8 +122,8 @@ final class WorkoutSessionIntegrationTests: XCTestCase {
     // MARK: - Full Cycle: With Named Exercises
 
     func testExercisesPerSetLimitedByExerciseCount() {
-        let workout = makeWorkout(intervals: 5) // 5 intervals configured
-        addExercises(workout, count: 3)          // but only 3 exercises added
+        let workout = makeWorkout(intervals: 5, seedExercises: false) // 5 intervals configured
+        addExercises(workout, count: 3)                                // but only 3 exercises added
         let vm = WorkoutSessionViewModel(workout: workout)
         vm.startWorkout()
         runToCompletion(vm)
@@ -125,7 +132,7 @@ final class WorkoutSessionIntegrationTests: XCTestCase {
     }
 
     func testNamedExercisesUsedInPhaseTitle() {
-        let workout = makeWorkout()
+        let workout = makeWorkout(seedExercises: false)
         let ex = Exercise(order: 0, name: "Burpee", splitLength: 30)
         ex.workout = workout
         workout.exercises.append(ex)
@@ -248,7 +255,7 @@ final class WorkoutSessionIntegrationTests: XCTestCase {
     }
 
     func testExercisesAreSortedByOrderAfterFetch() throws {
-        let workout = makeWorkout()
+        let workout = makeWorkout(seedExercises: false)
         addExercises(workout, count: 5)
         try context.save()
 
