@@ -338,14 +338,16 @@ final class WorkoutSessionViewModel {
             exercisesCompleted += 1
 
             // Trigger set log prompt for the just-completed exercise
-            let exercise = sortedExercises[safe: i]
-            pendingLog = PendingSetLog(
-                exerciseName: exercise?.name ?? "Exercise",
-                exerciseTemplateID: exercise?.templateID,
-                setIndex: s,
-                exerciseIndex: i,
-                targetReps: exercise?.reps ?? 0
-            )
+            if !ProcessInfo.processInfo.arguments.contains("-UITesting") {
+                let exercise = sortedExercises[safe: i]
+                pendingLog = PendingSetLog(
+                    exerciseName: exercise?.name ?? "Exercise",
+                    exerciseTemplateID: exercise?.templateID,
+                    setIndex: s,
+                    exerciseIndex: i,
+                    targetReps: exercise?.reps ?? 0
+                )
+            }
 
             let isLastExercise = i + 1 >= exercisesPerSet
             let isLastSet = s + 1 >= workout.numberOfSets

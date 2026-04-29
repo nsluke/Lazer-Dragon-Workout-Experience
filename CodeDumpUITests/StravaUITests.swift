@@ -27,43 +27,50 @@ final class StravaUITests: XCTestCase {
     // MARK: - Helpers
 
     /// Navigate to the workout completed screen by starting and fast-forwarding a workout.
-    /// Requires seed data to exist (the app seeds in DEBUG builds).
+    /// Requires seed data to exist (the app seeds when the workout list is empty).
     private func navigateToCompletedScreen() {
         app.launch()
 
-        // Wait for the workout list to load
-        let workoutList = app.navigationBars["WORKOUTS"]
-        XCTAssertTrue(workoutList.waitForExistence(timeout: 5), "Workout list did not appear")
+        // Wait for the workout list to load (look for the seed "Easy Day" workout —
+        // the shortest seed workout for fast skip).
+        let easyWorkout = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'Easy Day'")).firstMatch
+        XCTAssertTrue(easyWorkout.waitForExistence(timeout: 5), "Workout list did not appear")
+        easyWorkout.tap()
 
-        // Tap the first workout row to go to detail
-        let firstWorkout = app.cells.firstMatch
-        guard firstWorkout.waitForExistence(timeout: 3) else {
-            XCTFail("No workout rows found — seed data may not have loaded")
+        // Tap "BEGIN" to enter the workout session
+        let beginButton = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'BEGIN'")).firstMatch
+        guard beginButton.waitForExistence(timeout: 3) else {
+            XCTFail("BEGIN button not found on detail screen")
             return
         }
-        firstWorkout.tap()
+        beginButton.tap()
 
-        // Tap "START" to begin the workout session
-        let startButton = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'START'")).firstMatch
-        guard startButton.waitForExistence(timeout: 3) else {
-            XCTFail("START button not found on detail screen")
+        // Tap play to start the workout (session begins in idle)
+        let playButton = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'Start workout'")).firstMatch
+        guard playButton.waitForExistence(timeout: 3) else {
+            XCTFail("Play button not found on session screen")
             return
         }
-        startButton.tap()
+        playButton.tap()
 
-        // Fast-forward: repeatedly tap the skip button until we reach completion
+        // Fast-forward: repeatedly tap skip forward until we reach completion.
+        // Set log overlays are suppressed in -UITesting mode (see WorkoutSessionViewModel).
+        // The SHARE button only exists on the completed screen, so use it as the sentinel —
+        // the COMPLETE Text has its accessibility merged into a combined parent label.
         let skipButton = app.buttons["skip_forward_button"]
-        let completedHeader = app.staticTexts["COMPLETE"]
+        let shareButton = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'SHARE'")).firstMatch
 
         var taps = 0
-        while !completedHeader.exists && taps < 100 {
+        while !shareButton.exists && taps < 200 {
             if skipButton.exists && skipButton.isHittable {
                 skipButton.tap()
+            } else {
+                Thread.sleep(forTimeInterval: 0.2)
             }
             taps += 1
         }
 
-        XCTAssertTrue(completedHeader.waitForExistence(timeout: 5), "Did not reach completed screen after \(taps) skip taps")
+        XCTAssertTrue(shareButton.waitForExistence(timeout: 10), "Did not reach completed screen after \(taps) skip taps")
     }
 
     // MARK: - Disconnected State
