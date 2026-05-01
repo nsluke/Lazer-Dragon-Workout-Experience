@@ -25,6 +25,7 @@ final class WorkoutBuilderViewModel {
         var equipment: Equipment = .bodyweight
         var exerciseMode: ExerciseMode = .repBased
         var templateID: String? = nil
+        var supersetGroupID: String? = nil
     }
 
     init(editing workout: Workout? = nil) {
@@ -48,7 +49,8 @@ final class WorkoutBuilderViewModel {
                 targetMuscleGroups: $0.targetMuscleGroups,
                 equipment: $0.equipment,
                 exerciseMode: $0.exerciseMode,
-                templateID: $0.templateID
+                templateID: $0.templateID,
+                supersetGroupID: $0.supersetGroupID
             )
         }
     }
@@ -94,6 +96,55 @@ final class WorkoutBuilderViewModel {
 
     // MARK: - Private
 
+    // MARK: - Superset Grouping
+
+    /// Groups contiguous exercises at the given indices into a superset.
+    func groupAsSuperset(indices: [Int]) {
+        let sorted = indices.sorted()
+        guard sorted.count >= 2, sorted.count <= 4 else { return }
+        // Verify contiguous
+        for i in 1..<sorted.count {
+            guard sorted[i] == sorted[i - 1] + 1 else { return }
+        }
+        let groupID = UUID().uuidString
+        for i in sorted {
+            exercises[i].supersetGroupID = groupID
+        }
+    }
+
+    /// Removes an exercise from its superset group. Dissolves the group if fewer than 2 remain.
+    func removeFromSuperset(at index: Int) {
+        guard let groupID = exercises[index].supersetGroupID else { return }
+        exercises[index].supersetGroupID = nil
+        let remaining = exercises.indices.filter { exercises[$0].supersetGroupID == groupID }
+        if remaining.count < 2 {
+            for i in remaining { exercises[i].supersetGroupID = nil }
+        }
+    }
+
+    /// Returns the superset group label for a given exercise index (e.g., "SUPERSET" or "CIRCUIT").
+    func supersetLabel(at index: Int) -> String? {
+        guard let groupID = exercises[index].supersetGroupID else { return nil }
+        let count = exercises.filter { $0.supersetGroupID == groupID }.count
+        return count <= 2 ? "SUPERSET" : "CIRCUIT"
+    }
+
+    /// Returns true if this exercise is the first in its superset group (for rendering headers).
+    func isSupersetStart(at index: Int) -> Bool {
+        guard exercises[index].supersetGroupID != nil else { return false }
+        if index == 0 { return true }
+        return exercises[index].supersetGroupID != exercises[index - 1].supersetGroupID
+    }
+
+    /// Returns true if this exercise is the last in its superset group.
+    func isSupersetEnd(at index: Int) -> Bool {
+        guard exercises[index].supersetGroupID != nil else { return false }
+        if index == exercises.count - 1 { return true }
+        return exercises[index].supersetGroupID != exercises[index + 1].supersetGroupID
+    }
+
+    // MARK: - Private
+
     private func makeExercise(from draft: DraftExercise, order: Int) -> Exercise {
         Exercise(
             order: order,
@@ -103,7 +154,8 @@ final class WorkoutBuilderViewModel {
             targetMuscleGroupsRaw: draft.targetMuscleGroups.map(\.rawValue).joined(separator: ","),
             equipmentRaw: draft.equipment.rawValue,
             exerciseModeRaw: draft.exerciseMode.rawValue,
-            templateID: draft.templateID
+            templateID: draft.templateID,
+            supersetGroupID: draft.supersetGroupID
         )
     }
 

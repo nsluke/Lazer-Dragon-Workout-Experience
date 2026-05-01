@@ -6,6 +6,7 @@ struct AnalyticsDashboardView: View {
     @State private var viewModel = AnalyticsViewModel()
     @Query(sort: \WorkoutSession.date, order: .reverse) private var sessions: [WorkoutSession]
     @Query(sort: \SetLog.date, order: .reverse) private var allLogs: [SetLog]
+    @State private var showingExerciseProgress = false
 
     var body: some View {
         ZStack {
@@ -246,6 +247,39 @@ struct AnalyticsDashboardView: View {
                         plot.background(Color.outrunBlack.opacity(0.3))
                     }
                     .frame(height: 200)
+
+                    Button {
+                        showingExerciseProgress = true
+                    } label: {
+                        HStack {
+                            Spacer()
+                            Text("VIEW DETAILS")
+                                .font(.outrunFuture(10))
+                            Image(systemName: "chart.line.uptrend.xyaxis")
+                                .font(.system(size: 11))
+                            Spacer()
+                        }
+                        .foregroundColor(.outrunCyan)
+                        .padding(.vertical, 8)
+                        .background(Color.outrunCyan.opacity(0.1))
+                        .cornerRadius(8)
+                    }
+                    .buttonStyle(.plain)
+                    .sheet(isPresented: $showingExerciseProgress) {
+                        NavigationStack {
+                            ExerciseProgressChartView(
+                                exerciseTemplateID: viewModel.selectedExerciseID ?? "",
+                                exerciseName: viewModel.exerciseNames.first { viewModel.exerciseID(forName: $0, logs: allLogs) == viewModel.selectedExerciseID } ?? ""
+                            )
+                            .toolbar {
+                                ToolbarItem(placement: .topBarLeading) {
+                                    Button("Done") { showingExerciseProgress = false }
+                                        .font(.outrunFuture(14))
+                                        .foregroundColor(.outrunCyan)
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

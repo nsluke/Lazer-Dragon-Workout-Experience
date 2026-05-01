@@ -14,6 +14,7 @@ final class Exercise {
     var exerciseModeRaw: String = "repBased"
     var mediaURL: String?
     var templateID: String?
+    var supersetGroupID: String?
 
     var workout: Workout?
 
@@ -26,7 +27,8 @@ final class Exercise {
         equipmentRaw: String = "bodyweight",
         exerciseModeRaw: String = "repBased",
         mediaURL: String? = nil,
-        templateID: String? = nil
+        templateID: String? = nil,
+        supersetGroupID: String? = nil
     ) {
         self.order = order
         self.name = name
@@ -37,6 +39,7 @@ final class Exercise {
         self.exerciseModeRaw = exerciseModeRaw
         self.mediaURL = mediaURL
         self.templateID = templateID
+        self.supersetGroupID = supersetGroupID
     }
 
     var targetMuscleGroups: [MuscleGroup] {

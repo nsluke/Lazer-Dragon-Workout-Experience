@@ -101,51 +101,97 @@ struct WorkoutDetailView: View {
 
     private var exercisesSection: some View {
         Section {
-            ForEach(workout.sortedExercises) { exercise in
-                VStack(alignment: .leading, spacing: 4) {
-                    HStack {
-                        Text(exercise.name)
-                            .font(.outrunFuture(15))
-                            .foregroundColor(.outrunYellow)
-                            .minimumScaleFactor(0.7)
-                        Spacer()
-                        if exercise.reps > 0 {
-                            Text("\(exercise.reps) reps")
-                                .font(.outrunFuture(13))
-                                .foregroundColor(.outrunCyan)
-                        } else {
-                            Text(exercise.splitLength.formattedTime)
-                                .font(.outrunFuture(13))
-                                .foregroundColor(.outrunCyan)
+            ForEach(Array(workout.sortedExercises.enumerated()), id: \.element.id) { index, exercise in
+                VStack(alignment: .leading, spacing: 0) {
+                    // Superset header
+                    if isSupersetStart(exercise, in: workout.sortedExercises, at: index) {
+                        let count = supersetCount(for: exercise, in: workout.sortedExercises)
+                        HStack(spacing: 6) {
+                            Image(systemName: "arrow.triangle.swap")
+                                .font(.system(size: 9))
+                            Text(count <= 2 ? "SUPERSET" : "CIRCUIT")
+                                .font(.outrunFuture(9))
                         }
+                        .foregroundColor(.outrunPurple)
+                        .padding(.bottom, 4)
                     }
 
-                    if !exercise.targetMuscleGroups.isEmpty {
-                        HStack(spacing: 6) {
-                            ForEach(exercise.targetMuscleGroups, id: \.self) { muscle in
-                                HStack(spacing: 2) {
-                                    Image(systemName: muscle.icon)
-                                        .font(.system(size: 8))
-                                    Text(muscle.displayName)
-                                        .font(.outrunFuture(8))
-                                }
-                                .foregroundColor(.outrunCyan.opacity(0.6))
-                            }
-
-                            Label(exercise.equipment.displayName, systemImage: exercise.equipment.icon)
-                                .font(.outrunFuture(8))
-                                .foregroundColor(.outrunPurple.opacity(0.6))
+                    HStack(spacing: 0) {
+                        // Superset accent bar
+                        if exercise.supersetGroupID != nil {
+                            RoundedRectangle(cornerRadius: 1.5)
+                                .fill(Color.outrunPurple)
+                                .frame(width: 3)
+                                .padding(.vertical, 2)
+                                .padding(.trailing, 8)
                         }
-                        .accessibilityElement(children: .ignore)
-                        .accessibilityLabel("Muscles: \(exercise.targetMuscleGroups.map(\.displayName).joined(separator: ", ")). Equipment: \(exercise.equipment.displayName)")
+
+                        Button {
+                            let templateID = exercise.templateID ?? exercise.name
+                            path.append(Route.exerciseProgress(templateID: templateID, name: exercise.name))
+                        } label: {
+                            VStack(alignment: .leading, spacing: 4) {
+                                HStack {
+                                    Text(exercise.name)
+                                        .font(.outrunFuture(15))
+                                        .foregroundColor(.outrunYellow)
+                                        .minimumScaleFactor(0.7)
+                                    Spacer()
+                                    if exercise.reps > 0 {
+                                        Text("\(exercise.reps) reps")
+                                            .font(.outrunFuture(13))
+                                            .foregroundColor(.outrunCyan)
+                                    } else {
+                                        Text(exercise.splitLength.formattedTime)
+                                            .font(.outrunFuture(13))
+                                            .foregroundColor(.outrunCyan)
+                                    }
+                                    Image(systemName: "chart.line.uptrend.xyaxis")
+                                        .font(.system(size: 12))
+                                        .foregroundColor(.outrunPink.opacity(0.6))
+                                }
+
+                                if !exercise.targetMuscleGroups.isEmpty {
+                                    HStack(spacing: 6) {
+                                        ForEach(exercise.targetMuscleGroups, id: \.self) { muscle in
+                                            HStack(spacing: 2) {
+                                                Image(systemName: muscle.icon)
+                                                    .font(.system(size: 8))
+                                                Text(muscle.displayName)
+                                                    .font(.outrunFuture(8))
+                                            }
+                                            .foregroundColor(.outrunCyan.opacity(0.6))
+                                        }
+
+                                        Label(exercise.equipment.displayName, systemImage: exercise.equipment.icon)
+                                            .font(.outrunFuture(8))
+                                            .foregroundColor(.outrunPurple.opacity(0.6))
+                                    }
+                                    .accessibilityElement(children: .ignore)
+                                    .accessibilityLabel("Muscles: \(exercise.targetMuscleGroups.map(\.displayName).joined(separator: ", ")). Equipment: \(exercise.equipment.displayName)")
+                                }
+                            }
+                            .padding(.vertical, 2)
+                        }
+                        .buttonStyle(.plain)
                     }
                 }
-                .padding(.vertical, 2)
             }
         } header: {
             sectionLabel("Exercises")
         }
         .listRowBackground(Color.outrunSurface)
+    }
+
+    private func isSupersetStart(_ exercise: Exercise, in exercises: [Exercise], at index: Int) -> Bool {
+        guard exercise.supersetGroupID != nil else { return false }
+        if index == 0 { return true }
+        return exercise.supersetGroupID != exercises[index - 1].supersetGroupID
+    }
+
+    private func supersetCount(for exercise: Exercise, in exercises: [Exercise]) -> Int {
+        guard let groupID = exercise.supersetGroupID else { return 0 }
+        return exercises.filter { $0.supersetGroupID == groupID }.count
     }
 
     // MARK: - Begin Button

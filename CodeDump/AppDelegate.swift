@@ -51,6 +51,7 @@ enum Route: Hashable {
     case detail(Workout)
     case session(Workout)
     case activeProgram
+    case exerciseProgress(templateID: String, name: String)
 }
 
 // MARK: - Root View
@@ -199,6 +200,8 @@ struct WorkoutsTab: View {
                         WorkoutSessionView(workout: workout, path: $path)
                     case .activeProgram:
                         ProgramCalendarView(path: $path)
+                    case .exerciseProgress(let templateID, let name):
+                        ExerciseProgressChartView(exerciseTemplateID: templateID, exerciseName: name)
                     }
                 }
         }

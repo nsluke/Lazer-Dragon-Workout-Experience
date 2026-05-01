@@ -269,6 +269,19 @@ struct WorkoutSessionView: View {
 
     private var exerciseInfo: some View {
         VStack(spacing: 6) {
+            // Superset progress indicator
+            if let progress = viewModel.supersetProgress {
+                HStack(spacing: 6) {
+                    Image(systemName: "arrow.triangle.swap")
+                        .font(.system(size: 10))
+                    Text(progress.total <= 2 ? "SUPERSET" : "CIRCUIT")
+                        .font(.outrunFuture(10))
+                    Text("\(progress.current)/\(progress.total)")
+                        .font(.system(size: 12, weight: .bold, design: .monospaced))
+                }
+                .foregroundColor(.outrunPurple)
+            }
+
             if let current = viewModel.currentExercise {
                 switch current.exerciseMode {
                 case .timeBased:
@@ -289,12 +302,13 @@ struct WorkoutSessionView: View {
             }
 
             if let next = viewModel.nextExercise {
-                Text("NEXT: \(next.name.uppercased())")
-                    .font(.outrunFuture(13))
-                    .foregroundColor(.white.opacity(0.4))
+                let noRest = viewModel.nextIsInSuperset
+                Text(noRest ? "NEXT (NO REST): \(next.name.uppercased())" : "NEXT: \(next.name.uppercased())")
+                    .font(.outrunFuture(noRest ? 11 : 13))
+                    .foregroundColor(noRest ? .outrunPurple.opacity(0.7) : .white.opacity(0.4))
             }
         }
-        .frame(height: 44)
+        .frame(minHeight: 44)
     }
 
     // MARK: - Control Bar

@@ -95,6 +95,23 @@ final class WorkoutSessionViewModel {
         }
     }
 
+    /// Returns (current position, total count) if the current exercise is in a superset/circuit.
+    var supersetProgress: (current: Int, total: Int)? {
+        guard case .interval(let i, _) = phase,
+              let exercise = sortedExercises[safe: i],
+              let groupID = exercise.supersetGroupID, !groupID.isEmpty else { return nil }
+        let grouped = sortedExercises.enumerated().filter { $0.element.supersetGroupID == groupID }
+        guard grouped.count >= 2 else { return nil }
+        let position = (grouped.firstIndex { $0.offset == i } ?? 0) + 1
+        return (position, grouped.count)
+    }
+
+    /// Whether the next exercise after the current interval is in the same superset group (no rest).
+    var nextIsInSuperset: Bool {
+        guard case .interval(let i, _) = phase else { return false }
+        return isInSameSuperset(exerciseIndex: i, and: i + 1)
+    }
+
     var phaseTitle: String {
         switch phase {
         case .idle:                  return "READY"
@@ -375,6 +392,9 @@ final class WorkoutSessionViewModel {
                 } else {
                     transition(to: .interval(exerciseIndex: 0, setIndex: s + 1))
                 }
+            } else if isInSameSuperset(exerciseIndex: i, and: i + 1) {
+                // Superset: skip rest, go directly to next exercise
+                transition(to: .interval(exerciseIndex: i + 1, setIndex: s))
             } else if workout.restLength > 0 {
                 transition(to: .rest(nextExerciseIndex: i + 1, setIndex: s))
             } else {
@@ -413,6 +433,17 @@ final class WorkoutSessionViewModel {
         Task { await HealthKitManager.shared.saveEnrichedWorkout(type: type, start: start, end: end, setLogs: logs) }
     }
 
+    // MARK: - Superset Helpers
+
+    private func isInSameSuperset(exerciseIndex current: Int, and next: Int) -> Bool {
+        guard let currentEx = sortedExercises[safe: current],
+              let nextEx = sortedExercises[safe: next],
+              let currentGroup = currentEx.supersetGroupID,
+              !currentGroup.isEmpty,
+              let nextGroup = nextEx.supersetGroupID else { return false }
+        return currentGroup == nextGroup
+    }
+
     // MARK: - Watch
 
     private var watchPayload: [String: Any] {
@@ -426,7 +457,8 @@ final class WorkoutSessionViewModel {
             // Reference timestamps so the Watch can compute its own countdown
             "phaseStartDate": phaseStartDate.timeIntervalSince1970,
             "workoutStartDate": workoutStartDate.timeIntervalSince1970,
-            "totalPausedTime": totalPausedTime
+            "totalPausedTime": totalPausedTime,
+            "supersetProgress": supersetProgress.map { "\($0.current)/\($0.total)" } ?? ""
         ]
     }
 }
