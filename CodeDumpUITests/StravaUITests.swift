@@ -31,11 +31,11 @@ final class StravaUITests: XCTestCase {
     private func navigateToCompletedScreen() {
         app.launch()
 
-        // Wait for the workout list to load (look for seed workout "Test")
-        let testWorkout = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'Test'")).firstMatch
+        // Wait for the workout list to load (look for seed workout "Easy Day", the shortest preset).
+        let testWorkout = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'Easy Day'")).firstMatch
         XCTAssertTrue(testWorkout.waitForExistence(timeout: 5), "Workout list did not appear")
 
-        // Tap the "Test" workout row to go to detail (shortest workout for fast skip)
+        // Tap the "Easy Day" workout row to go to detail (shortest workout for fast skip)
         testWorkout.tap()
 
         // Tap "BEGIN" to begin the workout session
