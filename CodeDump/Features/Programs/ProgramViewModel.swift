@@ -188,7 +188,7 @@ final class ProgramViewModel {
                 templateID: item.id
             )
             exercise.workout = workout
-            workout.exercises.append(exercise)
+            workout.exercises?.append(exercise)
             context.insert(exercise)
         }
 
@@ -228,7 +228,7 @@ final class ProgramViewModel {
                 templateID: item.id
             )
             exercise.workout = workout
-            workout.exercises.append(exercise)
+            workout.exercises?.append(exercise)
             context.insert(exercise)
         }
 

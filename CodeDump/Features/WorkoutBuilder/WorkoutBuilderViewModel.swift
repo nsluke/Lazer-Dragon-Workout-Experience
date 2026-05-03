@@ -171,13 +171,13 @@ final class WorkoutBuilderViewModel {
         workout.cooldownLength       = cooldownLength
 
         // Replace all exercises
-        for ex in workout.exercises { context.delete(ex) }
+        for ex in workout.exercises ?? [] { context.delete(ex) }
         workout.exercises = []
 
         for (index, draft) in exercises.enumerated() {
             let ex = makeExercise(from: draft, order: index)
             ex.workout = workout
-            workout.exercises.append(ex)
+            workout.exercises?.append(ex)
             context.insert(ex)
         }
     }
@@ -199,7 +199,7 @@ final class WorkoutBuilderViewModel {
         for (index, draft) in exercises.enumerated() {
             let ex = makeExercise(from: draft, order: index)
             ex.workout = workout
-            workout.exercises.append(ex)
+            workout.exercises?.append(ex)
             context.insert(ex)
         }
     }

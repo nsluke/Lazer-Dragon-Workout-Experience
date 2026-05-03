@@ -384,7 +384,7 @@ struct WorkoutSessionView: View {
             setsCompleted: viewModel.setsCompleted
         )
         session.workout = viewModel.workout
-        viewModel.workout.sessions.append(session)
+        viewModel.workout.sessions?.append(session)
 
         // Save GPS route data if applicable
         if viewModel.isGPSWorkout, !viewModel.locationTracker.locations.isEmpty {

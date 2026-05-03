@@ -353,7 +353,7 @@ struct WorkoutListView: View {
             for (i, (exName, split, reps)) in exerciseData.enumerated() {
                 let ex = Exercise(order: i, name: exName, splitLength: split, reps: reps)
                 ex.workout = workout
-                workout.exercises.append(ex)
+                workout.exercises?.append(ex)
                 modelContext.insert(ex)
             }
         }
@@ -373,7 +373,7 @@ struct WorkoutRow: View {
                     .font(.outrunFuture(22))
                     .foregroundColor(.outrunYellow)
                     .minimumScaleFactor(0.7)
-                Text("\(workout.exercises.count) exercises  ·  \(workout.numberOfSets) set\(workout.numberOfSets == 1 ? "" : "s")  ·  ~\(workout.totalDurationEstimate.formattedTime)\(workout.sessions.isEmpty ? "" : "  ·  \(workout.sessions.count) session\(workout.sessions.count == 1 ? "" : "s")")")
+                Text("\(workout.exerciseCount) exercises  ·  \(workout.numberOfSets) set\(workout.numberOfSets == 1 ? "" : "s")  ·  ~\(workout.totalDurationEstimate.formattedTime)\(workout.sessionCount == 0 ? "" : "  ·  \(workout.sessionCount) session\(workout.sessionCount == 1 ? "" : "s")")")
                     .font(.outrunFuture(12))
                     .foregroundColor(.outrunCyan.opacity(0.8))
                     .minimumScaleFactor(0.7)
@@ -389,6 +389,6 @@ struct WorkoutRow: View {
         }
         .padding(.vertical, 6)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(workout.name), \(workout.workoutType.rawValue). \(workout.exercises.count) exercises, \(workout.numberOfSets) sets, about \(workout.totalDurationEstimate.formattedTime)")
+        .accessibilityLabel("\(workout.name), \(workout.workoutType.rawValue). \(workout.exerciseCount) exercises, \(workout.numberOfSets) sets, about \(workout.totalDurationEstimate.formattedTime)")
     }
 }

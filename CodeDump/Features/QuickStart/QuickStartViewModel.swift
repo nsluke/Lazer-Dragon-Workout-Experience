@@ -157,7 +157,7 @@ final class QuickStartViewModel {
                 templateID: draft.templateID
             )
             exercise.workout = workout
-            workout.exercises.append(exercise)
+            workout.exercises?.append(exercise)
             context.insert(exercise)
         }
 

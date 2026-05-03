@@ -72,7 +72,7 @@ final class WorkoutSessionViewModel {
     // MARK: - Computed
 
     var sortedExercises: [Exercise] {
-        workout.exercises.sorted { $0.order < $1.order }
+        (workout.exercises ?? []).sorted { $0.order < $1.order }
     }
 
     private var exercisesPerSet: Int {

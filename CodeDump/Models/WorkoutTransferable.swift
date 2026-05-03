@@ -90,7 +90,7 @@ struct WorkoutExport: Codable {
                 supersetGroupID: item.supersetGroupID
             )
             exercise.workout = workout
-            workout.exercises.append(exercise)
+            workout.exercises?.append(exercise)
             context.insert(exercise)
         }
 

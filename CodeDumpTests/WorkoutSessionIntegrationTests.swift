@@ -42,7 +42,7 @@ final class WorkoutSessionIntegrationTests: XCTestCase {
         for i in 0..<count {
             let ex = Exercise(order: i, name: "Exercise \(i + 1)", splitLength: 30)
             ex.workout = workout
-            workout.exercises.append(ex)
+            workout.exercises?.append(ex)
             context.insert(ex)
         }
     }
@@ -128,7 +128,7 @@ final class WorkoutSessionIntegrationTests: XCTestCase {
         let workout = makeWorkout()
         let ex = Exercise(order: 0, name: "Burpee", splitLength: 30)
         ex.workout = workout
-        workout.exercises.append(ex)
+        workout.exercises?.append(ex)
         context.insert(ex)
 
         let vm = WorkoutSessionViewModel(workout: workout)
@@ -170,7 +170,7 @@ final class WorkoutSessionIntegrationTests: XCTestCase {
         let workout = makeWorkout()
         let session = WorkoutSession(totalElapsed: 420, exercisesCompleted: 9, setsCompleted: 3)
         session.workout = workout
-        workout.sessions.append(session)
+        workout.sessions?.append(session)
         context.insert(session)
         try context.save()
 
@@ -186,12 +186,12 @@ final class WorkoutSessionIntegrationTests: XCTestCase {
         for i in 1...5 {
             let session = WorkoutSession(totalElapsed: i * 60, exercisesCompleted: i, setsCompleted: 1)
             session.workout = workout
-            workout.sessions.append(session)
+            workout.sessions?.append(session)
             context.insert(session)
         }
         try context.save()
 
-        XCTAssertEqual(workout.sessions.count, 5)
+        XCTAssertEqual(workout.sessions?.count, 5)
         let sessions = try context.fetch(FetchDescriptor<WorkoutSession>())
         XCTAssertEqual(sessions.count, 5)
     }
@@ -200,7 +200,7 @@ final class WorkoutSessionIntegrationTests: XCTestCase {
         let workout = makeWorkout()
         let session = WorkoutSession(totalElapsed: 300, exercisesCompleted: 3, setsCompleted: 1)
         session.workout = workout
-        workout.sessions.append(session)
+        workout.sessions?.append(session)
         context.insert(session)
         try context.save()
 
@@ -229,12 +229,12 @@ final class WorkoutSessionIntegrationTests: XCTestCase {
         for (i, date) in dates.enumerated() {
             let session = WorkoutSession(date: date, totalElapsed: i * 100, exercisesCompleted: i, setsCompleted: 1)
             session.workout = workout
-            workout.sessions.append(session)
+            workout.sessions?.append(session)
             context.insert(session)
         }
         try context.save()
 
-        let sorted = workout.sessions.sorted { $0.date > $1.date }
+        let sorted = (workout.sessions ?? []).sorted { $0.date > $1.date }
         XCTAssertEqual(sorted[0].totalElapsed, 200) // most recent
         XCTAssertEqual(sorted[2].totalElapsed, 0)   // oldest
     }
