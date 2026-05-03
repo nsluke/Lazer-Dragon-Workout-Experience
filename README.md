@@ -1,5 +1,7 @@
 # The Lazer Dragon Workout Experience
 
+[It is strongly recommended that you listen to this song while reading this README.](https://www.youtube.com/watch?v=MkgR0SxmMKo&list=RDMkgR0SxmMKo&start_radio=1)
+
 A fully-featured iOS workout timer and training companion with an outrun/synthwave aesthetic. Built entirely in Swift with SwiftUI, SwiftData, and zero external dependencies.
 
 [![Swift Version][swift-image]][swift-url] [![License][license-image]][license-url] [![Platform](https://img.shields.io/badge/platform-iOS%2018%2B-purple.svg)](https://developer.apple.com/ios/)
