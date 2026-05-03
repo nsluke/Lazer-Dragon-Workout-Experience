@@ -16,8 +16,9 @@ final class WorkoutSession {
 
     var workout: Workout?
 
+    // CloudKit requires to-many relationships to be optional.
     @Relationship(deleteRule: .cascade, inverse: \SetLog.session)
-    var setLogs: [SetLog] = []
+    var setLogs: [SetLog]? = []
 
     init(date: Date = .now, totalElapsed: Int, exercisesCompleted: Int, setsCompleted: Int) {
         self.date = date

@@ -200,7 +200,7 @@ struct DayDetailView: View {
     private func computeSummaries() {
         summaries = sessions.map { session in
             let summary = SessionAnalytics.analyze(
-                sessionLogs: session.setLogs,
+                sessionLogs: session.setLogs ?? [],
                 allHistoricalLogs: allHistoricalLogs,
                 workout: session.workout,
                 allSessions: allSessions

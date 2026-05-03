@@ -268,7 +268,7 @@ enum SessionAnalytics {
 
         guard let session = previousSession else { return nil }
 
-        let volume = session.setLogs.reduce(0.0) { sum, log in
+        let volume = (session.setLogs ?? []).reduce(0.0) { sum, log in
             sum + (log.weight ?? 0) * Double(log.reps ?? 0)
         }
 

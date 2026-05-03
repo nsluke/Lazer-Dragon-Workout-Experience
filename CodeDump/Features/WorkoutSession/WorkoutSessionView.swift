@@ -396,7 +396,7 @@ struct WorkoutSessionView: View {
         // Persist set logs
         for log in viewModel.sessionLogs {
             log.session = session
-            session.setLogs.append(log)
+            session.setLogs?.append(log)
             modelContext.insert(log)
         }
 

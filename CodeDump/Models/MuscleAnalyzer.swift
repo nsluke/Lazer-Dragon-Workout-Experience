@@ -43,7 +43,7 @@ struct MuscleAnalyzer {
         var lastTrained: [MuscleGroup: Date] = [:]
 
         for session in sessions {
-            for log in session.setLogs {
+            for log in session.setLogs ?? [] {
                 let muscles = resolveMuscles(for: log)
                 for muscle in muscles {
                     if let existing = lastTrained[muscle] {
@@ -68,7 +68,7 @@ struct MuscleAnalyzer {
         var counts: [MuscleGroup: Int] = [:]
 
         for session in sessions where session.date >= cutoff {
-            for log in session.setLogs {
+            for log in session.setLogs ?? [] {
                 let muscles = resolveMuscles(for: log)
                 for muscle in muscles {
                     counts[muscle, default: 0] += 1

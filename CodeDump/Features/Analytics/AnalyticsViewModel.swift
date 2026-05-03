@@ -120,7 +120,7 @@ final class AnalyticsViewModel {
         for session in sessions {
             let weekStart = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: session.date)) ?? session.date
             var entry = weekMap[weekStart] ?? (0, 0, 0)
-            for log in session.setLogs {
+            for log in session.setLogs ?? [] {
                 entry.volume += (log.weight ?? 0) * Double(log.reps ?? 0)
                 entry.sets += 1
             }

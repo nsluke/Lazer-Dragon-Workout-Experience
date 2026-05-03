@@ -91,7 +91,7 @@ final class StravaIntegrationTests: XCTestCase {
             weight: weight, reps: reps
         )
         log.session = session
-        session.setLogs.append(log)
+        session.setLogs?.append(log)
         context.insert(log)
         return log
     }
