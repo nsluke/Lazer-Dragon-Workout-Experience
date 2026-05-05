@@ -5,6 +5,7 @@ struct WorkoutBuilderView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @State private var showingLibrary = false
+    @State private var selectedForSuperset: Set<Int> = []
 
     init(editing workout: Workout? = nil) {
         _viewModel = State(initialValue: WorkoutBuilderViewModel(editing: workout))
@@ -22,8 +23,7 @@ struct WorkoutBuilderView: View {
                 }
                 .scrollContentBackground(.hidden)
             }
-            .navigationTitle(viewModel.isEditing ? "EDIT WORKOUT" : "NEW WORKOUT")
-            .navigationBarTitleDisplayMode(.inline)
+            .outrunTitle(viewModel.isEditing ? "EDIT WORKOUT" : "NEW WORKOUT")
             .outrunNavBar()
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -100,12 +100,74 @@ struct WorkoutBuilderView: View {
     private var exercisesSection: some View {
         Section {
             ForEach(viewModel.exercises.indices, id: \.self) { index in
-                ExerciseBuilderRow(
-                    exercise: Binding(
-                        get: { self.viewModel.exercises[index] },
-                        set: { self.viewModel.exercises[index] = $0 }
-                    )
-                )
+                VStack(alignment: .leading, spacing: 0) {
+                    // Superset header
+                    if viewModel.isSupersetStart(at: index), let label = viewModel.supersetLabel(at: index) {
+                        HStack(spacing: 6) {
+                            Image(systemName: "arrow.triangle.swap")
+                                .font(.system(size: 9))
+                            Text(label)
+                                .font(.outrunFuture(9))
+                        }
+                        .foregroundColor(.outrunPurple)
+                        .padding(.bottom, 4)
+                    }
+
+                    HStack(spacing: 0) {
+                        // Superset accent bar
+                        if viewModel.exercises[index].supersetGroupID != nil {
+                            RoundedRectangle(cornerRadius: 1.5)
+                                .fill(Color.outrunPurple)
+                                .frame(width: 3)
+                                .padding(.vertical, 2)
+                                .padding(.trailing, 8)
+                        }
+
+                        ExerciseBuilderRow(
+                            exercise: Binding(
+                                get: { self.viewModel.exercises[index] },
+                                set: { self.viewModel.exercises[index] = $0 }
+                            )
+                        )
+                    }
+                }
+                .contextMenu {
+                    if viewModel.exercises[index].supersetGroupID != nil {
+                        Button(role: .destructive) {
+                            viewModel.removeFromSuperset(at: index)
+                        } label: {
+                            Label("Remove from Superset", systemImage: "arrow.uturn.backward")
+                        }
+                    }
+
+                    if viewModel.exercises.count >= 2 {
+                        // Offer to create a superset with the next exercise
+                        if index < viewModel.exercises.count - 1,
+                           viewModel.exercises[index].supersetGroupID == nil {
+                            Button {
+                                viewModel.groupAsSuperset(indices: [index, index + 1])
+                            } label: {
+                                Label("Superset with Next", systemImage: "arrow.triangle.swap")
+                            }
+                        }
+                        // Offer to add to existing group above
+                        if index > 0,
+                           viewModel.exercises[index].supersetGroupID == nil,
+                           viewModel.exercises[index - 1].supersetGroupID != nil,
+                           viewModel.isSupersetEnd(at: index - 1) {
+                            let groupIndices = viewModel.exercises.indices.filter {
+                                viewModel.exercises[$0].supersetGroupID == viewModel.exercises[index - 1].supersetGroupID
+                            }
+                            if groupIndices.count < 4 {
+                                Button {
+                                    viewModel.groupAsSuperset(indices: groupIndices + [index])
+                                } label: {
+                                    Label("Add to Superset Above", systemImage: "plus.circle")
+                                }
+                            }
+                        }
+                    }
+                }
             }
             .onDelete { offsets in viewModel.removeExercises(at: offsets) }
             .onMove  { src, dst in viewModel.moveExercises(from: src, to: dst) }
@@ -188,34 +250,45 @@ struct ExerciseBuilderRow: View {
                 .font(.outrunFuture(15))
                 .foregroundColor(.outrunYellow)
 
-            if !exercise.targetMuscleGroups.isEmpty {
-                HStack(spacing: 6) {
-                    ForEach(exercise.targetMuscleGroups, id: \.self) { muscle in
-                        HStack(spacing: 2) {
-                            Image(systemName: muscle.icon)
-                                .font(.system(size: 8))
-                            Text(muscle.displayName)
-                                .font(.outrunFuture(7))
-                        }
-                        .foregroundColor(.outrunCyan.opacity(0.7))
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 3)
-                        .background(Color.outrunCyan.opacity(0.1))
-                        .clipShape(Capsule())
-                    }
+            HStack(spacing: 6) {
+                // Exercise mode badge
+                HStack(spacing: 2) {
+                    Image(systemName: exercise.exerciseMode.icon)
+                        .font(.system(size: 8))
+                    Text(exercise.exerciseMode.displayName)
+                        .font(.outrunFuture(7))
+                }
+                .foregroundColor(.outrunYellow.opacity(0.7))
+                .padding(.horizontal, 6)
+                .padding(.vertical, 3)
+                .background(Color.outrunYellow.opacity(0.1))
+                .clipShape(Capsule())
 
+                ForEach(exercise.targetMuscleGroups, id: \.self) { muscle in
                     HStack(spacing: 2) {
-                        Image(systemName: exercise.equipment.icon)
+                        Image(systemName: muscle.icon)
                             .font(.system(size: 8))
-                        Text(exercise.equipment.displayName)
+                        Text(muscle.displayName)
                             .font(.outrunFuture(7))
                     }
-                    .foregroundColor(.outrunPurple.opacity(0.7))
+                    .foregroundColor(.outrunCyan.opacity(0.7))
                     .padding(.horizontal, 6)
                     .padding(.vertical, 3)
-                    .background(Color.outrunPurple.opacity(0.1))
+                    .background(Color.outrunCyan.opacity(0.1))
                     .clipShape(Capsule())
                 }
+
+                HStack(spacing: 2) {
+                    Image(systemName: exercise.equipment.icon)
+                        .font(.system(size: 8))
+                    Text(exercise.equipment.displayName)
+                        .font(.outrunFuture(7))
+                }
+                .foregroundColor(.outrunPurple.opacity(0.7))
+                .padding(.horizontal, 6)
+                .padding(.vertical, 3)
+                .background(Color.outrunPurple.opacity(0.1))
+                .clipShape(Capsule())
             }
 
             HStack(spacing: 20) {
@@ -230,14 +303,16 @@ struct ExerciseBuilderRow: View {
                     }
                 }
 
-                HStack(spacing: 6) {
-                    Image(systemName: "repeat")
-                        .font(.caption)
-                        .foregroundColor(.outrunGreen.opacity(0.7))
-                    Stepper(value: $exercise.reps, in: 0...200) {
-                        Text(exercise.reps == 0 ? "timed" : "\(exercise.reps) reps")
-                            .font(.system(size: 13, design: .monospaced))
-                            .foregroundColor(.outrunGreen)
+                if exercise.exerciseMode != .timeBased {
+                    HStack(spacing: 6) {
+                        Image(systemName: "repeat")
+                            .font(.caption)
+                            .foregroundColor(.outrunGreen.opacity(0.7))
+                        Stepper(value: $exercise.reps, in: 0...200) {
+                            Text(exercise.reps == 0 ? "timed" : "\(exercise.reps) reps")
+                                .font(.system(size: 13, design: .monospaced))
+                                .foregroundColor(.outrunGreen)
+                        }
                     }
                 }
             }

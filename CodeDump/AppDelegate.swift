@@ -5,10 +5,6 @@ import UIKit
 @main
 struct LDWEApp: App {
     init() {
-        let large = UIFont(name: "OutrunFuture", size: 34) ?? .systemFont(ofSize: 34, weight: .bold)
-        let inline = UIFont(name: "OutrunFuture", size: 17) ?? .systemFont(ofSize: 17, weight: .semibold)
-        UINavigationBar.appearance().largeTitleTextAttributes = [.font: large, .foregroundColor: UIColor(Color.outrunYellow)]
-        UINavigationBar.appearance().titleTextAttributes      = [.font: inline, .foregroundColor: UIColor(Color.outrunCyan)]
 
         // Activate WatchConnectivity immediately so the session handshake
         // happens at launch, not only when a workout starts.
@@ -55,6 +51,7 @@ enum Route: Hashable {
     case detail(Workout)
     case session(Workout)
     case activeProgram
+    case exerciseProgress(templateID: String, name: String)
 }
 
 // MARK: - Root View
@@ -148,7 +145,7 @@ struct RootView: View {
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = UIColor(Color.outrunBlack)
 
-        let outrunFont = UIFont(name: "OutrunFuture", size: 9) ?? .systemFont(ofSize: 9)
+        let outrunFont = UIFont(name: "Audiowide-Regular", size: 9) ?? .systemFont(ofSize: 9)
         let normalColor = UIColor(Color.white.opacity(0.4))
         let selectedColor = UIColor(Color.outrunCyan)
 
@@ -203,6 +200,8 @@ struct WorkoutsTab: View {
                         WorkoutSessionView(workout: workout, path: $path)
                     case .activeProgram:
                         ProgramCalendarView(path: $path)
+                    case .exerciseProgress(let templateID, let name):
+                        ExerciseProgressChartView(exerciseTemplateID: templateID, exerciseName: name)
                     }
                 }
         }

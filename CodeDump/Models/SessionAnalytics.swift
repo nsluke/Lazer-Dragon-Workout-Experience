@@ -261,14 +261,14 @@ enum SessionAnalytics {
 
         // Find the most recent session for this workout (excluding today)
         let startOfToday = Calendar.current.startOfDay(for: .now)
-        let previousSession = workout.sessions
+        let previousSession = (workout.sessions ?? [])
             .filter { $0.date < startOfToday }
             .sorted { $0.date > $1.date }
             .first
 
         guard let session = previousSession else { return nil }
 
-        let volume = session.setLogs.reduce(0.0) { sum, log in
+        let volume = (session.setLogs ?? []).reduce(0.0) { sum, log in
             sum + (log.weight ?? 0) * Double(log.reps ?? 0)
         }
 

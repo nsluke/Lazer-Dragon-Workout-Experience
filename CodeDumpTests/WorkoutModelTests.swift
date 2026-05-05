@@ -43,7 +43,7 @@ final class WorkoutModelTests: XCTestCase {
         let e2 = Exercise(order: 2, name: "Third")
         let e0 = Exercise(order: 0, name: "First")
         let e1 = Exercise(order: 1, name: "Second")
-        for e in [e2, e0, e1] { e.workout = w; w.exercises.append(e); context.insert(e) }
+        for e in [e2, e0, e1] { e.workout = w; w.exercises?.append(e); context.insert(e) }
 
         let sorted = w.sortedExercises
         XCTAssertEqual(sorted.map(\.name), ["First", "Second", "Third"])
@@ -138,7 +138,7 @@ final class WorkoutModelTests: XCTestCase {
         context.insert(w)
         let e = Exercise(order: 0, name: "Burpee")
         e.workout = w
-        w.exercises.append(e)
+        w.exercises?.append(e)
         context.insert(e)
         try context.save()
 

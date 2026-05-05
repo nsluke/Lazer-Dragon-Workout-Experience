@@ -29,8 +29,7 @@ struct WorkoutCalendarView: View {
                 .padding(.bottom, 48)
             }
         }
-        .navigationTitle("HISTORY")
-        .navigationBarTitleDisplayMode(.inline)
+        .outrunTitle("HISTORY")
         .outrunNavBar()
     }
 
@@ -115,7 +114,7 @@ struct WorkoutCalendarView: View {
         let activeDays = Set(monthSessions.map { calendar.startOfDay(for: $0.date) }).count
         var totalVolume: Double = 0
         for session in monthSessions {
-            for log in session.setLogs {
+            for log in session.setLogs ?? [] {
                 let w: Double = log.weight ?? 0
                 let r: Double = Double(log.reps ?? 0)
                 totalVolume += w * r

@@ -29,6 +29,7 @@ struct BodyStatusView: View {
                     #endif
                     weeklyStatsSection
                     recommendedSection
+                    muscleHeatMap
                     muscleFreshnessGrid
                 }
                 .padding(.horizontal, 16)
@@ -36,8 +37,7 @@ struct BodyStatusView: View {
                 .padding(.bottom, 48)
             }
         }
-        .navigationTitle("BODY")
-        .navigationBarTitleDisplayMode(.large)
+        .outrunTitle("BODY")
         .outrunNavBar()
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -259,6 +259,21 @@ struct BodyStatusView: View {
             .accessibilityElement(children: .ignore)
             .accessibilityLabel("Recommended to train: \(recommendedMuscles.map(\.displayName).joined(separator: ", "))")
         }
+    }
+
+    // MARK: - Muscle Heat Map
+
+    private var muscleHeatMap: some View {
+        MuscleHeatMapView(
+            muscleCards: muscleCards.map { card in
+                MuscleHeatMapData(
+                    muscle: card.muscle,
+                    daysSinceLastTrained: card.daysSinceLastTrained,
+                    setsInLast7Days: card.setsInLast7Days,
+                    freshnessScore: card.freshnessScore
+                )
+            }
+        )
     }
 
     // MARK: - Muscle Freshness Grid

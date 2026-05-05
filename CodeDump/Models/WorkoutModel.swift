@@ -31,11 +31,12 @@ final class Workout {
     var cooldownLength: Int = 0
     var createdAt: Date = Date()
 
+    // CloudKit requires to-many relationships to be optional.
     @Relationship(deleteRule: .cascade, inverse: \Exercise.workout)
-    var exercises: [Exercise] = []
+    var exercises: [Exercise]? = []
 
     @Relationship(deleteRule: .cascade, inverse: \WorkoutSession.workout)
-    var sessions: [WorkoutSession] = []
+    var sessions: [WorkoutSession]? = []
 
     init(
         name: String,
@@ -65,8 +66,11 @@ final class Workout {
     }
 
     var sortedExercises: [Exercise] {
-        exercises.sorted { $0.order < $1.order }
+        (exercises ?? []).sorted { $0.order < $1.order }
     }
+
+    var exerciseCount: Int { exercises?.count ?? 0 }
+    var sessionCount: Int { sessions?.count ?? 0 }
 
     var totalDurationEstimate: Int {
         let warmup = warmupLength

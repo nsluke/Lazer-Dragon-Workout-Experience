@@ -22,7 +22,7 @@ extension Color {
 
 extension Font {
     static func widgetOutrun(_ size: CGFloat) -> Font {
-        .custom("OutrunFuture", size: size)
+        .custom("Audiowide-Regular", size: size)
     }
 }
 

@@ -269,19 +269,46 @@ struct WorkoutSessionView: View {
 
     private var exerciseInfo: some View {
         VStack(spacing: 6) {
-            if let current = viewModel.currentExercise, current.reps > 0 {
-                Text("\(current.reps) REPS")
-                    .font(.outrunFuture(14))
-                    .foregroundColor(.outrunYellow)
+            // Superset progress indicator
+            if let progress = viewModel.supersetProgress {
+                HStack(spacing: 6) {
+                    Image(systemName: "arrow.triangle.swap")
+                        .font(.system(size: 10))
+                    Text(progress.total <= 2 ? "SUPERSET" : "CIRCUIT")
+                        .font(.outrunFuture(10))
+                    Text("\(progress.current)/\(progress.total)")
+                        .font(.system(size: 12, weight: .bold, design: .monospaced))
+                }
+                .foregroundColor(.outrunPurple)
+            }
+
+            if let current = viewModel.currentExercise {
+                switch current.exerciseMode {
+                case .timeBased:
+                    HStack(spacing: 4) {
+                        Image(systemName: "timer")
+                            .font(.system(size: 12))
+                        Text("TIMED")
+                            .font(.outrunFuture(14))
+                    }
+                    .foregroundColor(.outrunCyan)
+                case .repBased, .hybrid:
+                    if current.reps > 0 {
+                        Text("\(current.reps) REPS")
+                            .font(.outrunFuture(14))
+                            .foregroundColor(.outrunYellow)
+                    }
+                }
             }
 
             if let next = viewModel.nextExercise {
-                Text("NEXT: \(next.name.uppercased())")
-                    .font(.outrunFuture(13))
-                    .foregroundColor(.white.opacity(0.4))
+                let noRest = viewModel.nextIsInSuperset
+                Text(noRest ? "NEXT (NO REST): \(next.name.uppercased())" : "NEXT: \(next.name.uppercased())")
+                    .font(.outrunFuture(noRest ? 11 : 13))
+                    .foregroundColor(noRest ? .outrunPurple.opacity(0.7) : .white.opacity(0.4))
             }
         }
-        .frame(height: 44)
+        .frame(minHeight: 44)
     }
 
     // MARK: - Control Bar
@@ -357,7 +384,7 @@ struct WorkoutSessionView: View {
             setsCompleted: viewModel.setsCompleted
         )
         session.workout = viewModel.workout
-        viewModel.workout.sessions.append(session)
+        viewModel.workout.sessions?.append(session)
 
         // Save GPS route data if applicable
         if viewModel.isGPSWorkout, !viewModel.locationTracker.locations.isEmpty {
@@ -369,7 +396,7 @@ struct WorkoutSessionView: View {
         // Persist set logs
         for log in viewModel.sessionLogs {
             log.session = session
-            session.setLogs.append(log)
+            session.setLogs?.append(log)
             modelContext.insert(log)
         }
 

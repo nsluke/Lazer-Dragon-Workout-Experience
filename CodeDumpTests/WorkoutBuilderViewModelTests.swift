@@ -82,7 +82,7 @@ final class WorkoutBuilderViewModelTests: XCTestCase {
         context.insert(workout)
         let ex = Exercise(order: 0, name: "Burpee", splitLength: 40, reps: 10)
         ex.workout = workout
-        workout.exercises.append(ex)
+        workout.exercises?.append(ex)
         context.insert(ex)
 
         let vm = WorkoutBuilderViewModel(editing: workout)
@@ -124,7 +124,7 @@ final class WorkoutBuilderViewModelTests: XCTestCase {
         vm.save(in: context)
 
         let workouts = try context.fetch(FetchDescriptor<Workout>())
-        XCTAssertEqual(workouts[0].exercises.count, 1)
+        XCTAssertEqual(workouts[0].exerciseCount, 1)
         XCTAssertEqual(workouts[0].sortedExercises[0].name, "Squat")
         XCTAssertEqual(workouts[0].sortedExercises[0].splitLength, 40)
     }
@@ -173,7 +173,7 @@ final class WorkoutBuilderViewModelTests: XCTestCase {
         context.insert(workout)
         let old = Exercise(order: 0, name: "Old Exercise", splitLength: 30, reps: 0)
         old.workout = workout
-        workout.exercises.append(old)
+        workout.exercises?.append(old)
         context.insert(old)
 
         let vm = WorkoutBuilderViewModel(editing: workout)
@@ -182,7 +182,7 @@ final class WorkoutBuilderViewModelTests: XCTestCase {
         vm.exercises[0].name = "New Exercise"
         vm.save(in: context)
 
-        XCTAssertEqual(workout.exercises.count, 1)
+        XCTAssertEqual(workout.exerciseCount, 1)
         XCTAssertEqual(workout.sortedExercises[0].name, "New Exercise")
     }
 

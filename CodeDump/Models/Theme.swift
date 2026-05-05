@@ -19,7 +19,7 @@ extension Color {
 
 extension Font {
     static func outrunFuture(_ size: CGFloat) -> Font {
-        .custom("OutrunFuture", size: size)
+        .custom("Audiowide-Regular", size: size)
     }
     static func morningStar(_ size: CGFloat) -> Font {
         .custom("MorningStar", size: size)
@@ -33,6 +33,22 @@ extension View {
         self
             .toolbarBackground(Color.outrunBlack, for: .navigationBar)
             .toolbarColorScheme(.dark, for: .navigationBar)
+    }
+
+    func outrunTitle(_ title: String) -> some View {
+        #if os(iOS)
+        self
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text(title)
+                        .font(.outrunFuture(17))
+                        .foregroundColor(.outrunCyan)
+                }
+            }
+        #else
+        self.navigationTitle(title)
+        #endif
     }
 }
 

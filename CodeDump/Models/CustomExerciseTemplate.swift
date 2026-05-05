@@ -7,6 +7,7 @@ final class CustomExerciseTemplate {
     var name: String = ""
     var targetMuscleGroupsRaw: String = ""
     var equipmentRaw: String = "bodyweight"
+    var exerciseModeRaw: String = "repBased"
     var instructions: String = ""
     var defaultDuration: Int = 30
     var defaultReps: Int = 0
@@ -16,6 +17,7 @@ final class CustomExerciseTemplate {
         name: String,
         muscleGroups: [MuscleGroup] = [],
         equipment: Equipment = .bodyweight,
+        exerciseMode: ExerciseMode = .repBased,
         instructions: String = "",
         defaultDuration: Int = 30,
         defaultReps: Int = 0
@@ -24,6 +26,7 @@ final class CustomExerciseTemplate {
         self.name = name
         self.targetMuscleGroupsRaw = muscleGroups.map(\.rawValue).joined(separator: ",")
         self.equipmentRaw = equipment.rawValue
+        self.exerciseModeRaw = exerciseMode.rawValue
         self.instructions = instructions
         self.defaultDuration = defaultDuration
         self.defaultReps = defaultReps
@@ -44,5 +47,10 @@ final class CustomExerciseTemplate {
     var equipment: Equipment {
         get { Equipment(rawValue: equipmentRaw) ?? .bodyweight }
         set { equipmentRaw = newValue.rawValue }
+    }
+
+    var exerciseMode: ExerciseMode {
+        get { ExerciseMode(rawValue: exerciseModeRaw) ?? .repBased }
+        set { exerciseModeRaw = newValue.rawValue }
     }
 }

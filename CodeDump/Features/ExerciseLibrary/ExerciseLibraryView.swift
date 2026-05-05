@@ -42,8 +42,7 @@ struct ExerciseLibraryView: View {
                 }
             }
             .searchable(text: $searchText, prompt: "Search exercises")
-            .navigationTitle("EXERCISE LIBRARY")
-            .navigationBarTitleDisplayMode(.inline)
+            .outrunTitle("EXERCISE LIBRARY")
             .outrunNavBar()
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {

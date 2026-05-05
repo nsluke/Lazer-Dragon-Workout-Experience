@@ -77,7 +77,7 @@ final class StravaIntegrationTests: XCTestCase {
     ) -> WorkoutSession {
         let s = WorkoutSession(totalElapsed: elapsed, exercisesCompleted: exercises, setsCompleted: sets)
         s.workout = workout
-        workout.sessions.append(s)
+        workout.sessions?.append(s)
         context.insert(s)
         return s
     }
@@ -91,7 +91,7 @@ final class StravaIntegrationTests: XCTestCase {
             weight: weight, reps: reps
         )
         log.session = session
-        session.setLogs.append(log)
+        session.setLogs?.append(log)
         context.insert(log)
         return log
     }
@@ -387,8 +387,8 @@ final class StravaIntegrationTests: XCTestCase {
         let workout = makeWorkout(name: "Full Body Blast", type: .strength)
         let ex1 = Exercise(order: 0, name: "Bench Press", splitLength: 30, reps: 10)
         let ex2 = Exercise(order: 1, name: "Squat", splitLength: 45, reps: 8)
-        ex1.workout = workout; workout.exercises.append(ex1); context.insert(ex1)
-        ex2.workout = workout; workout.exercises.append(ex2); context.insert(ex2)
+        ex1.workout = workout; workout.exercises?.append(ex1); context.insert(ex1)
+        ex2.workout = workout; workout.exercises?.append(ex2); context.insert(ex2)
 
         // 2. Simulate completing a session (what WorkoutSessionView does)
         let session = makeSession(workout: workout, elapsed: 2400, exercises: 2, sets: 3)

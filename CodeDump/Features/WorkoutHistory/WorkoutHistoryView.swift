@@ -7,17 +7,17 @@ struct WorkoutHistoryView: View {
     @Environment(\.modelContext) private var modelContext
 
     private var sortedSessions: [WorkoutSession] {
-        workout.sessions.sorted { $0.date > $1.date }
+        (workout.sessions ?? []).sorted { $0.date > $1.date }
     }
 
     // MARK: - Aggregate stats
 
     private var totalTime: Int {
-        workout.sessions.reduce(0) { $0 + $1.totalElapsed }
+        (workout.sessions ?? []).reduce(0) { $0 + $1.totalElapsed }
     }
 
     private var bestTime: Int? {
-        workout.sessions.map(\.totalElapsed).min()
+        (workout.sessions ?? []).map(\.totalElapsed).min()
     }
 
     var body: some View {
@@ -44,8 +44,7 @@ struct WorkoutHistoryView: View {
                 .scrollContentBackground(.hidden)
             }
         }
-        .navigationTitle("HISTORY")
-        .navigationBarTitleDisplayMode(.large)
+        .outrunTitle("HISTORY")
         .outrunNavBar()
     }
 

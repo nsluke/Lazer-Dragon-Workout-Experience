@@ -17,7 +17,9 @@ struct ExerciseExport: Codable {
     let reps: Int
     let targetMuscleGroupsRaw: String
     let equipmentRaw: String
+    let exerciseModeRaw: String?
     let templateID: String?
+    let supersetGroupID: String?
 
     init(from exercise: Exercise) {
         self.order = exercise.order
@@ -26,7 +28,9 @@ struct ExerciseExport: Codable {
         self.reps = exercise.reps
         self.targetMuscleGroupsRaw = exercise.targetMuscleGroupsRaw
         self.equipmentRaw = exercise.equipmentRaw
+        self.exerciseModeRaw = exercise.exerciseModeRaw
         self.templateID = exercise.templateID
+        self.supersetGroupID = exercise.supersetGroupID
     }
 }
 
@@ -44,7 +48,7 @@ struct WorkoutExport: Codable {
     let exercises: [ExerciseExport]
 
     init(from workout: Workout) {
-        self.version = 1
+        self.version = 2
         self.name = workout.name
         self.type = workout.type
         self.warmupLength = workout.warmupLength
@@ -81,10 +85,12 @@ struct WorkoutExport: Codable {
                 reps: item.reps,
                 targetMuscleGroupsRaw: item.targetMuscleGroupsRaw,
                 equipmentRaw: item.equipmentRaw,
-                templateID: item.templateID
+                exerciseModeRaw: item.exerciseModeRaw ?? "repBased",
+                templateID: item.templateID,
+                supersetGroupID: item.supersetGroupID
             )
             exercise.workout = workout
-            workout.exercises.append(exercise)
+            workout.exercises?.append(exercise)
             context.insert(exercise)
         }
 
