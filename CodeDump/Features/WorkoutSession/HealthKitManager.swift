@@ -19,6 +19,8 @@ final class HealthKitManager {
 
     func requestAuthorization() async {
         guard isAvailable else { return }
+        // Skip the system permission sheet during UI tests — it blocks the workflow.
+        if ProcessInfo.processInfo.arguments.contains("-UITesting") { return }
         let share: Set<HKSampleType> = [
             HKObjectType.workoutType(),
             HKQuantityType(.activeEnergyBurned)

@@ -1,0 +1,107 @@
+name: "Gate 3: Nightly"
+
+on:
+  schedule:
+    - cron: "0 6 * * *" # 6 AM UTC daily
+  workflow_dispatch: # Manual trigger
+
+env:
+  SCHEME: CodeDump
+  PROJECT: CodeDump.xcodeproj
+  COVERAGE_THRESHOLD: 70
+
+jobs:
+  nightly-multi-device:
+    name: "Multi-Device Test Matrix"
+    runs-on: macos-15
+    strategy:
+      fail-fast: false
+      matrix:
+        device:
+          - "iPhone SE (3rd generation)"
+          - "iPhone 16 Pro"
+          - "iPhone 16 Pro Max"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s "$(ls -d /Applications/Xcode_16*.app 2>/dev/null | sort -V | tail -1 || echo /Applications/Xcode.app)" && xcodebuild -version
+
+      - name: Install iOS Simulator
+        run: xcodebuild -downloadPlatform iOS
+
+      - name: "Unit + Integration Tests (${{ matrix.device }})"
+        run: |
+          set -o pipefail
+          xcodebuild test \
+            -project "$PROJECT" \
+            -scheme "$SCHEME" \
+            -destination "platform=iOS Simulator,name=${{ matrix.device }},OS=latest" \
+            -enableCodeCoverage YES \
+            -resultBundlePath "Results-${{ strategy.job-index }}.xcresult" \
+            -skip-testing:CodeDumpUITests \
+            -skip-testing:CodeDumpTests/StravaE2ETests \
+            | tee xcodebuild.log
+
+      - name: "UI Tests (${{ matrix.device }})"
+        run: |
+          set -o pipefail
+          xcodebuild test \
+            -project "$PROJECT" \
+            -scheme "$SCHEME" \
+            -destination "platform=iOS Simulator,name=${{ matrix.device }},OS=latest" \
+            -only-testing:CodeDumpUITests \
+            | tee xcodebuild.log
+
+      - name: Upload Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: "nightly-${{ strategy.job-index }}"
+          path: "Results-${{ strategy.job-index }}.xcresult"
+          retention-days: 7
+
+  nightly-e2e:
+    name: "E2E Tests (Strava Sandbox)"
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s "$(ls -d /Applications/Xcode_16*.app 2>/dev/null | sort -V | tail -1 || echo /Applications/Xcode.app)" && xcodebuild -version
+
+      - name: Install iOS Simulator
+        run: xcodebuild -downloadPlatform iOS
+
+      - name: Run E2E Tests
+        env:
+          STRAVA_TEST_CLIENT_ID: ${{ secrets.STRAVA_TEST_CLIENT_ID }}
+          STRAVA_TEST_CLIENT_SECRET: ${{ secrets.STRAVA_TEST_CLIENT_SECRET }}
+          STRAVA_TEST_REFRESH_TOKEN: ${{ secrets.STRAVA_TEST_REFRESH_TOKEN }}
+        run: |
+          if [ -z "$STRAVA_TEST_REFRESH_TOKEN" ]; then
+            echo "⚠️ Strava secrets not configured — skipping E2E"
+            exit 0
+          fi
+          set -o pipefail
+          xcodebuild test \
+            -project "$PROJECT" \
+            -scheme "$SCHEME" \
+            -destination "platform=iOS Simulator,name=iPhone 16 Pro,OS=latest" \
+            -only-testing:CodeDumpTests/StravaE2ETests \
+            | tee xcodebuild.log
+
+  nightly-summary:
+    name: "Nightly Summary"
+    runs-on: macos-15
+    if: always()
+    needs: [nightly-multi-device, nightly-e2e]
+    steps:
+      - name: Report
+        run: |
+          echo "## Nightly Test Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Job | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Multi-Device | ${{ needs.nightly-multi-device.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| E2E | ${{ needs.nightly-e2e.result }} |" >> $GITHUB_STEP_SUMMARY
