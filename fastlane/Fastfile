@@ -5,7 +5,7 @@ default_platform(:ios)
 #───────────────────────────────────────────────────────────────────────
 SCHEME        = "CodeDump"
 PROJECT       = "CodeDump.xcodeproj"
-DEVICE        = "iPhone 17 Pro"
+DEVICE        = "iPhone 16 Pro"
 IOS_VERSION   = "latest"
 DESTINATION   = "platform=iOS Simulator,name=#{DEVICE},OS=#{IOS_VERSION}"
 COV_THRESHOLD = 70
@@ -71,7 +71,7 @@ platform :ios do
   #─────────────────────────────────────────────────────────────────────
   desc "Gate 3: Nightly — all tests + E2E against Strava sandbox + multi-device"
   lane :gate_nightly do
-    devices = ["iPhone 17e", "iPhone 17 Pro", "iPhone 17 Pro Max"]
+    devices = ["iPhone SE (3rd generation)", "iPhone 16 Pro", "iPhone 16 Pro Max"]
 
     # Fast tests on all device sizes
     scan(
