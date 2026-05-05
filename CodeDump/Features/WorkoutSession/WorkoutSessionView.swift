@@ -51,12 +51,15 @@ struct WorkoutSessionView: View {
             viewModel.historicalLogs = allSetLogs
         }
         .onChange(of: viewModel.phase) { _, newPhase in
+            // Auto-commit any pending log on every phase change. commitSetLog()
+            // is a no-op when pendingLog is nil, so this is safe to fire on
+            // .interval / .restBetweenSets / .completed alike. finishWorkout()
+            // also commits internally, so the .completed branch is defensive.
+            if viewModel.pendingLog != nil {
+                viewModel.commitSetLog()
+            }
             if case .completed = newPhase {
                 saveSession()
-            }
-            // Auto-commit any pending log when the next interval starts
-            if case .interval = newPhase, viewModel.pendingLog != nil {
-                viewModel.commitSetLog()
             }
         }
         .onChange(of: scenePhase) { _, newPhase in

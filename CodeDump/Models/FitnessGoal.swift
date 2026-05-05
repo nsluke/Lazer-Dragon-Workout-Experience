@@ -121,7 +121,17 @@ final class FitnessGoal {
 
     var exerciseName: String? {
         guard let tid = exerciseTemplateID else { return nil }
-        return ExerciseTemplate.library.first(where: { $0.id == tid })?.name
+        if let builtIn = ExerciseTemplate.library.first(where: { $0.id == tid })?.name {
+            return builtIn
+        }
+        // Goal references a CustomExerciseTemplate. Fetch by ID via the model
+        // context, which is non-nil once the goal has been inserted.
+        guard let context = modelContext else { return nil }
+        var descriptor = FetchDescriptor<CustomExerciseTemplate>(
+            predicate: #Predicate { $0.id == tid }
+        )
+        descriptor.fetchLimit = 1
+        return (try? context.fetch(descriptor))?.first?.name
     }
 
     // MARK: - Auto-tracking

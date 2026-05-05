@@ -157,9 +157,13 @@ final class HealthKitManager {
             guard let firstDate = sortedLogs.first?.date,
                   let lastDate = sortedLogs.last?.date else { continue }
 
-            // Use log dates as segment boundaries, ensuring they fall within workout bounds
+            // Use log dates as segment boundaries, clamped to the workout window.
+            // SetLog timestamps frequently collapse (single log per exercise, or
+            // logs committed in rapid succession), so guarantee a non-zero span
+            // by extending the end at least 1s past the start when needed.
             let segStart = max(firstDate, workoutStart)
-            let segEnd = min(lastDate, workoutEnd)
+            let rawEnd = min(lastDate, workoutEnd)
+            let segEnd = max(rawEnd, min(segStart.addingTimeInterval(1), workoutEnd))
             guard segEnd > segStart else { continue }
 
             let dateInterval = DateInterval(start: segStart, end: segEnd)

@@ -1,6 +1,7 @@
 #if os(iOS)
 import Foundation
 import AuthenticationServices
+import Security
 
 // MARK: - Protocols for Testability
 
@@ -26,7 +27,8 @@ struct KeychainTokenStore: StravaTokenStore {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: key,
-            kSecAttrService as String: Self.service
+            kSecAttrService as String: Self.service,
+            kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlock
         ]
         SecItemDelete(query as CFDictionary)
         var addQuery = query
@@ -39,6 +41,7 @@ struct KeychainTokenStore: StravaTokenStore {
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: key,
             kSecAttrService as String: Self.service,
+            kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlock,
             kSecReturnData as String: true,
             kSecMatchLimit as String: kSecMatchLimitOne
         ]
@@ -120,6 +123,9 @@ final class StravaManager: NSObject {
     var isUploading = false
     var uploadResult: UploadResult?
 
+    /// CSRF nonce generated per `authorize()` and validated in the callback.
+    private var pendingAuthState: String?
+
     enum UploadResult: Equatable {
         case success
         case error(String)
@@ -196,13 +202,17 @@ final class StravaManager: NSObject {
     // MARK: - OAuth
 
     func authorize() {
+        let state = Self.makeAuthState()
+        pendingAuthState = state
+
         var components = URLComponents(string: Self.authorizeURL)!
         components.queryItems = [
             URLQueryItem(name: "client_id", value: Self.clientID),
             URLQueryItem(name: "redirect_uri", value: Self.redirectURI),
             URLQueryItem(name: "response_type", value: "code"),
             URLQueryItem(name: "approval_prompt", value: "auto"),
-            URLQueryItem(name: "scope", value: "activity:write,read")
+            URLQueryItem(name: "scope", value: "activity:write,read"),
+            URLQueryItem(name: "state", value: state)
         ]
 
         let session = ASWebAuthenticationSession(
@@ -211,6 +221,9 @@ final class StravaManager: NSObject {
         ) { [weak self] callbackURL, error in
             Task { @MainActor in
                 guard let self else { return }
+                let expectedState = self.pendingAuthState
+                self.pendingAuthState = nil
+
                 if let error {
                     if (error as NSError).code == ASWebAuthenticationSessionError.canceledLogin.rawValue {
                         return // User cancelled — not an error
@@ -219,8 +232,16 @@ final class StravaManager: NSObject {
                     return
                 }
                 guard let callbackURL,
-                      let code = URLComponents(url: callbackURL, resolvingAgainstBaseURL: false)?
-                        .queryItems?.first(where: { $0.name == "code" })?.value else {
+                      let queryItems = URLComponents(url: callbackURL, resolvingAgainstBaseURL: false)?.queryItems else {
+                    self.uploadResult = .error("No authorization code received.")
+                    return
+                }
+                let returnedState = queryItems.first(where: { $0.name == "state" })?.value
+                guard let expectedState, returnedState == expectedState else {
+                    self.uploadResult = .error("Authorization state mismatch.")
+                    return
+                }
+                guard let code = queryItems.first(where: { $0.name == "code" })?.value else {
                     self.uploadResult = .error("No authorization code received.")
                     return
                 }
@@ -230,6 +251,19 @@ final class StravaManager: NSObject {
         session.presentationContextProvider = self
         session.prefersEphemeralWebBrowserSession = false
         session.start()
+    }
+
+    private static func makeAuthState() -> String {
+        var bytes = [UInt8](repeating: 0, count: 32)
+        let status = SecRandomCopyBytes(kSecRandomDefault, bytes.count, &bytes)
+        if status == errSecSuccess {
+            return Data(bytes).base64EncodedString()
+                .replacingOccurrences(of: "+", with: "-")
+                .replacingOccurrences(of: "/", with: "_")
+                .replacingOccurrences(of: "=", with: "")
+        }
+        // Fall back to UUID — still unguessable, lower entropy than 256 bits but acceptable.
+        return UUID().uuidString
     }
 
     func disconnect() {

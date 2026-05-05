@@ -239,8 +239,11 @@ final class WorkoutSessionViewModel {
     }
 
     func endWorkout() {
+        // Route through finishWorkout so HealthKit save, Live Activity teardown,
+        // GPS stop, watch handler clear, and pendingLog auto-commit all run on
+        // the manual-end path instead of being skipped (issue #15).
         pause()
-        transition(to: .completed)
+        finishWorkout()
     }
 
     /// Called when the app returns to foreground. Restarts the tick loop so any
@@ -423,7 +426,10 @@ final class WorkoutSessionViewModel {
         timerTask?.cancel()
         if isGPSWorkout { locationTracker.stop() }
         let start = workoutStartDate
-        let end = start.addingTimeInterval(TimeInterval(totalElapsed))
+        // HealthKit rejects saves where endDate <= startDate. Guarantee at least
+        // a 1-second span so manual/instant-end workouts still persist.
+        let rawEnd = start.addingTimeInterval(TimeInterval(totalElapsed))
+        let end = max(rawEnd, start.addingTimeInterval(1))
         let type = workout.workoutType
         transition(to: .completed)
         liveActivity.end(finalState: currentActivityState)
