@@ -63,6 +63,12 @@ struct RootView: View {
     @State private var selectedTab: Tab = .workouts
     @State private var workoutsPath = NavigationPath()
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
+    private var isUITesting: Bool {
+        ProcessInfo.processInfo.arguments.contains("-UITesting")
+    }
+    private var shouldShowOnboarding: Bool {
+        !hasCompletedOnboarding && !isUITesting
+    }
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \WorkoutSession.date, order: .reverse) private var recentSessions: [WorkoutSession]
     @State private var importedWorkout: WorkoutExport?
@@ -96,7 +102,7 @@ struct RootView: View {
                 .tag(Tab.goals)
         }
         .tint(.outrunCyan)
-        .fullScreenCover(isPresented: .constant(!hasCompletedOnboarding)) {
+        .fullScreenCover(isPresented: .constant(shouldShowOnboarding)) {
             OnboardingView {
                 hasCompletedOnboarding = true
             }
