@@ -9,7 +9,7 @@ on:
 env:
   SCHEME: CodeDump
   PROJECT: CodeDump.xcodeproj
-  DESTINATION: "platform=iOS Simulator,name=iPhone 17 Pro,OS=latest"
+  DESTINATION: "platform=iOS Simulator,name=iPhone 16 Pro,OS=latest"
   COVERAGE_THRESHOLD: 70
 
 jobs:
@@ -24,6 +24,9 @@ jobs:
 
       - name: Select Xcode
         run: sudo xcode-select -s "$(ls -d /Applications/Xcode_16*.app 2>/dev/null | sort -V | tail -1 || echo /Applications/Xcode.app)" && xcodebuild -version
+
+      - name: Install iOS Simulator
+        run: xcodebuild -downloadPlatform iOS
 
       - name: Build & Test
         run: |
@@ -114,6 +117,9 @@ jobs:
 
       - name: Select Xcode
         run: sudo xcode-select -s "$(ls -d /Applications/Xcode_16*.app 2>/dev/null | sort -V | tail -1 || echo /Applications/Xcode.app)" && xcodebuild -version
+
+      - name: Install iOS Simulator
+        run: xcodebuild -downloadPlatform iOS
 
       - name: Full Test Suite (including Keychain)
         run: |
