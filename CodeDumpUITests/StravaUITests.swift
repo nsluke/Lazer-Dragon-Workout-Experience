@@ -36,15 +36,25 @@ final class StravaUITests: XCTestCase {
 
     // MARK: - Helpers
 
-    /// Taps at the element's center via a normalized coordinate, bypassing
-    /// the standard `isHittable` check. SwiftUI's List inserts transparent
-    /// overlays (swipe-actions hit zones, etc.) that intermittently make
-    /// rows and toolbar buttons report "Not hittable" even when they're
-    /// plainly visible. Coordinate taps still reach the underlying view
-    /// because they target the screen point directly.
+    /// Hybrid tap that works across iOS 18 and 26 simulators.
+    ///
+    /// - On iOS 18.5 (CI), `.tap()` works fine and `coord.tap()` on a list
+    ///   row with `.swipeActions` is sometimes interpreted as a swipe
+    ///   gesture (the row's button action never fires).
+    /// - On iOS 26 (local), `.tap()` aborts with "Not hittable" because
+    ///   SwiftUI inserts a transparent overlay over each row, even when
+    ///   the row is plainly visible. `coord.tap()` reaches the underlying
+    ///   button on iOS 26 because hit-testing happens at point level.
+    ///
+    /// Strategy: try `.tap()` first when the element reports hittable;
+    /// fall back to coordinate tap only when it doesn't.
     private func robustTap(_ element: XCUIElement) {
-        let coord = element.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
-        coord.tap()
+        if element.exists && element.isHittable {
+            element.tap()
+        } else {
+            let coord = element.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
+            coord.tap()
+        }
     }
 
     /// Navigate to the workout completed screen by starting and fast-forwarding a workout.
