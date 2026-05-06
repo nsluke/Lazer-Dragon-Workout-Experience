@@ -62,16 +62,21 @@ final class StravaUITests: XCTestCase {
     private func navigateToCompletedScreen() {
         app.launch()
 
-        // Wait for the workout list to load. Use existence (not hittability)
-        // because SwiftUI's List swipe-actions overlay intermittently makes
-        // cells report not-hittable even when they're plainly on screen —
-        // we work around that with a coordinate-based tap below.
-        let easyWorkout = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'Easy Day'")).firstMatch
-        guard easyWorkout.waitForExistence(timeout: 10) else {
-            XCTFail("Easy Day workout button never appeared on workout list")
+        // Wait for the workout list to load, then tap the "Easy Day" row.
+        //
+        // We target the inner StaticText rather than the wrapping Button:
+        // SwiftUI's List rows have a `.swipeActions` modifier whose
+        // gesture recognizer swallows coordinate taps on the button area
+        // on iOS 18.5 simulators (the row's Button action never fires,
+        // so navigation doesn't happen). The StaticText sits outside that
+        // gesture zone but still propagates the tap up to the parent
+        // Button, so navigation goes through reliably on iOS 18 and 26.
+        let easyText = app.staticTexts.matching(NSPredicate(format: "label == 'Easy Day'")).firstMatch
+        guard easyText.waitForExistence(timeout: 10) else {
+            XCTFail("Easy Day workout text never appeared on workout list")
             return
         }
-        robustTap(easyWorkout)
+        robustTap(easyText)
 
         // Tap "BEGIN" to enter the workout session
         let beginButton = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'BEGIN'")).firstMatch
