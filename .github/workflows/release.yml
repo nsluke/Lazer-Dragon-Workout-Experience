@@ -36,7 +36,16 @@ jobs:
         run: sudo xcode-select -s "$(ls -d /Applications/Xcode_16*.app 2>/dev/null | sort -V | tail -1 || echo /Applications/Xcode.app)" && xcodebuild -version
 
       - name: Install iOS Simulator
-        run: xcodebuild -downloadPlatform iOS
+        run: |
+          for i in 1 2 3; do
+            if xcodebuild -downloadPlatform iOS; then
+              exit 0
+            fi
+            echo "Attempt $i failed; retrying after $((i * 30))s..."
+            sleep $((i * 30))
+          done
+          echo "All 3 attempts to download iOS simulator failed."
+          exit 1
 
       - name: Unit + Integration + Contract + Concurrency + Accessibility + Error Injection
         run: |
@@ -130,7 +139,16 @@ jobs:
         run: sudo xcode-select -s "$(ls -d /Applications/Xcode_16*.app 2>/dev/null | sort -V | tail -1 || echo /Applications/Xcode.app)" && xcodebuild -version
 
       - name: Install iOS Simulator
-        run: xcodebuild -downloadPlatform iOS
+        run: |
+          for i in 1 2 3; do
+            if xcodebuild -downloadPlatform iOS; then
+              exit 0
+            fi
+            echo "Attempt $i failed; retrying after $((i * 30))s..."
+            sleep $((i * 30))
+          done
+          echo "All 3 attempts to download iOS simulator failed."
+          exit 1
 
       - name: UI Tests
         run: |
