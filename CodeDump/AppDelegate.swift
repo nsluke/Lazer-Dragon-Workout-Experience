@@ -9,6 +9,24 @@ struct LDWEApp: App {
         // Activate WatchConnectivity immediately so the session handshake
         // happens at launch, not only when a workout starts.
         _ = WatchConnectivityManager.shared
+
+        Self.resetTransientStateForUITestsIfNeeded()
+    }
+
+    /// Wipes accumulating session data (WorkoutSession, SetLog, FitnessGoal,
+    /// TrainingProgram, CustomExerciseTemplate) when the harness passes
+    /// `-ResetUITestData`. Tests that re-enter the workout flow each case
+    /// would otherwise see the workout list grow with prior runs' sessions,
+    /// shifting the layout enough to make seed-workout buttons not hittable.
+    private static func resetTransientStateForUITestsIfNeeded() {
+        guard ProcessInfo.processInfo.arguments.contains("-ResetUITestData") else { return }
+        let context = sharedContainer.mainContext
+        try? context.delete(model: WorkoutSession.self)
+        try? context.delete(model: SetLog.self)
+        try? context.delete(model: FitnessGoal.self)
+        try? context.delete(model: TrainingProgram.self)
+        try? context.delete(model: CustomExerciseTemplate.self)
+        try? context.save()
     }
 
     static let sharedContainer: ModelContainer = {
