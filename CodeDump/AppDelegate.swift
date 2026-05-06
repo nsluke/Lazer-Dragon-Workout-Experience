@@ -9,6 +9,49 @@ struct LDWEApp: App {
         // Activate WatchConnectivity immediately so the session handshake
         // happens at launch, not only when a workout starts.
         _ = WatchConnectivityManager.shared
+
+        Self.preloadUITestSeedIfNeeded()
+    }
+
+    /// When `-UITestStartSession` is set, insert the synthetic Easy Day
+    /// workout into the in-memory store synchronously at launch so the
+    /// `@Query` in RootView returns it on the very first read. Doing the
+    /// insert from RootView.onAppear races with the @Query's first
+    /// snapshot — sometimes the navigation appends a route to a workout
+    /// that's not yet visible, leaving the session screen blank.
+    private static func preloadUITestSeedIfNeeded() {
+        guard ProcessInfo.processInfo.arguments.contains("-UITestStartSession") else { return }
+        let context = sharedContainer.mainContext
+        let descriptor = FetchDescriptor<Workout>(predicate: #Predicate { $0.name == "Easy Day" })
+        if let existing = try? context.fetch(descriptor), !existing.isEmpty {
+            return
+        }
+        let workout = makeUITestSeedWorkout()
+        context.insert(workout)
+        try? context.save()
+    }
+
+    static func makeUITestSeedWorkout() -> Workout {
+        let workout = Workout(
+            name: "Easy Day",
+            type: .strength,
+            warmupLength: 5,
+            intervalLength: 5,
+            restLength: 5,
+            numberOfIntervals: 2,
+            numberOfSets: 1,
+            restBetweenSetLength: 5,
+            cooldownLength: 5
+        )
+        let exercises = [
+            Exercise(order: 0, name: "Push-ups", splitLength: 5, reps: 10, targetMuscleGroupsRaw: "chest", equipmentRaw: "bodyweight", templateID: "push-ups"),
+            Exercise(order: 1, name: "Squats", splitLength: 5, reps: 10, targetMuscleGroupsRaw: "quads", equipmentRaw: "bodyweight", templateID: "bodyweight-squats")
+        ]
+        for exercise in exercises {
+            exercise.workout = workout
+        }
+        workout.exercises = exercises
+        return workout
     }
 
     static let sharedContainer: ModelContainer = {
@@ -84,7 +127,6 @@ struct RootView: View {
     @State private var importedWorkout: WorkoutExport?
     @State private var showingImportAlert = false
     @State private var importError: String?
-    @State private var didAutoStartUITestSession = false
 
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -196,48 +238,27 @@ struct RootView: View {
     /// session itself (skip-forward → completed screen) — only the list
     /// hop is bypassed.
     private func autoStartUITestSessionIfNeeded() {
-        guard !didAutoStartUITestSession,
-              ProcessInfo.processInfo.arguments.contains("-UITestStartSession") else {
+        // Use `workoutsPath.isEmpty` rather than a separate @State flag so we
+        // never miss firing when SwiftUI re-creates the view between tests
+        // — the path is fresh on each app launch, the flag wasn't always.
+        guard ProcessInfo.processInfo.arguments.contains("-UITestStartSession"),
+              workoutsPath.isEmpty else {
             return
         }
+        // The seed was inserted in LDWEApp.preloadUITestSeedIfNeeded, but
+        // an empty allWorkouts snapshot is briefly possible while the
+        // @Query catches up. Insert again as a safety net rather than
+        // navigating to a non-existent route.
         let easyDay: Workout
         if let existing = allWorkouts.first(where: { $0.name == "Easy Day" }) {
             easyDay = existing
         } else {
-            // The in-memory store starts empty (see sharedContainer's
-            // -UITesting branch); insert a minimal Easy Day inline so we
-            // don't depend on WorkoutListView's onAppear-driven seed,
-            // which never runs when we deep-link past the list.
-            easyDay = Self.makeUITestSeedWorkout()
+            easyDay = LDWEApp.makeUITestSeedWorkout()
             modelContext.insert(easyDay)
             try? modelContext.save()
         }
-        didAutoStartUITestSession = true
         selectedTab = .workouts
         workoutsPath.append(Route.session(easyDay))
-    }
-
-    private static func makeUITestSeedWorkout() -> Workout {
-        let workout = Workout(
-            name: "Easy Day",
-            type: .strength,
-            warmupLength: 5,
-            intervalLength: 5,
-            restLength: 5,
-            numberOfIntervals: 2,
-            numberOfSets: 1,
-            restBetweenSetLength: 5,
-            cooldownLength: 5
-        )
-        let exercises = [
-            Exercise(order: 0, name: "Push-ups", splitLength: 5, reps: 10, targetMuscleGroupsRaw: "chest", equipmentRaw: "bodyweight", templateID: "push-ups"),
-            Exercise(order: 1, name: "Squats", splitLength: 5, reps: 10, targetMuscleGroupsRaw: "quads", equipmentRaw: "bodyweight", templateID: "bodyweight-squats")
-        ]
-        for exercise in exercises {
-            exercise.workout = workout
-        }
-        workout.exercises = exercises
-        return workout
     }
 
     // MARK: - Import
