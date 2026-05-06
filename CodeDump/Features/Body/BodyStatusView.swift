@@ -9,6 +9,8 @@ struct BodyStatusView: View {
     @State private var muscleCards: [MuscleCardData] = []
     @State private var recommendedMuscles: [MuscleGroup] = []
     @State private var weeklyStats: (sessions: Int, sets: Int, volume: Double) = (0, 0, 0)
+    @State private var strengthScore: StrengthScoreEngine.StrengthScore?
+    @State private var strengthTrend: [StrengthScoreEngine.TrendPoint] = []
     #if os(iOS)
     @State private var recoveryScore: RecoveryScore?
     #endif
@@ -24,6 +26,7 @@ struct BodyStatusView: View {
 
             ScrollView {
                 VStack(spacing: 16) {
+                    strengthScoreSection
                     #if os(iOS)
                     recoveryBar
                     #endif
@@ -90,6 +93,12 @@ struct BodyStatusView: View {
             .filter { $0 != .fullBody }
 
         computeWeeklyStats()
+        computeStrengthScore()
+    }
+
+    private func computeStrengthScore() {
+        strengthScore = StrengthScoreEngine.score(sessions: sessions, setLogs: setLogs)
+        strengthTrend = StrengthScoreEngine.trend(sessions: sessions, setLogs: setLogs)
     }
 
     private func computeWeeklyStats() {
@@ -187,6 +196,15 @@ struct BodyStatusView: View {
         return .outrunOrange
     }
     #endif
+
+    // MARK: - Strength Score
+
+    @ViewBuilder
+    private var strengthScoreSection: some View {
+        if let score = strengthScore {
+            StrengthScoreCard(score: score, trend: strengthTrend)
+        }
+    }
 
     // MARK: - Weekly Stats
 
