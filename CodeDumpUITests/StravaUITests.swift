@@ -20,7 +20,11 @@ final class StravaUITests: XCTestCase {
         // set-log overlay off so the skip-forward loop reaches `.completed`,
         // and (in LDWEApp.sharedContainer) switches SwiftData to an
         // in-memory store so every launch starts with empty session state.
-        app.launchArguments += ["-UITesting", "YES"]
+        // -UITestStartSession deep-links straight into a synthetic Easy Day
+        // workout session, bypassing the workout list and detail screens
+        // (which were flaky on iOS 18.5 because of List swipe-actions
+        // intercepting cell taps).
+        app.launchArguments += ["-UITesting", "YES", "-UITestStartSession", "YES"]
     }
 
     override func tearDownWithError() throws {
@@ -57,38 +61,19 @@ final class StravaUITests: XCTestCase {
         }
     }
 
-    /// Navigate to the workout completed screen by starting and fast-forwarding a workout.
-    /// Requires seed data to exist (the app seeds when the workout list is empty).
+    /// Navigate to the workout completed screen by fast-forwarding the
+    /// auto-launched Easy Day session. The app deep-links straight into the
+    /// session view via `-UITestStartSession`, so the helper only has to
+    /// hit play and skip-forward to completion.
     private func navigateToCompletedScreen() {
         app.launch()
 
-        // Wait for the workout list to load, then tap the "Easy Day" row.
-        //
-        // We target the inner StaticText rather than the wrapping Button:
-        // SwiftUI's List rows have a `.swipeActions` modifier whose
-        // gesture recognizer swallows coordinate taps on the button area
-        // on iOS 18.5 simulators (the row's Button action never fires,
-        // so navigation doesn't happen). The StaticText sits outside that
-        // gesture zone but still propagates the tap up to the parent
-        // Button, so navigation goes through reliably on iOS 18 and 26.
-        let easyText = app.staticTexts.matching(NSPredicate(format: "label == 'Easy Day'")).firstMatch
-        guard easyText.waitForExistence(timeout: 10) else {
-            XCTFail("Easy Day workout text never appeared on workout list")
-            return
-        }
-        robustTap(easyText)
-
-        // Tap "BEGIN" to enter the workout session
-        let beginButton = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'BEGIN'")).firstMatch
-        guard beginButton.waitForExistence(timeout: 5) else {
-            XCTFail("BEGIN button never appeared on detail screen")
-            return
-        }
-        robustTap(beginButton)
-
-        // Tap play to start the workout (session begins in idle)
+        // Tap play to start the workout (session begins in idle).
+        // 15s timeout because the deep-link insert+navigate occasionally
+        // takes a beat on iOS 26 simulators after a previous test left
+        // the app on the completed screen.
         let playButton = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'Start workout'")).firstMatch
-        guard playButton.waitForExistence(timeout: 5) else {
+        guard playButton.waitForExistence(timeout: 15) else {
             XCTFail("Play button never appeared on session screen")
             return
         }

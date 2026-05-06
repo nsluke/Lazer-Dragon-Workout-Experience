@@ -80,9 +80,11 @@ struct RootView: View {
     }
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \WorkoutSession.date, order: .reverse) private var recentSessions: [WorkoutSession]
+    @Query private var allWorkouts: [Workout]
     @State private var importedWorkout: WorkoutExport?
     @State private var showingImportAlert = false
     @State private var importError: String?
+    @State private var didAutoStartUITestSession = false
 
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -121,6 +123,14 @@ struct RootView: View {
             styleTabBar()
             WidgetDataProvider.shared.refreshAll(context: modelContext)
             WatchConnectivityManager.shared.sendIdleContext(lastWorkoutDate: recentSessions.first?.date)
+            autoStartUITestSessionIfNeeded()
+        }
+        .onChange(of: allWorkouts) { _, _ in
+            // The seed runs in WorkoutListView.onAppear and populates this
+            // @Query asynchronously. Re-check once the seed lands so the
+            // UI-test deep-link fires even when the seed wasn't ready at
+            // RootView.onAppear.
+            autoStartUITestSessionIfNeeded()
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
             WidgetDataProvider.shared.refreshAll(context: modelContext)
@@ -174,6 +184,60 @@ struct RootView: View {
 
         UITabBar.appearance().standardAppearance = appearance
         UITabBar.appearance().scrollEdgeAppearance = appearance
+    }
+
+    // MARK: - UI-test deep link
+
+    /// When `-UITestStartSession` is set, push a minimal "Easy Day" workout
+    /// session onto the navigation path automatically. This skips the
+    /// workout-list and detail-screen taps, which are flaky on iOS 18.5
+    /// simulators because SwiftUI's List `.swipeActions` gesture
+    /// recognizer intercepts the cell tap. UI tests still navigate the
+    /// session itself (skip-forward → completed screen) — only the list
+    /// hop is bypassed.
+    private func autoStartUITestSessionIfNeeded() {
+        guard !didAutoStartUITestSession,
+              ProcessInfo.processInfo.arguments.contains("-UITestStartSession") else {
+            return
+        }
+        let easyDay: Workout
+        if let existing = allWorkouts.first(where: { $0.name == "Easy Day" }) {
+            easyDay = existing
+        } else {
+            // The in-memory store starts empty (see sharedContainer's
+            // -UITesting branch); insert a minimal Easy Day inline so we
+            // don't depend on WorkoutListView's onAppear-driven seed,
+            // which never runs when we deep-link past the list.
+            easyDay = Self.makeUITestSeedWorkout()
+            modelContext.insert(easyDay)
+            try? modelContext.save()
+        }
+        didAutoStartUITestSession = true
+        selectedTab = .workouts
+        workoutsPath.append(Route.session(easyDay))
+    }
+
+    private static func makeUITestSeedWorkout() -> Workout {
+        let workout = Workout(
+            name: "Easy Day",
+            type: .strength,
+            warmupLength: 5,
+            intervalLength: 5,
+            restLength: 5,
+            numberOfIntervals: 2,
+            numberOfSets: 1,
+            restBetweenSetLength: 5,
+            cooldownLength: 5
+        )
+        let exercises = [
+            Exercise(order: 0, name: "Push-ups", splitLength: 5, reps: 10, targetMuscleGroupsRaw: "chest", equipmentRaw: "bodyweight", templateID: "push-ups"),
+            Exercise(order: 1, name: "Squats", splitLength: 5, reps: 10, targetMuscleGroupsRaw: "quads", equipmentRaw: "bodyweight", templateID: "bodyweight-squats")
+        ]
+        for exercise in exercises {
+            exercise.workout = workout
+        }
+        workout.exercises = exercises
+        return workout
     }
 
     // MARK: - Import
